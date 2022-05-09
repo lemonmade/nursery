@@ -371,8 +371,12 @@ class NestedAbortController extends AbortController {
   constructor(parent: AbortSignal) {
     super();
 
-    parent.addEventListener('abort', () => {
-      this.abort();
-    });
+    parent.addEventListener(
+      'abort',
+      () => {
+        this.abort();
+      },
+      {once: true},
+    );
   }
 }
