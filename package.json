@@ -16,6 +16,8 @@
     "react-dom": "npm:@quilted/react@^0.1.0"
   },
   "devDependencies": {
+    "@changesets/changelog-github": "^0.4.3",
+    "@changesets/cli": "^2.21.1",
     "@quilted/browserslist-config": "^0.1.0",
     "@quilted/craft": "^0.1.0",
     "@quilted/eslint-config": "^0.1.0",

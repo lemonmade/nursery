@@ -6,59 +6,42 @@ on:
       - '**'
       - '!main'
   workflow_call:
+    inputs:
+      build:
+        type: boolean
+        default: true
+        description: 'Whether to run a build as part of testing'
 
 jobs:
   lint:
     name: Lint 💅
     runs-on: ubuntu-latest
-    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/workflows/actions/prepare
       - uses: quilt-framework/action-lint@v2
-        with:
-          command: pnpm lint
 
   type-check:
     name: Type check 🧮
     runs-on: ubuntu-latest
-    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/workflows/actions/prepare
       - uses: quilt-framework/action-type-check@v2
-        with:
-          command: pnpm type-check
-          cache-key: v2
 
   unit-tests:
     name: Unit tests 🧪
     runs-on: ubuntu-latest
-    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/workflows/actions/prepare
-      # We need to build a few packages that provide Babel plugins
-      # included in test configurations
-      - uses: quilt-framework/action-build@v2
-        with:
-          command: pnpm build
-          arguments: -- --only-project async --only-project workers
       - uses: quilt-framework/action-test@v2
-        with:
-          command: pnpm test:unit
 
-  e2e-tests:
-    name: End-to-end tests 🔬
+  build:
+    name: Build 🏗
+    if: ${{ inputs.build || github.event_name == 'push' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/workflows/actions/prepare
       - uses: quilt-framework/action-build@v2
-        with:
-          command: pnpm build
-          arguments: -- --only-project package:*
-      - uses: quilt-framework/action-test@v2
-        with:
-          command: pnpm test:e2e
