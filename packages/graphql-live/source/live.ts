@@ -1,5 +1,3 @@
-import {EventEmitter, on} from 'events';
-
 import type {
   DocumentNode,
   SelectionNode,
@@ -7,6 +5,8 @@ import type {
   OperationDefinitionNode,
   FragmentDefinitionNode,
 } from 'graphql';
+
+import {createEmitter} from '@lemonmade/events';
 
 import type {
   GraphQLLiveResolverObject,
@@ -53,13 +53,15 @@ export function execute<
 >(
   document: DocumentNode,
   resolvers: Resolver,
-  options: {
+  options?: {
+    signal?: AbortSignal;
     variables?: Variables;
     context?: Resolver extends {__context?: infer U} ? U : never;
-  } = {},
+  },
 ) {
-  const variables = ((options as any).variables ?? {}) as Variables;
-  const context = ((options as any).context ?? {}) as Context;
+  const rootSignal = options?.signal;
+  const variables = (options?.variables ?? {}) as Variables;
+  const context = (options?.context ?? {}) as Context;
 
   let query: OperationDefinitionNode | undefined = undefined;
 
@@ -83,12 +85,9 @@ export function execute<
     throw new Error('No query found');
   }
 
-  const emitter = new EventEmitter();
-
+  const emitter = createEmitter<{update: void}>();
   const liveFields = new Map<string, GraphQLLiveField>();
 
-  const abort = new AbortController();
-  const rootSignal = abort.signal;
   const rawResults: Record<string, any> = {};
 
   let initialPromise: Promise<void>;
@@ -114,19 +113,18 @@ export function execute<
         query!.selectionSet.selections,
         resolvers,
         rawResults,
-        rootSignal,
+        rootSignal ?? new AbortController().signal,
       );
 
       await initialPromise;
 
+      if (liveFields.size === 0 || rootSignal?.aborted) return;
+
       yield rawResults as any;
 
-      if (liveFields.size === 0 || rootSignal.aborted) return;
-
-      for await (const _ of on(emitter, 'update', {signal: rootSignal})) {
-        if (rootSignal.aborted) return;
+      for await (const _ of emitter.on('update', {signal: rootSignal})) {
         yield rawResults as any;
-        if (liveFields.size === 0) return;
+        if (liveFields.size === 0) break;
       }
     },
   };

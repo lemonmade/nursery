@@ -25,7 +25,8 @@
   "types": "./build/typescript/index.d.ts",
   "sideEffects": false,
   "dependencies": {
-    "graphql": "^16.4.0"
+    "graphql": "^16.4.0",
+    "@lemonmade/events": "^0.1.0"
   },
   "peerDependencies": {
     "@babel/runtime": ">=7.0.0 <8.0.0"
