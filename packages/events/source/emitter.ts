@@ -39,8 +39,8 @@ export function createEmitter<
 
   return {
     on,
-    emit<Key extends keyof Events>(type: Key, data?: Events[Key]) {
-      const handlers = handlerMap.get(type);
+    emit<Event extends keyof Events>(event: Event, data?: Events[Event]) {
+      const handlers = handlerMap.get(event);
 
       if (handlers) {
         for (const handler of Array.from(handlers)) {
@@ -89,6 +89,7 @@ export function createEmitter<
     } else {
       handlers = new Set();
       handlers.add(normalizedHandler);
+      handlerMap.set(event, handlers);
     }
 
     signal?.addEventListener('abort', remove, {signal: signalAbort.signal});
