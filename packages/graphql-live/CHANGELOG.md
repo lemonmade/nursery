@@ -1,5 +1,14 @@
 # @lemonmade/graphql-live
 
+## 0.1.2
+
+### Patch Changes
+
+- [`50d4d57`](https://github.com/lemonmade/nursery/commit/50d4d579c9de7b4d50dfbb186d154ec5e7e8d844) Thanks [@lemonmade](https://github.com/lemonmade)! - Fix yielding of first GraphQL result
+
+- Updated dependencies [[`b7613e3`](https://github.com/lemonmade/nursery/commit/b7613e393f0e731a3d174649efad130410189b3d)]:
+  - @lemonmade/events@0.1.2
+
 ## 0.1.1
 
 ### Patch Changes

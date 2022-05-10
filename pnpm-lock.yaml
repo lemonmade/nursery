@@ -36,7 +36,7 @@ importers:
 
   packages/graphql-live:
     specifiers:
-      '@lemonmade/events': ^0.1.1
+      '@lemonmade/events': ^0.1.2
       graphql: ^16.4.0
     dependencies:
       '@lemonmade/events': link:../events
