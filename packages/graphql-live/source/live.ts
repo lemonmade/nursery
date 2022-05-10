@@ -118,9 +118,11 @@ export function execute<
 
       await initialPromise;
 
-      if (liveFields.size === 0 || rootSignal?.aborted) return;
+      if (rootSignal?.aborted) return;
 
       yield rawResults as any;
+
+      if (liveFields.size === 0) return;
 
       for await (const _ of emitter.on('update', {signal: rootSignal})) {
         yield rawResults as any;
