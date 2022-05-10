@@ -30,7 +30,10 @@ export function createQueryResolver<
 >(
   createResolvers: (
     helpers: GraphQLLiveResolverCreateHelper<Types, Context>,
-  ) => Omit<GraphQLLiveResolverObject<Types['Query'], Context>, '__typename'>,
+  ) => Omit<
+    GraphQLLiveResolverObject<Types['Query'], Context>,
+    '__typename' | '__context'
+  >,
 ): GraphQLLiveResolverObject<Types['Query'], Context> {
   const resolvers = createResolvers({
     object: createObjectResolver as any,
