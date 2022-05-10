@@ -6,7 +6,7 @@ import type {EventTarget} from './types';
 // @see https://github.com/nodejs/node/blob/master/lib/events.js#L1012-L1019
 export function on<
   EventMap = Record<string, unknown>,
-  Event extends string & keyof EventMap = string & keyof EventMap,
+  Event extends keyof EventMap = keyof EventMap,
   Target extends EventTarget<EventMap> = EventTarget<EventMap>,
 >(
   emitter: Target,
@@ -91,7 +91,7 @@ export function on<
     },
   };
 
-  addListener(emitter, event, eventHandler, {
+  addListener(emitter, event as any, eventHandler, {
     signal: listenerAbortController.signal,
   });
 

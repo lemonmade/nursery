@@ -12,5 +12,18 @@ export interface EventTargetAddEventListener<
   ): void;
 }
 
+export interface EventTargetFunction<EventMap = Record<string, unknown>> {
+  <Event extends keyof EventMap>(
+    event: Event,
+    listener: (
+      ...args: EventMap[Event] extends any[]
+        ? EventMap[Event]
+        : [EventMap[Event]]
+    ) => void,
+    options?: {once?: boolean; signal?: AbortSignal},
+  ): void;
+}
+
 export type EventTarget<EventMap = Record<string, unknown>> =
-  EventTargetAddEventListener<EventMap>;
+  | EventTargetAddEventListener<EventMap>
+  | EventTargetFunction<EventMap>;

@@ -5,13 +5,30 @@ import type {EventTarget} from './types';
 
 export async function once<
   EventMap = Record<string, unknown>,
-  Event extends string & keyof EventMap = string & keyof EventMap,
+  Event extends keyof EventMap = keyof EventMap,
+  Target extends EventTarget<EventMap> = EventTarget<EventMap>,
+>(target: Target, event: Event): Promise<EventMap[Event]>;
+export async function once<
+  EventMap = Record<string, unknown>,
+  Event extends keyof EventMap = keyof EventMap,
   Target extends EventTarget<EventMap> = EventTarget<EventMap>,
   Abort extends AbortBehavior = 'returns',
 >(
   target: Target,
   event: Event,
-  options?: {signal?: AbortSignal; abort: Abort},
+  options: {signal: AbortSignal; abort?: Abort},
+): Promise<
+  Abort extends 'returns' ? EventMap[Event] | undefined : EventMap[Event]
+>;
+export async function once<
+  EventMap = Record<string, unknown>,
+  Event extends keyof EventMap = keyof EventMap,
+  Target extends EventTarget<EventMap> = EventTarget<EventMap>,
+  Abort extends AbortBehavior = 'returns',
+>(
+  target: Target,
+  event: Event,
+  options?: {signal?: AbortSignal; abort?: Abort},
 ): Promise<
   Abort extends 'returns' ? EventMap[Event] | undefined : EventMap[Event]
 > {
@@ -35,7 +52,10 @@ export async function once<
       resolve(args.length > 1 ? args : args[0]);
     };
 
-    addListener(target, event, resolver, {once: true});
+    addListener(target, event as any, resolver, {
+      once: true,
+      signal: listenerAbortController.signal,
+    });
 
     if (signal) {
       addListener(

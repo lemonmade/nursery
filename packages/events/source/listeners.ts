@@ -1,21 +1,27 @@
-import type {EventTarget} from './types';
+import type {EventTarget, EventTargetAddEventListener} from './types';
 
 export function addListener(
   target: EventTarget<any>,
-  name: string,
+  name: string | symbol,
   listener: (...args: any[]) => void,
   flags?: {once?: boolean; signal?: AbortSignal},
 ) {
-  if (typeof target.addEventListener === 'function') {
-    // EventTarget does not have `error` event semantics like Node
-    // EventEmitters, we do not listen to `error` events here.
-    target.addEventListener(
-      name,
-      (...args: any[]) => {
-        listener(...args);
-      },
+  if (typeof target === 'function') {
+    target(name, listener, flags);
+    return;
+  }
+
+  if (
+    typeof (target as EventTargetAddEventListener).addEventListener ===
+    'function'
+  ) {
+    (target as EventTargetAddEventListener).addEventListener(
+      name as any,
+      listener,
       flags,
     );
+
+    return;
   }
 
   // TODO throw error
