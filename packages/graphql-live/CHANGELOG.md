@@ -1,5 +1,11 @@
 # @lemonmade/graphql-live
 
+## 0.1.4
+
+### Patch Changes
+
+- [`074740e`](https://github.com/lemonmade/nursery/commit/074740e91a5ec8adc99a0d888bea076c30f77a33) Thanks [@lemonmade](https://github.com/lemonmade)! - Fix some GraphQL typing issues
+
 ## 0.1.3
 
 ### Patch Changes
