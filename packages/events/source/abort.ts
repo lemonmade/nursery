@@ -1,9 +1,18 @@
 export type AbortBehavior = 'throws' | 'returns';
 
 export class NestedAbortController extends AbortController {
+  private readonly cleanup = new AbortController();
+
   constructor(parent?: AbortSignal) {
     super();
-    parent?.addEventListener('abort', () => this.abort(), {once: true});
+    parent?.addEventListener('abort', () => this.abort(), {
+      signal: this.cleanup.signal,
+    });
+  }
+
+  abort(reason?: any) {
+    this.cleanup.abort();
+    super.abort(reason);
   }
 }
 

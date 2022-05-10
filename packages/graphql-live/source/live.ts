@@ -6,7 +6,7 @@ import type {
   FragmentDefinitionNode,
 } from 'graphql';
 
-import {createEmitter} from '@lemonmade/events';
+import {createEmitter, NestedAbortController} from '@lemonmade/events';
 
 import type {
   GraphQLLiveResolverObject,
@@ -363,20 +363,6 @@ export function execute<
           }
         }
       }),
-    );
-  }
-}
-
-class NestedAbortController extends AbortController {
-  constructor(parent: AbortSignal) {
-    super();
-
-    parent.addEventListener(
-      'abort',
-      () => {
-        this.abort();
-      },
-      {once: true},
     );
   }
 }
