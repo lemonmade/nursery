@@ -4,5 +4,9 @@
     "outDir": "build/typescript"
   },
   "include": ["quilt.workspace.ts", "**/quilt.project.ts"],
-  "references": [{"path": "./packages/graphql-live"}]
+  "references": [
+    {"path": "./packages/events"},
+    {"path": "./packages/graphql-live"},
+    {"path": "./packages/threads"}
+  ]
 }

@@ -31,5 +31,8 @@
   "eslintConfig": {
     "extends": "@quilted/eslint-config/workspace"
   },
+  "browserslist": [
+    "extends @quilted/browserslist-config/defaults"
+  ],
   "packageManager": "pnpm@6.32.2"
 }
