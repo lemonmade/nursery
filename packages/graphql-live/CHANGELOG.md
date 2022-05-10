@@ -1,5 +1,14 @@
 # @lemonmade/graphql-live
 
+## 0.1.3
+
+### Patch Changes
+
+- [`46c5e7b`](https://github.com/lemonmade/nursery/commit/46c5e7b410b139ae5c4f863ba40b4ff83bf7655f) Thanks [@lemonmade](https://github.com/lemonmade)! - Fix nested abort controllers
+
+- Updated dependencies [[`46c5e7b`](https://github.com/lemonmade/nursery/commit/46c5e7b410b139ae5c4f863ba40b4ff83bf7655f)]:
+  - @lemonmade/events@0.1.3
+
 ## 0.1.2
 
 ### Patch Changes
