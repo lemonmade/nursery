@@ -1,4 +1,4 @@
-import {EventEmitter, on} from 'events';
+import {createEmitter} from '@lemonmade/events';
 
 import {parse} from 'graphql';
 
@@ -468,7 +468,7 @@ function sleep(duration: number) {
 function createAsyncIterator<T>(initialValue: T) {
   let currentValue = initialValue;
 
-  const emitter = new EventEmitter();
+  const emitter = createEmitter<{yield: T}>();
 
   emitter.on('yield', (value) => {
     currentValue = value;
@@ -484,10 +484,7 @@ function createAsyncIterator<T>(initialValue: T) {
       signal?: AbortSignal;
     } = {}): AsyncGenerator<T, void, void> {
       yield currentValue;
-
-      for await (const [value] of on(emitter, 'yield', {signal})) {
-        yield value;
-      }
+      yield* emitter.on('yield', {signal});
     },
   };
 }

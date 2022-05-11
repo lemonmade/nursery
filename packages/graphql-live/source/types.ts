@@ -12,7 +12,7 @@ export type GraphQLLiveResolverObject<
     [Field in keyof Type]: Field extends '__typename'
       ? Type[Field]
       : Type[Field] extends (variables: infer Variables) => infer ReturnValue
-      ? GraphQLLiveResolverField<Variables, ReturnValue, Context>
+      ? GraphQLLiveResolverField<ReturnValue, Variables, Context>
       : never;
   },
   GraphQLNullableFields<Type>
@@ -23,8 +23,8 @@ export interface GraphQLLiveResolverFieldOptions {
 }
 
 export type GraphQLLiveResolverField<
-  Variables,
   ReturnType,
+  Variables,
   Context = Record<string, never>,
 > =
   | GraphQLLiveReturnResult<ReturnType, Context>
