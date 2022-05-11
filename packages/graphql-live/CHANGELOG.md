@@ -1,5 +1,11 @@
 # @lemonmade/graphql-live
 
+## 0.1.5
+
+### Patch Changes
+
+- [`59470d6`](https://github.com/lemonmade/nursery/commit/59470d65682ab20185b408af46b3e421688cf6b3) Thanks [@lemonmade](https://github.com/lemonmade)! - Add support for field variables
+
 ## 0.1.4
 
 ### Patch Changes
