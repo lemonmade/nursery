@@ -16,6 +16,7 @@ interface Person {
   __typename: 'Person';
   name(variables: {}): string;
   pets(variables: {}): Pet[];
+  pet(variables: {name: string}): Pet | null;
   school(variables: {}): School | null;
 }
 
@@ -218,6 +219,68 @@ describe('execute()', () => {
       const result = await execute(query, resolver).untilDone();
 
       expect(result).toStrictEqual({version: 'v1'});
+    });
+  });
+
+  describe('variables', () => {
+    it('passes static variables to field resolvers', async () => {
+      const query = parse(`query { me { pet(name: "Winston") { age } } }`);
+
+      const spy = jest.fn();
+
+      const resolver = createQueryResolver(({object}) => {
+        spy.mockReturnValue(object('Dog', {name: 'Winston', age: 10}));
+
+        return {
+          me: object('Person', {
+            name: 'Chris',
+            pets: [],
+            pet: spy,
+          }),
+        };
+      });
+
+      const result = await execute(query, resolver).untilDone();
+
+      expect(spy).toHaveBeenCalledWith(
+        {name: 'Winston'},
+        expect.anything(),
+        expect.anything(),
+      );
+
+      expect(result).toStrictEqual({me: {pet: {age: 10}}});
+    });
+
+    it('resolves field variables from query variables', async () => {
+      const query = parse(
+        `query Pet($name: String!) { me { pet(name: $name) { age } } }`,
+      );
+
+      const spy = jest.fn();
+
+      const resolver = createQueryResolver(({object}) => {
+        spy.mockReturnValue(object('Dog', {name: 'Winston', age: 10}));
+
+        return {
+          me: object('Person', {
+            name: 'Chris',
+            pets: [],
+            pet: spy,
+          }),
+        };
+      });
+
+      const result = await execute(query, resolver, {
+        variables: {name: 'Winston'},
+      }).untilDone();
+
+      expect(spy).toHaveBeenCalledWith(
+        {name: 'Winston'},
+        expect.anything(),
+        expect.anything(),
+      );
+
+      expect(result).toStrictEqual({me: {pet: {age: 10}}});
     });
   });
 

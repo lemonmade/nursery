@@ -4,6 +4,7 @@ import type {
   FieldNode,
   OperationDefinitionNode,
   FragmentDefinitionNode,
+  ValueNode,
 } from 'graphql';
 
 import {createEmitter, NestedAbortController} from '@lemonmade/events';
@@ -215,7 +216,18 @@ export function execute<
             }
 
             // TODO pass actual variables for this field
-            const resolverResult = valueOrResolver(variables, context, {
+
+            const fieldVariables: Record<string, any> = {};
+
+            if (selection.arguments) {
+              for (const argument of selection.arguments) {
+                fieldVariables[argument.name.value] = resolveArgumentValue(
+                  argument.value,
+                );
+              }
+            }
+
+            const resolverResult = valueOrResolver(fieldVariables, context, {
               signal,
             });
 
@@ -367,5 +379,32 @@ export function execute<
         }
       }),
     );
+  }
+
+  function resolveArgumentValue(value: ValueNode): any {
+    const valueKind = value.kind;
+
+    return valueKind === 'StringValue' ||
+      valueKind === 'BooleanValue' ||
+      valueKind === 'EnumValue'
+      ? value.value
+      : valueKind === 'IntValue'
+      ? Number.parseInt(value.value)
+      : valueKind === 'FloatValue'
+      ? Number.parseFloat(value.value)
+      : valueKind === 'NullValue'
+      ? null
+      : valueKind === 'Variable'
+      ? (variables as any)[value.name.value] ?? null
+      : valueKind === 'ListValue'
+      ? value.values.map(resolveArgumentValue)
+      : valueKind === 'ObjectValue'
+      ? Object.fromEntries(
+          value.fields.map((field) => [
+            field.name.value,
+            resolveArgumentValue(field.value),
+          ]),
+        )
+      : null;
   }
 }
