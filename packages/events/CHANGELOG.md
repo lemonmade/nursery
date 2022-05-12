@@ -1,5 +1,11 @@
 # @lemonmade/events
 
+## 0.1.4
+
+### Patch Changes
+
+- [`4f9b7b5`](https://github.com/lemonmade/nursery/commit/4f9b7b55457ca4f966e13dea24feac819e8fd99f) Thanks [@lemonmade](https://github.com/lemonmade)! - Add support for `on`-style listeners
+
 ## 0.1.3
 
 ### Patch Changes
