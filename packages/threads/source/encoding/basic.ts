@@ -8,6 +8,7 @@ import type {MemoryRetainer} from '../memory';
 import {StackFrame, isMemoryManageable} from '../memory';
 
 const FUNCTION = '_@f';
+const ASYNC_ITERATOR = '_@i';
 
 export function createBasicEncoder(
   api: ThreadEncodingStrategyApi,
@@ -19,7 +20,7 @@ export function createBasicEncoder(
   return {
     encode,
     decode,
-    async call(id, args) {
+    call(id, args) {
       const stackFrame = new StackFrame();
       const func = idsToFunction.get(id);
 
@@ -29,17 +30,24 @@ export function createBasicEncoder(
         );
       }
 
-      try {
-        const retainedBy = isMemoryManageable(func)
-          ? [stackFrame, ...func[RETAINED_BY]]
-          : [stackFrame];
+      const retainedBy = isMemoryManageable(func)
+        ? [stackFrame, ...func[RETAINED_BY]]
+        : [stackFrame];
 
-        const result = await func(...(decode(args, retainedBy) as any[]));
+      const result = func(...(decode(args, retainedBy) as any[]));
 
-        return result;
-      } finally {
+      if (result == null || typeof result.then !== 'function') {
         stackFrame.release();
       }
+
+      return (async () => {
+        try {
+          const resolved = await result;
+          return resolved;
+        } finally {
+          stackFrame.release();
+        }
+      })();
     },
     release(id) {
       const func = idsToFunction.get(id);
@@ -63,22 +71,32 @@ export function createBasicEncoder(
       }
 
       const transferables: Transferable[] = [];
+      const encodeValue = (value: any) => {
+        const [fieldValue, nestedTransferables = []] = encode(value);
+        transferables.push(...nestedTransferables);
+        return fieldValue;
+      };
 
       if (Array.isArray(value)) {
-        const result = value.map((item) => {
-          const [result, nestedTransferables = []] = encode(item);
-          transferables.push(...nestedTransferables);
-          return result;
-        });
-
+        const result = value.map((item) => encodeValue(item));
         return [result, transferables];
       }
 
-      const result = Object.keys(value).reduce((object, key) => {
-        const [result, nestedTransferables = []] = encode((value as any)[key]);
-        transferables.push(...nestedTransferables);
-        return {...object, [key]: result};
-      }, {});
+      const result: Record<string, any> = {};
+
+      for (const key of Object.keys(value)) {
+        result[key] = encodeValue((value as any)[key]);
+      }
+
+      if (
+        (Symbol.asyncIterator in value || Symbol.iterator in value) &&
+        typeof (value as any).next === 'function'
+      ) {
+        result.next ??= encodeValue((value as any).next.bind(value));
+        result.return ??= encodeValue((value as any).return.bind(value));
+        result.throw ??= encodeValue((value as any).throw.bind(value));
+        result[ASYNC_ITERATOR] = true;
+      }
 
       return [result, transferables];
     }
@@ -167,15 +185,19 @@ export function createBasicEncoder(
         return proxy as any;
       }
 
-      return Object.keys(value).reduce(
-        (object, key) => ({
-          ...object,
-          [key]: decode((value as any)[key], retainedBy),
-        }),
-        {},
-      ) as any;
+      const result: Record<string | symbol, any> = {};
+
+      for (const key of Object.keys(value)) {
+        if (key === ASYNC_ITERATOR) {
+          result[Symbol.asyncIterator] = () => result;
+        } else {
+          result[key] = decode((value as any)[key], retainedBy);
+        }
+      }
+
+      return result;
     }
 
-    return value as any;
+    return value;
   }
 }

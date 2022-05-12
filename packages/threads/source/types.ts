@@ -10,15 +10,31 @@ export interface ThreadTarget {
   listen(options: {signal: AbortSignal}): AsyncGenerator<any, void, void>;
 }
 
+export type ThreadExposable<T> = {
+  [K in keyof T]: T[K] extends (...args: infer Args) => infer ReturnType
+    ? (
+        ...args: ThreadSafeArgument<Args>
+      ) => ReturnType extends Promise<any>
+        ? ReturnType
+        : ReturnType extends AsyncGenerator<any, any, any>
+        ? ReturnType
+        : ReturnType | Promise<ReturnType>
+    : never;
+};
+
 export type ThreadCallable<T> = {
   [K in keyof T]: T[K] extends (...args: infer Args) => infer ReturnType
-    ? (...args: Args) => ThreadSafeReturnType<ReturnType>
+    ? (...args: ThreadSafeArgument<Args>) => ThreadSafeReturnType<ReturnType>
     : never;
 };
 
 export type MaybePromise<T> = T extends Promise<any> ? T : T | Promise<T>;
 
-export type ThreadSafeReturnType<T> = T extends Promise<any>
+export type ThreadSafeReturnType<T> = T extends AsyncGenerator<any, any, any>
+  ? T
+  : T extends Generator<infer T, infer R, infer N>
+  ? AsyncGenerator<T, R, N>
+  : T extends Promise<any>
   ? T
   : T extends infer U | Promise<infer U>
   ? Promise<U>
@@ -38,6 +54,10 @@ export type ThreadSafeArgument<T> = T extends (
 ) => infer TypeReturned
   ? TypeReturned extends Promise<any>
     ? (...args: Args) => TypeReturned
+    : TypeReturned extends AsyncGenerator<any, any, any>
+    ? (...args: Args) => TypeReturned
+    : TypeReturned extends Generator<infer T, infer R, infer N>
+    ? (...args: Args) => AsyncGenerator<T, R, N>
     : (...args: Args) => TypeReturned | Promise<TypeReturned>
   : T extends (infer ArrayElement)[]
   ? ThreadSafeArgument<ArrayElement>[]
@@ -61,7 +81,7 @@ export interface MemoryManageable {
 export interface ThreadEncodingStrategy {
   encode(value: unknown): [any, Transferable[]?];
   decode(value: unknown, retainedBy?: Iterable<MemoryRetainer>): unknown;
-  call(id: string, args: any[]): Promise<any>;
+  call(id: string, args: any[]): any;
   release(id: string): void;
   terminate?(): void;
 }

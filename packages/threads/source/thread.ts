@@ -4,6 +4,7 @@ import type {
   Thread,
   ThreadTarget,
   ThreadCallable,
+  ThreadExposable,
   ThreadEncodingStrategy,
   ThreadEncodingStrategyApi,
   AnyFunction,
@@ -17,7 +18,7 @@ export interface ThreadOptions<
   Target = Record<string, never>,
 > {
   callable?: (keyof Target)[];
-  expose?: Self;
+  expose?: ThreadExposable<Self>;
   uuid?(): string;
   encoder?(api: ThreadEncodingStrategyApi): ThreadEncodingStrategy;
 }
@@ -141,10 +142,8 @@ export function createThread<
             );
           }
 
-          const [encoded, transferables] = encoder.encode(
-            await func(...(encoder.decode(args, [stackFrame]) as any[])),
-          );
-
+          const result = func(...(encoder.decode(args, [stackFrame]) as any[]));
+          const [encoded, transferables] = await encodeFunctionResult(result);
           send(RESULT, [id, undefined, encoded], transferables);
         } catch (error) {
           const {name, message, stack} = error as Error;
@@ -183,8 +182,8 @@ export function createThread<
           data[1] as MessageMap[typeof FUNCTION_APPLY];
 
         try {
-          const result = await encoder.call(funcId, args);
-          const [encoded, transferables] = encoder.encode(result);
+          const result = encoder.call(funcId, args);
+          const [encoded, transferables] = await encodeFunctionResult(result);
           send(FUNCTION_RESULT, [callId, undefined, encoded], transferables);
         } catch (error) {
           const {name, message, stack} = error as Error;
@@ -221,7 +220,7 @@ export function createThread<
   }
 
   function waitForResult(id: string, retainedBy?: Iterable<MemoryRetainer>) {
-    return new Promise<any>((resolve, reject) => {
+    const promise = new Promise<any>((resolve, reject) => {
       callIdsToResolver.set(id, (_, errorResult, value) => {
         if (errorResult == null) {
           resolve(value && encoder.decode(value, retainedBy));
@@ -232,6 +231,30 @@ export function createThread<
         }
       });
     });
+
+    Object.defineProperty(promise, Symbol.asyncIterator, {
+      async *value() {
+        const result = await promise;
+
+        Object.defineProperty(result, Symbol.asyncIterator, {
+          value: () => result,
+        });
+
+        yield* result;
+      },
+    });
+
+    return promise;
+  }
+
+  async function encodeFunctionResult(
+    result: any,
+  ): Promise<[any, Transferable[]?]> {
+    if (typeof result !== 'object' || result == null) {
+      return encoder.encode(result);
+    } else {
+      return encoder.encode(await result);
+    }
   }
 }
 

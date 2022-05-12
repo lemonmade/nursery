@@ -13,6 +13,7 @@ export type {
   Thread,
   ThreadTarget,
   ThreadCallable,
+  ThreadExposable,
   ThreadSafeArgument,
   ThreadSafeReturnType,
   ThreadEncodingStrategy,
