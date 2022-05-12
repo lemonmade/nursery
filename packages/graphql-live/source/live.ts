@@ -102,7 +102,9 @@ export function execute<
       return rawResults as any;
     },
     async untilResolved(): Promise<Data> {
-      const {value} = await executionResult[Symbol.asyncIterator]().next();
+      const iterator = executionResult[Symbol.asyncIterator]();
+      const {value} = await iterator.next();
+      iterator.return();
       return value!;
     },
     async untilDone(): Promise<Data> {
