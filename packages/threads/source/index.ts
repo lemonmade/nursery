@@ -4,9 +4,9 @@ export {retain, release, StackFrame, isMemoryManageable} from './memory';
 export type {MemoryManageable, MemoryRetainer} from './memory';
 export {RELEASE_METHOD, RETAIN_METHOD, RETAINED_BY} from './constants';
 export {
-  targetFromClientWebSocket,
-  targetFromMessagePort,
   targetFromWebWorker,
+  targetFromMessagePort,
+  targetFromBrowserWebSocket,
 } from './targets';
 export {createBasicEncoder} from './encoding';
 export type {
