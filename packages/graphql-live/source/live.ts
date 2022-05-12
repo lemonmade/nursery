@@ -231,6 +231,7 @@ export function execute<
 
             const resolverResult = valueOrResolver(fieldVariables, context, {
               signal,
+              field: selection,
             });
 
             if (resolverResult == null || typeof resolverResult !== 'object') {

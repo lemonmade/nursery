@@ -1,3 +1,5 @@
+import type {FieldNode} from 'graphql';
+
 export type GraphQLNullableFields<Type> = {
   [Field in keyof Type]: ((...args: any[]) => null) extends Type[Field]
     ? Field
@@ -18,8 +20,9 @@ export type GraphQLLiveResolverObject<
   GraphQLNullableFields<Type>
 > & {__context?: Context};
 
-export interface GraphQLLiveResolverFieldOptions {
+export interface GraphQLLiveResolverFieldContext {
   readonly signal: AbortSignal;
+  readonly field: FieldNode;
 }
 
 export type GraphQLLiveResolverField<
@@ -31,7 +34,7 @@ export type GraphQLLiveResolverField<
   | ((
       variables: Variables,
       context: Context,
-      options: GraphQLLiveResolverFieldOptions,
+      graphQLContext: GraphQLLiveResolverFieldContext,
     ) =>
       | GraphQLLiveReturnResult<ReturnType, Context>
       | Promise<GraphQLLiveReturnResult<ReturnType, Context>>
