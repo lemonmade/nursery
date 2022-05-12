@@ -1,12 +1,12 @@
 import {on} from '@lemonmade/events';
-import type {ThreadEndpoint} from '../types';
+import type {ThreadTarget} from '../types';
 
-export function threadFromWebWorker(worker: Worker): ThreadEndpoint {
+export function targetFromWebWorker(worker: Worker): ThreadTarget {
   return {
     send(...args: [any, Transferable[]]) {
       worker.postMessage(...args);
     },
-    async *listen({signal} = {}) {
+    async *listen({signal}) {
       const messages = on<WorkerEventMap, 'message'>(worker, 'message', {
         signal,
       });
@@ -14,9 +14,6 @@ export function threadFromWebWorker(worker: Worker): ThreadEndpoint {
       for await (const message of messages) {
         yield message.data;
       }
-    },
-    terminate() {
-      worker.terminate();
     },
   };
 }

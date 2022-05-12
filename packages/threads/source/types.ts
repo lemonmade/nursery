@@ -1,9 +1,13 @@
 import type {RELEASE_METHOD, RETAIN_METHOD, RETAINED_BY} from './constants';
 
-export interface ThreadEndpoint {
+export interface Thread<Target> {
+  readonly call: ThreadCallable<Target>;
+  terminate(): void;
+}
+
+export interface ThreadTarget {
   send(message: any, transferables?: Transferable[]): void;
-  listen(options?: {signal?: AbortSignal}): AsyncGenerator<any, void, void>;
-  terminate?(): void;
+  listen(options: {signal: AbortSignal}): AsyncGenerator<any, void, void>;
 }
 
 export type ThreadCallable<T> = {
@@ -71,3 +75,6 @@ export interface ThreadEncodingStrategyApi {
     retainedBy?: Iterable<MemoryRetainer>,
   ): Promise<any>;
 }
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type AnyFunction = Function;

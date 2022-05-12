@@ -1,17 +1,17 @@
 import {on, once} from '@lemonmade/events';
-import type {ThreadEndpoint} from '../types';
+import type {ThreadTarget} from '../types';
 
-export function threadFromClientWebSocket(
-  websocket: WebSocket,
-): ThreadEndpoint {
+export function targetFromClientWebSocket(websocket: WebSocket): ThreadTarget {
   return {
     send(message) {
       websocket.send(JSON.stringify(message));
     },
-    async *listen({signal} = {}) {
+    async *listen({signal}) {
       if (websocket.readyState !== websocket.OPEN) {
-        await once(websocket, 'open');
+        await once(websocket, 'open', {signal});
       }
+
+      if (signal.aborted) return;
 
       const messages = on<WebSocketEventMap, 'message'>(websocket, 'message', {
         signal,
@@ -20,9 +20,6 @@ export function threadFromClientWebSocket(
       for await (const message of messages) {
         yield JSON.parse(message.data);
       }
-    },
-    terminate() {
-      websocket.close();
     },
   };
 }

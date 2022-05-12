@@ -1,22 +1,21 @@
 import {on} from '@lemonmade/events';
-import type {ThreadEndpoint} from '../types';
+import type {ThreadTarget} from '../types';
 
-export function threadFromMessagePort(port: MessagePort): ThreadEndpoint {
+export function targetFromMessagePort(port: MessagePort): ThreadTarget {
   return {
     send(...args: [any, Transferable[]]) {
       port.postMessage(...args);
     },
-    async *listen({signal} = {}) {
+    async *listen({signal}) {
       const messages = on<MessagePortEventMap, 'message'>(port, 'message', {
         signal,
       });
 
+      port.start();
+
       for await (const message of messages) {
         yield message.data;
       }
-    },
-    terminate() {
-      port.close();
     },
   };
 }
