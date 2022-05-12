@@ -1,5 +1,11 @@
 # @lemonmade/graphql-live
 
+## 0.1.7
+
+### Patch Changes
+
+- [`eec24be`](https://github.com/lemonmade/nursery/commit/eec24be53a3f06e84d2f784c4152c771e1b17f4e) Thanks [@lemonmade](https://github.com/lemonmade)! - Fix untilResolved() method on GraphQL executor
+
 ## 0.1.6
 
 ### Patch Changes
