@@ -23,6 +23,22 @@ export type GraphQLLiveResolverObject<
 export interface GraphQLLiveResolverFieldContext {
   readonly signal: AbortSignal;
   readonly field: FieldNode;
+  readonly path: readonly (string | number)[];
+}
+
+export interface GraphQLLiveResolverFunction<
+  ReturnType,
+  Variables,
+  Context = Record<string, never>,
+> {
+  (
+    variables: Variables,
+    context: Context,
+    graphQLContext: GraphQLLiveResolverFieldContext,
+  ):
+    | GraphQLLiveReturnResult<ReturnType, Context>
+    | Promise<GraphQLLiveReturnResult<ReturnType, Context>>
+    | AsyncIterableIterator<GraphQLLiveReturnResult<ReturnType, Context>>;
 }
 
 export type GraphQLLiveResolverField<
@@ -31,15 +47,7 @@ export type GraphQLLiveResolverField<
   Context = Record<string, never>,
 > =
   | GraphQLLiveReturnResult<ReturnType, Context>
-  | ((
-      variables: Variables,
-      context: Context,
-      graphQLContext: GraphQLLiveResolverFieldContext,
-    ) =>
-      | GraphQLLiveReturnResult<ReturnType, Context>
-      | Promise<GraphQLLiveReturnResult<ReturnType, Context>>
-      | IterableIterator<GraphQLLiveReturnResult<ReturnType, Context>>
-      | AsyncIterableIterator<GraphQLLiveReturnResult<ReturnType, Context>>);
+  | GraphQLLiveResolverFunction<ReturnType, Variables, Context>;
 
 export type GraphQLLiveSimpleReturnResult<
   Type,
@@ -56,7 +64,7 @@ export type GraphQLLiveReturnResult<
   Type,
   Context = Record<string, never>,
 > = Type extends null
-  ? null
+  ? null | undefined
   : Type extends number
   ? Type
   : Type extends string
@@ -69,7 +77,7 @@ export type GraphQLLiveReturnResult<
   ? GraphQLLiveReturnResult<Type['__possibleTypes'], Context>
   : Type extends {__typename: any}
   ? GraphQLLiveResolverObject<Type, Context>
-  : never;
+  : unknown;
 
 export interface GraphQLLiveResolverCreateHelper<
   Types,

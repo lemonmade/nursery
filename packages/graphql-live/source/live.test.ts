@@ -2,10 +2,7 @@ import {createEmitter} from '@lemonmade/events';
 
 import {parse} from 'graphql';
 
-import {
-  execute,
-  createQueryResolver as createQueryResolverForSchema,
-} from './live';
+import {run, createQueryResolver as createQueryResolverForSchema} from './live';
 import type {
   GraphQLLiveResolverObject,
   GraphQLLiveResolverCreateHelper,
@@ -62,7 +59,7 @@ interface Schema {
 // - Variables
 // - Arguments
 
-describe('execute()', () => {
+describe('run()', () => {
   it('returns static field values', async () => {
     const query = parse(`query { version }`);
 
@@ -70,9 +67,9 @@ describe('execute()', () => {
       version: 'v1',
     }));
 
-    const result = await execute(query, resolver).untilDone();
+    const result = await run(query, resolver).untilDone();
 
-    expect(result).toStrictEqual({version: 'v1'});
+    expect(result.data).toStrictEqual({version: 'v1'});
   });
 
   it('returns field values with aliases', async () => {
@@ -85,9 +82,9 @@ describe('execute()', () => {
       }),
     }));
 
-    const result = await execute(query, resolver).untilDone();
+    const result = await run(query, resolver).untilDone();
 
-    expect(result).toStrictEqual({my: {name: 'Chris'}});
+    expect(result.data).toStrictEqual({my: {name: 'Chris'}});
   });
 
   it('returns nullish field values', async () => {
@@ -101,9 +98,9 @@ describe('execute()', () => {
       }),
     }));
 
-    const result = await execute(query, resolver).untilDone();
+    const result = await run(query, resolver).untilDone();
 
-    expect(result).toStrictEqual({me: {school: null}});
+    expect(result.data).toStrictEqual({me: {school: null}});
   });
 
   it('returns nested field selections', async () => {
@@ -120,9 +117,9 @@ describe('execute()', () => {
       }),
     }));
 
-    const result = await execute(query, resolver).untilDone();
+    const result = await run(query, resolver).untilDone();
 
-    expect(result).toStrictEqual({me: {school: {age: 10}}});
+    expect(result.data).toStrictEqual({me: {school: {age: 10}}});
   });
 
   it('returns field selections on lists', async () => {
@@ -138,9 +135,9 @@ describe('execute()', () => {
       }),
     }));
 
-    const result = await execute(query, resolver).untilDone();
+    const result = await run(query, resolver).untilDone();
 
-    expect(result).toStrictEqual({
+    expect(result.data).toStrictEqual({
       me: {pets: [{name: 'Winston'}, {name: 'Molly'}]},
     });
   });
@@ -162,9 +159,9 @@ describe('execute()', () => {
         }),
       }));
 
-      const result = await execute(query, resolver).untilDone();
+      const result = await run(query, resolver).untilDone();
 
-      expect(result).toStrictEqual({
+      expect(result.data).toStrictEqual({
         me: {
           pets: [
             {__typename: 'Dog', breed: null},
@@ -194,9 +191,9 @@ describe('execute()', () => {
         }),
       }));
 
-      const result = await execute(query, resolver).untilDone();
+      const result = await run(query, resolver).untilDone();
 
-      expect(result).toStrictEqual({
+      expect(result.data).toStrictEqual({
         me: {
           pets: [
             {__typename: 'Dog', breed: null},
@@ -216,9 +213,9 @@ describe('execute()', () => {
         version: () => Promise.resolve('v1'),
       }));
 
-      const result = await execute(query, resolver).untilDone();
+      const result = await run(query, resolver).untilDone();
 
-      expect(result).toStrictEqual({version: 'v1'});
+      expect(result.data).toStrictEqual({version: 'v1'});
     });
   });
 
@@ -240,7 +237,7 @@ describe('execute()', () => {
         };
       });
 
-      const result = await execute(query, resolver).untilDone();
+      const result = await run(query, resolver).untilDone();
 
       expect(spy).toHaveBeenCalledWith(
         {name: 'Winston'},
@@ -248,7 +245,7 @@ describe('execute()', () => {
         expect.anything(),
       );
 
-      expect(result).toStrictEqual({me: {pet: {age: 10}}});
+      expect(result.data).toStrictEqual({me: {pet: {age: 10}}});
     });
 
     it('resolves field variables from query variables', async () => {
@@ -270,7 +267,7 @@ describe('execute()', () => {
         };
       });
 
-      const result = await execute(query, resolver, {
+      const result = await run(query, resolver, {
         variables: {name: 'Winston'},
       }).untilDone();
 
@@ -280,7 +277,7 @@ describe('execute()', () => {
         expect.anything(),
       );
 
-      expect(result).toStrictEqual({me: {pet: {age: 10}}});
+      expect(result.data).toStrictEqual({me: {pet: {age: 10}}});
     });
   });
 
@@ -293,12 +290,12 @@ describe('execute()', () => {
         version: () => iterate(['v1', 'v2', 'v3']),
       }));
 
-      for await (const result of execute(query, resolver)) {
+      for await (const result of run(query, resolver)) {
         spy(result);
       }
 
       expect(spy).toHaveBeenCalledTimes(3);
-      expect(spy).toHaveBeenLastCalledWith({version: `v3`});
+      expect(spy).toHaveBeenLastCalledWith({data: {version: `v3`}});
     });
 
     it('yields for iterators in nested selections', async () => {
@@ -312,12 +309,12 @@ describe('execute()', () => {
         }),
       }));
 
-      for await (const result of execute(query, resolver)) {
+      for await (const result of run(query, resolver)) {
         spy(result);
       }
 
       expect(spy).toHaveBeenCalledTimes(3);
-      expect(spy).toHaveBeenCalledWith({me: {name: `Chris 3`}});
+      expect(spy).toHaveBeenCalledWith({data: {me: {name: `Chris 3`}}});
     });
 
     it('yields for nested iterators', async () => {
@@ -341,17 +338,19 @@ describe('execute()', () => {
         }),
       }));
 
-      for await (const result of execute(query, resolver)) {
+      for await (const result of run(query, resolver)) {
         spy(result);
       }
 
       expect(spy).toHaveBeenCalledTimes(4);
       expect(spy).toHaveBeenCalledWith({
-        me: {
-          pets: [
-            {name: 'Molly', age: null},
-            {name: 'Winston', age: 10},
-          ],
+        data: {
+          me: {
+            pets: [
+              {name: 'Molly', age: null},
+              {name: 'Winston', age: 10},
+            ],
+          },
         },
       });
     });
@@ -394,12 +393,14 @@ describe('execute()', () => {
         }),
       }));
 
-      const iterator = execute(query, resolver)[Symbol.asyncIterator]();
+      const iterator = run(query, resolver)[Symbol.asyncIterator]();
 
       expect(await iterator.next()).toStrictEqual({
         done: false,
         value: {
-          me: {school: {name: highSchool.name, age: 20}},
+          data: {
+            me: {school: {name: highSchool.name, age: 20}},
+          },
         },
       });
 
@@ -410,7 +411,9 @@ describe('execute()', () => {
       expect(await iterator.next()).toStrictEqual({
         done: false,
         value: {
-          me: {school: {name: university.name, age: 10}},
+          data: {
+            me: {school: {name: university.name, age: 10}},
+          },
         },
       });
 
@@ -432,7 +435,9 @@ describe('execute()', () => {
       expect(await nextPromise).toStrictEqual({
         done: false,
         value: {
-          me: {school: {name: university.name, age: 11}},
+          data: {
+            me: {school: {name: university.name, age: 11}},
+          },
         },
       });
     });

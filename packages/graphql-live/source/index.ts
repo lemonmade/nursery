@@ -1,2 +1,2 @@
 export * from './types';
-export {execute, createQueryResolver, createObjectResolver} from './live';
+export {run, createQueryResolver, createObjectResolver} from './live';
