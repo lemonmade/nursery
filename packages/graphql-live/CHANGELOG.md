@@ -1,5 +1,13 @@
 # @lemonmade/graphql-live
 
+## 0.1.8
+
+### Patch Changes
+
+- [`f705c85`](https://github.com/lemonmade/nursery/commit/f705c85e7073a272eba9b57f1cd69d0b5d28f1bf) Thanks [@lemonmade](https://github.com/lemonmade)! - Improved GraphQL spec handling
+
+* [`ab0d614`](https://github.com/lemonmade/nursery/commit/ab0d61457b10a854896b84032ba102a6d52eb0ef) Thanks [@lemonmade](https://github.com/lemonmade)! - Add context of current field in query resolvers
+
 ## 0.1.7
 
 ### Patch Changes
