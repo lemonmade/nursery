@@ -9,6 +9,8 @@ export {
   targetFromBrowserWebSocket,
 } from './targets';
 export {createBasicEncoder} from './encoding';
+export {createThreadAbortSignal, acceptThreadAbortSignal} from './abort';
+export type {ThreadAbortSignal} from './abort';
 export type {
   Thread,
   ThreadTarget,

@@ -10,21 +10,27 @@ export interface ThreadTarget {
   listen(options: {signal: AbortSignal}): AsyncGenerator<any, void, void>;
 }
 
+export interface ThreadExposableFunction<Args extends any[], ReturnType> {
+  (...args: ThreadSafeArgument<Args>): ReturnType extends Promise<any>
+    ? ReturnType
+    : ReturnType extends AsyncGenerator<any, any, any>
+    ? ReturnType
+    : ReturnType | Promise<ReturnType>;
+}
+
 export type ThreadExposable<T> = {
   [K in keyof T]: T[K] extends (...args: infer Args) => infer ReturnType
-    ? (
-        ...args: ThreadSafeArgument<Args>
-      ) => ReturnType extends Promise<any>
-        ? ReturnType
-        : ReturnType extends AsyncGenerator<any, any, any>
-        ? ReturnType
-        : ReturnType | Promise<ReturnType>
+    ? ThreadExposableFunction<Args, ReturnType>
     : never;
 };
 
+export interface ThreadCallableFunction<Args extends any[], ReturnType> {
+  (...args: ThreadSafeArgument<Args>): ThreadSafeReturnType<ReturnType>;
+}
+
 export type ThreadCallable<T> = {
   [K in keyof T]: T[K] extends (...args: infer Args) => infer ReturnType
-    ? (...args: ThreadSafeArgument<Args>) => ThreadSafeReturnType<ReturnType>
+    ? ThreadCallableFunction<Args, ReturnType>
     : never;
 };
 
@@ -58,15 +64,10 @@ export type ThreadSafeArgument<T> = T extends (
     ? (...args: Args) => TypeReturned
     : TypeReturned extends Generator<infer T, infer R, infer N>
     ? (...args: Args) => AsyncGenerator<T, R, N>
+    : TypeReturned extends boolean
+    ? (...args: Args) => boolean | Promise<boolean>
     : (...args: Args) => TypeReturned | Promise<TypeReturned>
-  : T extends (infer ArrayElement)[]
-  ? ThreadSafeArgument<ArrayElement>[]
-  : T extends readonly (infer ArrayElement)[]
-  ? readonly ThreadSafeArgument<ArrayElement>[]
-  : // eslint-disable-next-line @typescript-eslint/ban-types
-  T extends object
-  ? {[K in keyof T]: ThreadSafeArgument<T[K]>}
-  : T;
+  : {[K in keyof T]: ThreadSafeArgument<T[K]>};
 
 export interface MemoryRetainer {
   add(manageable: MemoryManageable): void;
