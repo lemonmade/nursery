@@ -19,6 +19,7 @@ export interface ThreadOptions<
 > {
   callable?: (keyof Target)[];
   expose?: ThreadExposable<Self>;
+  signal?: AbortSignal;
   uuid?(): string;
   encoder?(api: ThreadEncodingStrategyApi): ThreadEncodingStrategy;
 }
@@ -47,13 +48,12 @@ export function createThread<
   {
     expose,
     callable,
+    signal,
     uuid = defaultUuid,
     encoder: createEncoder = createBasicEncoder,
   }: ThreadOptions<Self, Target> = {},
 ): Thread<Target> {
-  const abort = new AbortController();
-  const {signal} = abort;
-
+  let terminated = false;
   const activeApi = new Map<string | number, AnyFunction>();
 
   if (expose) {
@@ -88,12 +88,24 @@ export function createThread<
     },
   });
 
-  signal.addEventListener(
+  const terminate = () => {
+    if (terminated) return;
+
+    for (const id of callIdsToResolver.keys()) {
+      resolveCall(id, new ThreadTerminatedError());
+    }
+
+    terminated = true;
+    activeApi.clear();
+    callIdsToResolver.clear();
+    encoder.terminate?.();
+  };
+
+  signal?.addEventListener(
     'abort',
     () => {
-      activeApi.clear();
-      callIdsToResolver.clear();
-      encoder.terminate?.();
+      send(TERMINATE, []);
+      terminate();
     },
     {once: true},
   );
@@ -104,19 +116,14 @@ export function createThread<
     }
   })();
 
-  return {
-    call,
-    terminate() {
-      send(TERMINATE, []);
-      abort.abort();
-    },
-  };
+  return call;
 
   function send<Type extends keyof MessageMap>(
     type: Type,
     args: MessageMap[Type],
     transferables?: Transferable[],
   ) {
+    if (terminated) return;
     target.send([type, args], transferables);
   }
 
@@ -127,7 +134,7 @@ export function createThread<
 
     switch (data[0]) {
       case TERMINATE: {
-        abort.abort();
+        terminate();
         break;
       }
       case CALL: {
@@ -155,12 +162,7 @@ export function createThread<
         break;
       }
       case RESULT: {
-        const [callId] = data[1] as MessageMap[typeof RESULT];
-
-        callIdsToResolver.get(callId)!(
-          ...(data[1] as MessageMap[typeof RESULT]),
-        );
-        callIdsToResolver.delete(callId);
+        resolveCall(...(data[1] as MessageMap[typeof RESULT]));
         break;
       }
       case RELEASE: {
@@ -169,12 +171,7 @@ export function createThread<
         break;
       }
       case FUNCTION_RESULT: {
-        const [callId] = data[1] as MessageMap[typeof FUNCTION_RESULT];
-
-        callIdsToResolver.get(callId)!(
-          ...(data[1] as MessageMap[typeof FUNCTION_RESULT]),
-        );
-        callIdsToResolver.delete(callId);
+        resolveCall(...(data[1] as MessageMap[typeof FUNCTION_RESULT]));
         break;
       }
       case FUNCTION_APPLY: {
@@ -197,25 +194,27 @@ export function createThread<
 
   function handlerForCall(property: string | number | symbol) {
     return (...args: any[]) => {
-      if (signal.aborted) {
-        throw new Error(
-          'You attempted to call a function on a terminated thread.',
-        );
+      try {
+        if (terminated) {
+          throw new ThreadTerminatedError();
+        }
+
+        if (typeof property !== 'string' && typeof property !== 'number') {
+          throw new Error(
+            `Can’t call a symbol method on a thread: ${property.toString()}`,
+          );
+        }
+
+        const id = uuid();
+        const done = waitForResult(id);
+        const [encoded, transferables] = encoder.encode(args);
+
+        send(CALL, [id, property, encoded], transferables);
+
+        return done;
+      } catch (error) {
+        return Promise.reject(error);
       }
-
-      if (typeof property !== 'string' && typeof property !== 'number') {
-        throw new Error(
-          `Can’t call a symbol method on a thread: ${property.toString()}`,
-        );
-      }
-
-      const id = uuid();
-      const done = waitForResult(id);
-      const [encoded, transferables] = encoder.encode(args);
-
-      send(CALL, [id, property, encoded], transferables);
-
-      return done;
     };
   }
 
@@ -255,6 +254,23 @@ export function createThread<
     } else {
       return encoder.encode(await result);
     }
+  }
+
+  function resolveCall(...args: MessageMap[typeof RESULT]) {
+    const callId = args[0];
+
+    const resolver = callIdsToResolver.get(callId);
+
+    if (resolver) {
+      resolver(...args);
+      callIdsToResolver.delete(callId);
+    }
+  }
+}
+
+class ThreadTerminatedError extends Error {
+  constructor() {
+    super('You attempted to call a function on a terminated thread.');
   }
 }
 

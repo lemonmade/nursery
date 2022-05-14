@@ -19,7 +19,7 @@ export function targetFromBrowserWebSocket(websocket: WebSocket): ThreadTarget {
         await once(websocket, 'open', {signal});
       }
 
-      if (signal.aborted) return;
+      if (signal?.aborted) return;
 
       for await (const message of messages) {
         yield JSON.parse(message.data);

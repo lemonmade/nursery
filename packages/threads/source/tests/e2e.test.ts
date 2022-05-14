@@ -8,7 +8,7 @@ describe('thread', () => {
     }
 
     const {port1, port2} = new MessageChannel();
-    const endpoint1 = createThread<Record<string, never>, EndpointApi>(
+    const threadOne = createThread<Record<string, never>, EndpointApi>(
       targetFromMessagePort(port1),
     );
 
@@ -16,7 +16,7 @@ describe('thread', () => {
       expose: {hello: () => 'world'},
     });
 
-    expect(await endpoint1.call.hello()).toBe('world');
+    expect(await threadOne.hello()).toBe('world');
   });
 
   it('proxies function calls', async () => {
@@ -25,7 +25,7 @@ describe('thread', () => {
     }
 
     const {port1, port2} = new MessageChannel();
-    const endpoint1 = createThread<Record<string, never>, EndpointApi>(
+    const threadOne = createThread<Record<string, never>, EndpointApi>(
       targetFromMessagePort(port1),
     );
 
@@ -35,7 +35,7 @@ describe('thread', () => {
       },
     });
 
-    expect(await endpoint1.call.greet(() => 'Chris')).toBe('Hello, Chris!');
+    expect(await threadOne.greet(() => 'Chris')).toBe('Hello, Chris!');
   });
 
   it('proxies generators', async () => {
@@ -61,7 +61,7 @@ describe('thread', () => {
       },
     });
 
-    for await (const value of threadOne.call.iterate()) {
+    for await (const value of threadOne.iterate()) {
       expect(value).toBe(++expected);
     }
   });
@@ -89,8 +89,86 @@ describe('thread', () => {
       },
     });
 
-    for await (const value of threadOne.call.iterate()) {
+    for await (const value of threadOne.iterate()) {
       expect(value).toBe(++expected);
     }
+  });
+
+  it('throws errors when calling methods on terminated threads', async () => {
+    interface EndpointApi {
+      greet(): string;
+    }
+
+    const abort = new AbortController();
+
+    const {port1, port2} = new MessageChannel();
+    const threadOne = createThread<Record<string, never>, EndpointApi>(
+      targetFromMessagePort(port1),
+      {signal: abort.signal},
+    );
+
+    createThread<EndpointApi>(targetFromMessagePort(port2), {
+      expose: {
+        greet: () => 'Hello, world!',
+      },
+    });
+
+    abort.abort();
+
+    await expect(threadOne.greet()).rejects.toBeInstanceOf(Error);
+  });
+
+  it('rejects all in-flight requests when a thread terminates', async () => {
+    interface EndpointApi {
+      greet(): string;
+    }
+
+    const abort = new AbortController();
+
+    const {port1, port2} = new MessageChannel();
+    const threadOne = createThread<Record<string, never>, EndpointApi>(
+      targetFromMessagePort(port1),
+      {signal: abort.signal},
+    );
+
+    createThread<EndpointApi>(targetFromMessagePort(port2), {
+      expose: {
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        greet: () => new Promise(() => {}),
+      },
+    });
+
+    const result = threadOne.greet();
+
+    abort.abort();
+
+    await expect(result).rejects.toBeInstanceOf(Error);
+  });
+
+  it('rejects all in-flight requests when a target thread terminates', async () => {
+    interface EndpointApi {
+      greet(): string;
+    }
+
+    const abort = new AbortController();
+
+    const {port1, port2} = new MessageChannel();
+    const threadOne = createThread<Record<string, never>, EndpointApi>(
+      targetFromMessagePort(port1),
+    );
+
+    createThread<EndpointApi>(targetFromMessagePort(port2), {
+      signal: abort.signal,
+      expose: {
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        greet: () => new Promise(() => {}),
+      },
+    });
+
+    const result = threadOne.greet();
+
+    abort.abort();
+
+    await expect(result).rejects.toBeInstanceOf(Error);
   });
 });

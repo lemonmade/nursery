@@ -1,13 +1,10 @@
 import type {RELEASE_METHOD, RETAIN_METHOD, RETAINED_BY} from './constants';
 
-export interface Thread<Target> {
-  readonly call: ThreadCallable<Target>;
-  terminate(): void;
-}
+export type Thread<Target> = ThreadCallable<Target>;
 
 export interface ThreadTarget {
   send(message: any, transferables?: Transferable[]): void;
-  listen(options: {signal: AbortSignal}): AsyncGenerator<any, void, void>;
+  listen(options: {signal?: AbortSignal}): AsyncGenerator<any, void, void>;
 }
 
 export interface ThreadExposableFunction<Args extends any[], ReturnType> {

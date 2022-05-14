@@ -16,7 +16,7 @@ export async function once<
 >(
   target: Target,
   event: Event,
-  options: {signal: AbortSignal; abort?: Abort},
+  options: {signal?: AbortSignal; abort?: Abort},
 ): Promise<
   Abort extends 'returns' ? EventMap[Event] | undefined : EventMap[Event]
 >;
