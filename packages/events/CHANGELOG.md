@@ -1,5 +1,11 @@
 # @lemonmade/events
 
+## 0.1.5
+
+### Patch Changes
+
+- [`ccd59e7`](https://github.com/lemonmade/nursery/commit/ccd59e7a8e73502ed47c9fed85aa619c12c49d1c) Thanks [@lemonmade](https://github.com/lemonmade)! - Improve thread termination
+
 ## 0.1.4
 
 ### Patch Changes

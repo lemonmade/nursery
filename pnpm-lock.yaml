@@ -46,7 +46,7 @@ importers:
 
   packages/threads:
     specifiers:
-      '@lemonmade/events': ^0.1.0
+      '@lemonmade/events': ^0.1.5
     dependencies:
       '@lemonmade/events': link:../events
 
