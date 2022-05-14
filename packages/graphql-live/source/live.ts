@@ -349,56 +349,52 @@ export function run<
             const consumeNextUpdate = async function consumeNextUpdate(
               abort: AbortController,
             ): Promise<void> {
+              let value;
+              let done;
+
               try {
-                let value;
-                let done;
-
-                try {
-                  const resolvedIteratorResult = await iterator.next();
-                  value = resolvedIteratorResult.value;
-                  done = resolvedIteratorResult.done ?? false;
-                } catch (error) {
-                  value = error;
-                  done = true;
-                }
-
-                if (abort.signal.aborted) return;
-
-                if (done) {
-                  liveFields.delete(fieldPath);
-
-                  if (value === undefined) {
-                    emitter.emit('update', {
-                      path,
-                      value: result,
-                      change: false,
-                    });
-                    return;
-                  }
-                }
-
-                abort.abort();
-                const newAbort = new NestedAbortController(signal);
-
-                const oldError = currentError;
-                // TODO don’t want fields within here to emit in this phase...
-                currentError = await handleValueForField(
-                  value,
-                  fieldName,
-                  result,
-                  selection,
-                  newAbort.signal,
-                  newPath,
-                );
-
-                if (oldError) errors.delete(oldError);
-
-                emitter.emit('update', {path, value: result});
-
-                consumeNextUpdate(newAbort);
-              } catch {
-                // TODO: what do I do here...
+                const resolvedIteratorResult = await iterator.next();
+                value = resolvedIteratorResult.value;
+                done = resolvedIteratorResult.done ?? false;
+              } catch (error) {
+                value = error;
+                done = true;
               }
+
+              if (abort.signal.aborted) return;
+
+              if (done) {
+                liveFields.delete(fieldPath);
+
+                if (value === undefined) {
+                  emitter.emit('update', {
+                    path: newPath,
+                    value: result,
+                    change: false,
+                  });
+                  return;
+                }
+              }
+
+              abort.abort();
+              const newAbort = new NestedAbortController(signal);
+
+              const oldError = currentError;
+              // TODO don’t want fields within here to emit in this phase...
+              currentError = await handleValueForField(
+                value,
+                fieldName,
+                result,
+                selection,
+                newAbort.signal,
+                newPath,
+              );
+
+              if (oldError) errors.delete(oldError);
+
+              emitter.emit('update', {path, value: result});
+
+              consumeNextUpdate(newAbort);
             };
 
             const iteratorResult = iterator.next();
