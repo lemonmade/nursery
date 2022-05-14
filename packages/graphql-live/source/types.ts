@@ -1,5 +1,24 @@
 import type {FieldNode} from 'graphql';
 
+export interface GraphQLError {
+  readonly message: string;
+  readonly path?: readonly (string | number)[];
+  readonly locations?: readonly {
+    readonly line: number;
+    readonly column: number;
+  }[];
+}
+
+export type GraphQLResult<Data> =
+  | {
+      readonly data: Data;
+      readonly errors?: never;
+    }
+  | {
+      readonly data: Data | null;
+      readonly errors: readonly GraphQLError[];
+    };
+
 export type GraphQLNullableFields<Type> = {
   [Field in keyof Type]: ((...args: any[]) => null) extends Type[Field]
     ? Field
@@ -64,7 +83,7 @@ export type GraphQLLiveReturnResult<
   Type,
   Context = Record<string, never>,
 > = Type extends null
-  ? null | undefined
+  ? null | undefined | Error | void
   : Type extends number
   ? Type
   : Type extends string

@@ -205,6 +205,129 @@ describe('run()', () => {
     });
   });
 
+  describe('functions', () => {
+    it('uses field resolvers that are functions', async () => {
+      const query = parse(`query { version }`);
+
+      const spy = jest.fn(() => 'v1');
+
+      const resolver = createQueryResolver(() => ({
+        version: spy,
+      }));
+
+      const result = await run(query, resolver).untilDone();
+
+      expect(spy).toHaveBeenCalledWith(
+        {},
+        {},
+        expect.objectContaining({
+          field: expect.objectContaining({
+            kind: 'Field',
+            name: expect.objectContaining({value: 'version'}),
+          }),
+          path: ['version'],
+        }),
+      );
+      expect(result.data).toStrictEqual({version: 'v1'});
+    });
+
+    it('includes an error when a resolver function throws', async () => {
+      const query = parse(`query { me { pet(name: "Sean") { name } } }`);
+
+      const resolver = createQueryResolver(({object}) => ({
+        me: object('Person', {
+          name: 'Chris',
+          pets: [],
+          pet({name}) {
+            if (name === 'Sean') {
+              throw new Error('That’s a terrible pet name!');
+            }
+
+            return null;
+          },
+        }),
+      }));
+
+      const result = await run(query, resolver).untilDone();
+
+      expect(result.data).toStrictEqual({me: {pet: null}});
+      expect(result.errors).toStrictEqual([
+        {
+          message: 'That’s a terrible pet name!',
+          path: ['me', 'pet'],
+          locations: [
+            {
+              line: expect.any(Number),
+              column: expect.any(Number),
+            },
+          ],
+        },
+      ]);
+    });
+
+    describe('variables', () => {
+      it('passes static variables to field resolvers', async () => {
+        const query = parse(`query { me { pet(name: "Winston") { age } } }`);
+
+        const spy = jest.fn();
+
+        const resolver = createQueryResolver(({object}) => {
+          spy.mockReturnValue(object('Dog', {name: 'Winston', age: 10}));
+
+          return {
+            me: object('Person', {
+              name: 'Chris',
+              pets: [],
+              pet: spy,
+            }),
+          };
+        });
+
+        const result = await run(query, resolver).untilDone();
+
+        expect(spy).toHaveBeenCalledWith(
+          {name: 'Winston'},
+          expect.anything(),
+          expect.anything(),
+        );
+
+        expect(result.data).toStrictEqual({me: {pet: {age: 10}}});
+      });
+
+      it('resolves field variables from query variables', async () => {
+        const query = parse(
+          `query Pet($name: String!) { me { pet(name: $name) { age } } }`,
+        );
+
+        const spy = jest.fn();
+
+        const resolver = createQueryResolver(({object}) => {
+          spy.mockReturnValue(object('Dog', {name: 'Winston', age: 10}));
+
+          return {
+            me: object('Person', {
+              name: 'Chris',
+              pets: [],
+              pet: spy,
+            }),
+          };
+        });
+
+        const result = await run(query, resolver, {
+          variables: {name: 'Winston'},
+        }).untilDone();
+
+        expect(spy).toHaveBeenCalledWith(
+          {name: 'Winston'},
+          expect.anything(),
+          expect.anything(),
+        );
+
+        expect(result.data).toStrictEqual({me: {pet: {age: 10}}});
+      });
+    });
+  });
+
   describe('promises', () => {
     it('returns field values that return promises', async () => {
       const query = parse(`query { version }`);
@@ -217,67 +340,39 @@ describe('run()', () => {
 
       expect(result.data).toStrictEqual({version: 'v1'});
     });
-  });
 
-  describe('variables', () => {
-    it('passes static variables to field resolvers', async () => {
-      const query = parse(`query { me { pet(name: "Winston") { age } } }`);
+    it('includes an error when a resolver function rejects', async () => {
+      const query = parse(`query { me { pet(name: "Sean") { name } } }`);
 
-      const spy = jest.fn();
+      const resolver = createQueryResolver(({object}) => ({
+        me: object('Person', {
+          name: 'Chris',
+          pets: [],
+          async pet({name}) {
+            if (name === 'Sean') {
+              throw new Error('That’s a terrible pet name!');
+            }
 
-      const resolver = createQueryResolver(({object}) => {
-        spy.mockReturnValue(object('Dog', {name: 'Winston', age: 10}));
-
-        return {
-          me: object('Person', {
-            name: 'Chris',
-            pets: [],
-            pet: spy,
-          }),
-        };
-      });
+            return null;
+          },
+        }),
+      }));
 
       const result = await run(query, resolver).untilDone();
 
-      expect(spy).toHaveBeenCalledWith(
-        {name: 'Winston'},
-        expect.anything(),
-        expect.anything(),
-      );
-
-      expect(result.data).toStrictEqual({me: {pet: {age: 10}}});
-    });
-
-    it('resolves field variables from query variables', async () => {
-      const query = parse(
-        `query Pet($name: String!) { me { pet(name: $name) { age } } }`,
-      );
-
-      const spy = jest.fn();
-
-      const resolver = createQueryResolver(({object}) => {
-        spy.mockReturnValue(object('Dog', {name: 'Winston', age: 10}));
-
-        return {
-          me: object('Person', {
-            name: 'Chris',
-            pets: [],
-            pet: spy,
-          }),
-        };
-      });
-
-      const result = await run(query, resolver, {
-        variables: {name: 'Winston'},
-      }).untilDone();
-
-      expect(spy).toHaveBeenCalledWith(
-        {name: 'Winston'},
-        expect.anything(),
-        expect.anything(),
-      );
-
-      expect(result.data).toStrictEqual({me: {pet: {age: 10}}});
+      expect(result.data).toStrictEqual({me: {pet: null}});
+      expect(result.errors).toStrictEqual([
+        {
+          message: 'That’s a terrible pet name!',
+          path: ['me', 'pet'],
+          locations: [
+            {
+              line: expect.any(Number),
+              column: expect.any(Number),
+            },
+          ],
+        },
+      ]);
     });
   });
 
@@ -441,6 +536,100 @@ describe('run()', () => {
         },
       });
     });
+
+    it('includes an error when an iterator throws', async () => {
+      const query = parse(`query { me { pet(name: "Sean") { name } } }`);
+
+      const resolver = createQueryResolver(({object}) => ({
+        me: object('Person', {
+          name: 'Chris',
+          pets: [],
+          async *pet({name}) {
+            if (name === 'Sean') {
+              throw new Error('That’s a terrible pet name!');
+            }
+
+            yield null;
+          },
+        }),
+      }));
+
+      const result = await run(query, resolver).untilDone();
+
+      expect(result.data).toStrictEqual({me: {pet: null}});
+      expect(result.errors).toStrictEqual([
+        {
+          message: 'That’s a terrible pet name!',
+          path: ['me', 'pet'],
+          locations: [
+            {
+              line: expect.any(Number),
+              column: expect.any(Number),
+            },
+          ],
+        },
+      ]);
+    });
+
+    it('includes an error when an iterator yields an error', async () => {
+      const query = parse(`query { me { pet(name: "Sean") { name } } }`);
+
+      const resolver = createQueryResolver(({object}) => ({
+        me: object('Person', {
+          name: 'Chris',
+          pets: [],
+          async *pet({name}) {
+            if (name === 'Sean') {
+              yield new Error('That’s a terrible pet name!');
+              return;
+            }
+
+            yield null;
+          },
+        }),
+      }));
+
+      const result = await run(query, resolver).untilDone();
+
+      expect(result.data).toStrictEqual({me: {pet: null}});
+      expect(result.errors).toStrictEqual([
+        {
+          message: 'That’s a terrible pet name!',
+          path: ['me', 'pet'],
+          locations: [
+            {
+              line: expect.any(Number),
+              column: expect.any(Number),
+            },
+          ],
+        },
+      ]);
+    });
+
+    it('removes an error when subsequent iterations do not return one', async () => {
+      const query = parse(`query { me { pet(name: "Sean") { name } } }`);
+
+      const resolver = createQueryResolver(({object}) => ({
+        me: object('Person', {
+          name: 'Chris',
+          pets: [],
+          async *pet({name}) {
+            if (name === 'Sean') {
+              yield new Error(
+                'Uh... sorry, temporary network error, it’s not just a bad name!',
+              );
+            }
+
+            yield null;
+          },
+        }),
+      }));
+
+      const result = await run(query, resolver).untilDone();
+
+      expect(result.data).toStrictEqual({me: {pet: null}});
+      expect(result.errors).toBeUndefined();
+    });
   });
 });
 
@@ -454,6 +643,9 @@ function createQueryResolver(
     me: helpers.object('Person', {
       name: 'Chris',
       pets: [],
+      pet() {
+        return;
+      },
     }),
     ...fields?.(helpers),
   }));

@@ -11,6 +11,8 @@ import type {GraphQLOperationType} from '@quilted/graphql';
 import {createEmitter, NestedAbortController} from '@lemonmade/events';
 
 import type {
+  GraphQLError,
+  GraphQLResult,
   GraphQLLiveResolverObject,
   GraphQLLiveResolverCreateHelper,
   GraphQLLiveResolverFunction,
@@ -44,21 +46,6 @@ export function createQueryResolver<
 
   return {__typename: 'Query', ...resolvers} as any;
 }
-
-export interface GraphQLError {
-  readonly message: string;
-  readonly path: readonly (string | number)[];
-}
-
-export type GraphQLResult<Data> =
-  | {
-      readonly data: Data;
-      readonly errors?: never;
-    }
-  | {
-      readonly data: Data | null;
-      readonly errors: readonly GraphQLError[];
-    };
 
 export interface GraphQLRunner<Data, _Variables> {
   readonly current: GraphQLResult<Data> | undefined;
@@ -190,8 +177,28 @@ export function run<
     path: (string | number)[],
   ) {
     if (value == null) {
-      result[name] = null;
       return;
+    }
+
+    if (value instanceof Error) {
+      const error: GraphQLError = {
+        message: value.message,
+        path: (value as any).path ?? path,
+        locations:
+          (value as any).locations ??
+          (field.loc?.startToken
+            ? [
+                {
+                  line: field.loc.startToken.line,
+                  column: field.loc.startToken.column,
+                },
+              ]
+            : undefined),
+      };
+
+      errors.add(error);
+
+      return error;
     }
 
     if (field.selectionSet != null) {
@@ -232,7 +239,6 @@ export function run<
       );
     }
 
-    // TODO: check this isn’t an object
     result[name] = value;
   }
 
@@ -278,19 +284,30 @@ export function run<
             }
           }
 
-          const resolverResult = (
-            valueOrResolver as GraphQLLiveResolverFunction<
-              unknown,
-              any,
-              Context
-            >
-          )(fieldVariables, context, {
-            signal,
-            field: selection,
-            path: newPath,
-          });
+          let resolverResult: any;
+          let currentError: GraphQLError | void;
 
-          if (resolverResult == null || typeof resolverResult !== 'object') {
+          try {
+            resolverResult = (
+              valueOrResolver as GraphQLLiveResolverFunction<
+                unknown,
+                any,
+                Context
+              >
+            )(fieldVariables, context, {
+              signal,
+              field: selection,
+              path: newPath,
+            });
+          } catch (error) {
+            resolverResult = error;
+          }
+
+          if (
+            resolverResult == null ||
+            typeof resolverResult !== 'object' ||
+            resolverResult instanceof Error
+          ) {
             return handleValueForField(
               resolverResult,
               fieldName,
@@ -303,7 +320,13 @@ export function run<
 
           if (isPromise(resolverResult)) {
             return (async () => {
-              const value = await resolverResult;
+              let value;
+
+              try {
+                value = await resolverResult;
+              } catch (error) {
+                value = error;
+              }
 
               if (signal.aborted) return;
 
@@ -327,7 +350,17 @@ export function run<
               abort: AbortController,
             ): Promise<void> {
               try {
-                const {value, done = false} = await iterator.next();
+                let value;
+                let done;
+
+                try {
+                  const resolvedIteratorResult = await iterator.next();
+                  value = resolvedIteratorResult.value;
+                  done = resolvedIteratorResult.done ?? false;
+                } catch (error) {
+                  value = error;
+                  done = true;
+                }
 
                 if (abort.signal.aborted) return;
 
@@ -347,8 +380,9 @@ export function run<
                 abort.abort();
                 const newAbort = new NestedAbortController(signal);
 
+                const oldError = currentError;
                 // TODO don’t want fields within here to emit in this phase...
-                await handleValueForField(
+                currentError = await handleValueForField(
                   value,
                   fieldName,
                   result,
@@ -356,6 +390,8 @@ export function run<
                   newAbort.signal,
                   newPath,
                 );
+
+                if (oldError) errors.delete(oldError);
 
                 emitter.emit('update', {path, value: result});
 
@@ -368,16 +404,21 @@ export function run<
             const iteratorResult = iterator.next();
 
             return (async () => {
-              const {value, done = false} = await iteratorResult;
+              let value;
+              let done;
+
+              try {
+                const resolvedIteratorResult = await iteratorResult;
+                value = resolvedIteratorResult.value;
+                done = resolvedIteratorResult.done ?? false;
+              } catch (error) {
+                value = error;
+                done = true;
+              }
 
               if (signal.aborted) return;
 
-              if (!done) {
-                liveFields.add(fieldPath);
-                consumeNextUpdate(abort);
-              }
-
-              return handleValueForField(
+              currentError = await handleValueForField(
                 value,
                 fieldName,
                 result,
@@ -385,6 +426,11 @@ export function run<
                 abort.signal,
                 newPath,
               );
+
+              if (!done) {
+                liveFields.add(fieldPath);
+                consumeNextUpdate(abort);
+              }
             })();
           }
 
