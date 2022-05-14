@@ -1,5 +1,11 @@
 # @lemonmade/threads
 
+## 0.1.3
+
+### Patch Changes
+
+- [`a96df46`](https://github.com/lemonmade/nursery/commit/a96df46bbafd26420fc10916b84c4025549eb07b) Thanks [@lemonmade](https://github.com/lemonmade)! - Add ThreadAbortController
+
 ## 0.1.2
 
 ### Patch Changes

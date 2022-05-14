@@ -1,5 +1,11 @@
 # @lemonmade/graphql-live
 
+## 0.1.9
+
+### Patch Changes
+
+- [`82770f4`](https://github.com/lemonmade/nursery/commit/82770f40da51f64962097ea9e63a1d6884370504) Thanks [@lemonmade](https://github.com/lemonmade)! - Fix paths passed to GraphQL resolvers
+
 ## 0.1.8
 
 ### Patch Changes
