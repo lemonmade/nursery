@@ -1,4 +1,4 @@
-import {createEmitter} from '@lemonmade/events';
+import {createEmitter} from '@quilted/events';
 
 import {parse} from 'graphql';
 

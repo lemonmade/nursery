@@ -8,7 +8,7 @@ import type {
 } from 'graphql';
 
 import type {GraphQLOperationType} from '@quilted/graphql';
-import {createEmitter, NestedAbortController} from '@lemonmade/events';
+import {createEmitter, NestedAbortController} from '@quilted/events';
 
 import type {
   GraphQLError,
