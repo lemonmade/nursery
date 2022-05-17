@@ -1,5 +1,11 @@
 # @lemonmade/graphql-live
 
+## 0.1.10
+
+### Patch Changes
+
+- [`a9d9d5d`](https://github.com/lemonmade/nursery/commit/a9d9d5d0a7281fa6fe6a75cbb2f9a15a0067312a) Thanks [@lemonmade](https://github.com/lemonmade)! - Move events and threads to Quilt
+
 ## 0.1.9
 
 ### Patch Changes
