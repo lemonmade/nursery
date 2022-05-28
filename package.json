@@ -37,5 +37,5 @@
   "browserslist": [
     "extends @quilted/browserslist-config/defaults"
   ],
-  "packageManager": "pnpm@6.32.2"
+  "packageManager": "pnpm@7.1.6"
 }
