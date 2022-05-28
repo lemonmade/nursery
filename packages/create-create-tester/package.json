@@ -15,6 +15,7 @@
     "access": "public",
     "@lemonmade:registry": "https://registry.npmjs.org"
   },
+  "bin": "./bin/create-tester.mjs",
   "exports": {
     ".": {
       "quilt:esnext": "./build/esnext/index.esnext",
