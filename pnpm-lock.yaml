@@ -12,6 +12,7 @@ importers:
       '@quilted/prettier': ^0.2.0
       '@quilted/quilt': ^0.5.0
       '@quilted/typescript': ^0.2.0
+      '@types/jest': ^27.5.1
       '@types/node': ^16.0.0
       react: npm:@quilted/react@^0.1.0
       react-dom: npm:@quilted/react@^0.1.0
@@ -28,6 +29,7 @@ importers:
       '@quilted/eslint-config': 0.1.9_typescript@4.6.4
       '@quilted/prettier': 0.2.8
       '@quilted/typescript': 0.2.11_typescript@4.6.4
+      '@types/jest': 27.5.1
       '@types/node': 16.11.33
       typescript: 4.6.4
 
@@ -2197,7 +2199,7 @@ packages:
       '@rollup/plugin-json': 4.1.0_rollup@2.72.1
       '@rollup/plugin-node-resolve': 13.3.0_rollup@2.72.1
       '@rollup/plugin-replace': 2.4.2_rollup@2.72.1
-      '@types/jest': 27.5.0
+      '@types/jest': 27.5.1
       '@types/postcss-preset-env': 6.7.3
       '@types/prettier': 2.6.0
       arg: 5.0.1
@@ -3164,8 +3166,8 @@ packages:
       '@types/istanbul-lib-report': 3.0.0
     dev: true
 
-  /@types/jest/27.5.0:
-    resolution: {integrity: sha512-9RBFx7r4k+msyj/arpfaa0WOOEcaAZNmN+j80KFbFCoSqCJGHTz7YMAMGQW9Xmqm5w6l5c25vbSjMwlikJi5+g==}
+  /@types/jest/27.5.1:
+    resolution: {integrity: sha512-fUy7YRpT+rHXto1YlL+J9rs0uLGyiqVt3ZOTQR+4ROc47yNl8WLdVLgUloBRhOxP1PZvguHl44T3H0wAWxahYQ==}
     dependencies:
       jest-matcher-utils: 27.5.1
       pretty-format: 27.5.1
