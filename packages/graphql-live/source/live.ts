@@ -58,7 +58,10 @@ export function run<
   Data = Record<string, unknown>,
   Variables = Record<string, never>,
   Context = Record<string, never>,
-  Resolver = GraphQLLiveResolverObject<{__typename: 'Query'}, Context>,
+  Resolver extends GraphQLLiveResolverObject<
+    {__typename: 'Query'},
+    Context
+  > = GraphQLLiveResolverObject<{__typename: 'Query'}, Context>,
 >(
   document: DocumentNode & GraphQLOperationType<Data, Variables>,
   resolvers: Resolver,
@@ -177,6 +180,7 @@ export function run<
     path: (string | number)[],
   ) {
     if (value == null) {
+      result[name] = null;
       return;
     }
 
