@@ -1,5 +1,11 @@
 # @lemonmade/graphql-live
 
+## 0.1.11
+
+### Patch Changes
+
+- [`04f5429`](https://github.com/lemonmade/nursery/commit/04f5429a1079b70083b6ae20ba29915d2e7667bb) Thanks [@lemonmade](https://github.com/lemonmade)! - Fix GraphQL resolvers switching from value to no value
+
 ## 0.1.10
 
 ### Patch Changes
