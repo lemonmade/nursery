@@ -16,6 +16,7 @@ import type {
   GraphQLLiveResolverObject,
   GraphQLLiveResolverCreateHelper,
   GraphQLLiveResolverFunction,
+  ContextTypeForGraphQLLiveResolverObject,
 } from './types';
 
 export function createObjectResolver<
@@ -67,7 +68,7 @@ export function run<
   options?: {
     signal?: AbortSignal;
     variables?: Variables;
-    context?: Resolver extends {__context?: infer U} ? U : never;
+    context?: ContextTypeForGraphQLLiveResolverObject<Resolver>;
   },
 ): GraphQLRunner<Data, Variables> {
   const rootSignal = options?.signal;
@@ -247,8 +248,7 @@ export function run<
 
   function handleSelection(
     selections: readonly SelectionNode[],
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    resolvers: GraphQLLiveResolverObject<{}, Context>,
+    resolvers: GraphQLLiveResolverObject<any, any>,
     result: Record<string, any>,
     signal: AbortSignal,
     path: (string | number)[],
@@ -292,11 +292,7 @@ export function run<
 
           try {
             resolverResult = (
-              valueOrResolver as GraphQLLiveResolverFunction<
-                unknown,
-                any,
-                Context
-              >
+              valueOrResolver as GraphQLLiveResolverFunction<unknown, any, any>
             )(fieldVariables, context, {
               signal,
               field: selection,

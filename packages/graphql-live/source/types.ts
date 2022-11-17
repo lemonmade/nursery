@@ -39,6 +39,9 @@ export type GraphQLLiveResolverObject<
   GraphQLNullableFields<Type>
 > & {__context?: Context};
 
+export type ContextTypeForGraphQLLiveResolverObject<T> =
+  T extends GraphQLLiveResolverObject<any, infer Context> ? Context : never;
+
 export interface GraphQLLiveResolverFieldContext {
   readonly signal: AbortSignal;
   readonly field: FieldNode;
