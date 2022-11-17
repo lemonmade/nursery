@@ -1,5 +1,11 @@
 # @lemonmade/graphql-live
 
+## 0.1.12
+
+### Patch Changes
+
+- [`6bfa6ea`](https://github.com/lemonmade/nursery/commit/6bfa6ea7ab19bb5a4001caddb86f63b4dc390382) Thanks [@lemonmade](https://github.com/lemonmade)! - fix live resolver types
+
 ## 0.1.11
 
 ### Patch Changes
