@@ -73,7 +73,7 @@ export function run<
 ): GraphQLRunner<Data, Variables> {
   const rootSignal = options?.signal;
   const variables = (options?.variables ?? {}) as Variables;
-  const context = (options?.context ?? {}) as any;
+  const context = (options as any)?.context ?? {};
 
   let query: OperationDefinitionNode | undefined = undefined;
 
