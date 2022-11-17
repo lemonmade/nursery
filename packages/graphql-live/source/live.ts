@@ -57,11 +57,10 @@ export interface GraphQLRunner<Data, _Variables> {
 export function run<
   Data = Record<string, unknown>,
   Variables = Record<string, never>,
-  Context = Record<string, never>,
   Resolver extends GraphQLLiveResolverObject<
     {__typename: 'Query'},
-    Context
-  > = GraphQLLiveResolverObject<{__typename: 'Query'}, Context>,
+    Record<string, any>
+  > = GraphQLLiveResolverObject<{__typename: 'Query'}, Record<string, never>>,
 >(
   document: DocumentNode & GraphQLOperationType<Data, Variables>,
   resolvers: Resolver,
@@ -73,7 +72,7 @@ export function run<
 ): GraphQLRunner<Data, Variables> {
   const rootSignal = options?.signal;
   const variables = (options?.variables ?? {}) as Variables;
-  const context = (options?.context ?? {}) as Context;
+  const context = (options?.context ?? {}) as any;
 
   let query: OperationDefinitionNode | undefined = undefined;
 
