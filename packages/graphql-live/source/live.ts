@@ -8,8 +8,9 @@ import type {
 } from 'graphql';
 
 import type {GraphQLOperationType} from '@quilted/graphql';
-import {createEmitter, NestedAbortController} from '@quilted/events';
+import {createEmitter} from '@quilted/events';
 
+import {NestedAbortController} from './abort';
 import type {
   GraphQLError,
   GraphQLResult,
