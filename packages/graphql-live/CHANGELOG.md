@@ -1,5 +1,11 @@
 # @lemonmade/graphql-live
 
+## 0.1.13
+
+### Patch Changes
+
+- [`3b861ff`](https://github.com/lemonmade/nursery/commit/3b861ff612e90ec3a6e4ec2f8cb04589ba5a2f69) Thanks [@lemonmade](https://github.com/lemonmade)! - Fix nested signal event listener limit warnings
+
 ## 0.1.12
 
 ### Patch Changes
