@@ -1,6 +1,9 @@
-import {createPackage, quiltPackage} from '@quilted/craft';
+import {createProject, quiltPackage} from '@quilted/craft';
 
-export default createPackage((pkg) => {
-  pkg.binary({name: 'create-tester', source: './source/index.ts'});
-  pkg.use(quiltPackage());
+export default createProject((project) => {
+  project.use(
+    quiltPackage({
+      executable: {'create-tester': './source/index.ts'},
+    }),
+  );
 });

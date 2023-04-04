@@ -17,6 +17,8 @@
   },
   "exports": {
     ".": {
+      "types": "./build/typescript/index.d.ts",
+      "quilt:source": "./source/index.ts",
       "quilt:esnext": "./build/esnext/index.esnext",
       "import": "./build/esm/index.mjs",
       "require": "./build/cjs/index.cjs"
@@ -25,21 +27,23 @@
   "types": "./build/typescript/index.d.ts",
   "sideEffects": false,
   "dependencies": {
-    "graphql": "^16.0.0",
     "@quilted/events": "^0.1.0",
     "@quilted/graphql": "^0.4.0"
   },
   "peerDependencies": {
-    "@babel/runtime": ">=7.0.0 <8.0.0"
+    "graphql": "^16.0.0"
   },
   "peerDependenciesMeta": {
-    "@babel/runtime": {
+    "graphql": {
       "optional": true
     }
   },
+  "devDependencies": {
+    "graphql": "^16.0.0"
+  },
   "eslintConfig": {
     "extends": [
-      "@quilted/eslint-config/package"
+      "@quilted/eslint-config/project"
     ]
   }
 }
