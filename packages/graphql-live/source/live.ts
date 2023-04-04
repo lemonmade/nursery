@@ -102,7 +102,6 @@ export function run<
     update: {path: (string | number)[]; value: any; change?: boolean};
   }>();
   const liveFields = new Set<string>();
-  // eslint-disable-next-line @typescript-eslint/ban-types
   const data: Data | {} = {};
   const errors = new Set<GraphQLError>();
 

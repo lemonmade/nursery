@@ -8,7 +8,6 @@ import type {
   GraphQLLiveResolverCreateHelper,
 } from './types';
 
-/* eslint-disable @typescript-eslint/ban-types */
 interface Person {
   __typename: 'Person';
   name(variables: {}): string;
@@ -52,8 +51,6 @@ interface Schema {
   Dog: Dog;
   Pet: Pet;
 }
-
-/* eslint-enable @typescript-eslint/ban-types */
 
 // TODO
 // - Variables
