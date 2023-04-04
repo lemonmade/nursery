@@ -28,6 +28,9 @@
   "types": "./build/typescript/index.d.ts",
   "sideEffects": false,
   "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^18.15.11"
+  },
   "eslintConfig": {
     "extends": [
       "@quilted/eslint-config/project"
