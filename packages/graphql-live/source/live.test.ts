@@ -1,3 +1,4 @@
+import {describe, it, expect} from '@quilted/testing';
 import {createEmitter} from '@quilted/events';
 
 import {parse} from 'graphql';
