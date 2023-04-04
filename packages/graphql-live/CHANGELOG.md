@@ -1,5 +1,11 @@
 # @lemonmade/graphql-live
 
+## 0.1.14
+
+### Patch Changes
+
+- [#18](https://github.com/lemonmade/nursery/pull/18) [`8f7931d`](https://github.com/lemonmade/nursery/commit/8f7931d82a2b8a2a0ed73494fc2df0d31cbd0a73) Thanks [@lemonmade](https://github.com/lemonmade)! - Update dev dependencies
+
 ## 0.1.13
 
 ### Patch Changes
