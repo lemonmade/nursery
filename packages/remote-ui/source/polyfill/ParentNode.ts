@@ -152,13 +152,22 @@ export class ParentNode extends ChildNode {
       }
     }
 
+    const ownerDocument = this[OWNER_DOCUMENT];
+
+    child[PARENT] = this;
+    child[OWNER_DOCUMENT] = ownerDocument;
+
     // @todo support DocumentFragment insertion
     const childNodes = this._childNodes;
     const children = this._children;
+    let insertIndex: number;
+
+    if (childNodes == null) return;
+
     if (before) {
-      if (childNodes) {
-        childNodes.splice(childNodes.indexOf(before), 0, child);
-      }
+      insertIndex = childNodes.indexOf(before);
+      childNodes.splice(insertIndex, 0, child);
+
       if (children && isElement) {
         let ref: Node | null = before;
         while (ref && ref.nodeType !== 1) ref = ref[NEXT];
@@ -169,16 +178,12 @@ export class ParentNode extends ChildNode {
         }
       }
     } else {
-      if (childNodes) childNodes.push(child);
+      insertIndex = childNodes.length;
+      childNodes.push(child);
       if (children && isElement) children.push(child);
     }
 
-    const ownerDocument = this[OWNER_DOCUMENT];
-
-    child[PARENT] = this;
-    child[OWNER_DOCUMENT] = ownerDocument;
-
-    hooks.insertChild?.(this as any, child as any, before as any);
+    hooks.insertChild?.(this as any, child as any, insertIndex);
   }
 }
 
