@@ -1,5 +1,11 @@
 # @lemonmade/remote-ui
 
+## 0.1.5
+
+### Patch Changes
+
+- [`1ccfdd3`](https://github.com/lemonmade/nursery/commit/1ccfdd3f3878f5aa620b5cb68a4affcc4d7c2c5b) Thanks [@lemonmade](https://github.com/lemonmade)! - Add generic for properties
+
 ## 0.1.4
 
 ### Patch Changes
