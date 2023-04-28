@@ -1,5 +1,5 @@
 import {REMOTE_PROPERTIES} from '../constants.ts';
-import {updateRemoteElementProperty} from '../remote.ts';
+import {updateRemoteElementProperty} from './internals.ts';
 
 export interface RemoteElementProperties {
   [key: string]: {

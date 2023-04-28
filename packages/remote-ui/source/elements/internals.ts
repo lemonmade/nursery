@@ -3,8 +3,11 @@ import {
   REMOTE_CALLBACK,
   REMOTE_PROPERTIES,
   MUTATION_TYPE_UPDATE_PROPERTY,
-} from './constants.ts';
-import type {RemoteMutationCallback} from './types.ts';
+} from '../constants.ts';
+import type {
+  RemoteMutationCallback,
+  RemoteNodeSerialization,
+} from '../types.ts';
 
 let id = 0;
 
@@ -23,7 +26,7 @@ export function remoteProperties(
 }
 
 export function updateRemoteElementProperty(
-  node: Node,
+  node: Element,
   property: string,
   value: unknown,
 ) {
@@ -66,6 +69,36 @@ export function disconnectRemoteNode(node: Node) {
   if (node.childNodes) {
     for (let i = 0; i < node.childNodes.length; i++) {
       disconnectRemoteNode(node.childNodes[i]!);
+    }
+  }
+}
+
+export function serializeRemoteNode(node: Node): RemoteNodeSerialization {
+  switch (node.nodeType) {
+    // Element
+    case 1: {
+      return {
+        id: remoteId(node),
+        type: 1,
+        element: (node as Element).localName,
+        properties: remoteProperties(node),
+        children: Array.from(node.childNodes).map(serializeRemoteNode),
+      };
+    }
+    // TextNode
+    case 3: {
+      return {
+        id: remoteId(node),
+        type: 3,
+        data: (node as Text).data,
+      };
+    }
+    default: {
+      throw new Error(
+        `Cannot serialize node of type ${
+          node.nodeType
+        } (${typeof node.nodeType})`,
+      );
     }
   }
 }

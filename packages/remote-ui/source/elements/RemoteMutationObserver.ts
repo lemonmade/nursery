@@ -1,11 +1,15 @@
-import {remoteId, connectRemoteNode, disconnectRemoteNode} from './remote.ts';
-import {serializeNode} from './serialize.ts';
+import {
+  remoteId,
+  connectRemoteNode,
+  disconnectRemoteNode,
+  serializeRemoteNode,
+} from './internals.ts';
 import {
   MUTATION_TYPE_INSERT_CHILD,
   MUTATION_TYPE_REMOVE_CHILD,
   MUTATION_TYPE_UPDATE_TEXT,
-} from './constants.ts';
-import type {RemoteMutationCallback, RemoteMutationRecord} from './types';
+} from '../constants.ts';
+import type {RemoteMutationCallback, RemoteMutationRecord} from '../types.ts';
 
 export class RemoteMutationObserver extends MutationObserver {
   constructor(callback: RemoteMutationCallback) {
@@ -36,7 +40,7 @@ export class RemoteMutationObserver extends MutationObserver {
             remoteRecords.push([
               MUTATION_TYPE_INSERT_CHILD,
               targetId,
-              serializeNode(node),
+              serializeRemoteNode(node),
               position + index,
             ]);
           });

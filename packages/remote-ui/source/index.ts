@@ -1,13 +1,4 @@
 export {
-  RemoteElement,
-  type RemoteElementProperties,
-} from './elements/RemoteElement.ts';
-export {RemoteRootElement} from './elements/RemoteRootElement.ts';
-export {RemoteReceiverElement} from './elements/RemoteReceiverElement.ts';
-
-export {RemoteMutationObserver} from './mutation-observer.ts';
-
-export {
   RemoteReceiver,
   type RemoteChildReceived,
   type RemoteElementReceived,
@@ -22,11 +13,6 @@ export {
   createRemoteMutationCallback,
   type RemoteMutationHandler,
 } from './callback.ts';
-export {
-  updateRemoteElementProperty,
-  connectRemoteNode,
-  disconnectRemoteNode,
-} from './remote.ts';
 
 export * from './types.ts';
 export {

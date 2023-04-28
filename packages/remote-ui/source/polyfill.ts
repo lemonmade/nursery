@@ -4,10 +4,14 @@ import {
   MUTATION_TYPE_UPDATE_TEXT,
   REMOTE_CALLBACK,
 } from './constants.ts';
-import {remoteId, connectRemoteNode, disconnectRemoteNode} from './remote.ts';
-import {serializeNode} from './serialize.ts';
 import {hooks, type Hooks} from './polyfill/hooks.ts';
 import {Window, installWindowGlobals} from './polyfill/Window.ts';
+import {
+  remoteId,
+  connectRemoteNode,
+  disconnectRemoteNode,
+  serializeRemoteNode,
+} from './elements/internals.ts';
 
 const window = new Window();
 
@@ -20,7 +24,12 @@ hooks.insertChild = (parent, node, index) => {
   connectRemoteNode(node, callback);
 
   callback([
-    [MUTATION_TYPE_INSERT_CHILD, remoteId(parent), serializeNode(node), index],
+    [
+      MUTATION_TYPE_INSERT_CHILD,
+      remoteId(parent),
+      serializeRemoteNode(node),
+      index,
+    ],
   ]);
 };
 
