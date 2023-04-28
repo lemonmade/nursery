@@ -13,3 +13,5 @@ export {
   serializeRemoteNode,
   updateRemoteElementProperty,
 } from './elements/internals.ts';
+
+export type {RemoteMutationCallback} from './callback.ts';
