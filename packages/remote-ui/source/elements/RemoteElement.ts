@@ -3,7 +3,7 @@ import {updateRemoteElementProperty} from './internals.ts';
 
 export interface RemoteElementPropertyDefinition<Value = unknown> {
   attribute?: string | boolean;
-  callback?: Value extends (...args: any[]) => any ? true : never;
+  callback?: Value extends (...args: any[]) => any ? boolean : false;
 }
 
 export type RemoteElementPropertiesDefinition<
