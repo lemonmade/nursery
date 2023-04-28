@@ -1,14 +1,17 @@
 import {REMOTE_PROPERTIES} from '../constants.ts';
 import {updateRemoteElementProperty} from './internals.ts';
 
-export interface RemoteElementProperties {
-  [key: string]: {
-    attribute: string | boolean;
-  };
+export interface RemoteElementPropertyDefinition {
+  attribute?: string | boolean;
+  callback?: boolean;
+}
+
+export interface RemoteElementPropertiesDefinition {
+  [key: string]: RemoteElementPropertyDefinition;
 }
 
 export class RemoteElement extends HTMLElement {
-  static readonly properties: RemoteElementProperties;
+  static readonly properties: RemoteElementPropertiesDefinition;
   private static readonly attributeToPropertyMap = new Map<string, string>();
 
   static get observedAttributes() {
@@ -22,7 +25,7 @@ export class RemoteElement extends HTMLElement {
       const {attribute = true} = properties[name]!;
 
       if (attribute === true) {
-        attributeToPropertyMap.set(name.toLowerCase(), name);
+        attributeToPropertyMap.set(name, name);
       } else if (typeof attribute === 'string') {
         attributeToPropertyMap.set(attribute, name);
       }
@@ -47,17 +50,28 @@ export class RemoteElement extends HTMLElement {
 
     if (properties) {
       Object.keys(properties).forEach((name) => {
-        Object.defineProperty(this, name, {
+        const property = properties[name]!;
+
+        const propertyDescriptor = {
           configurable: true,
           enumerable: true,
           get: () => {
             return this[REMOTE_PROPERTIES][name];
           },
-          set: (value) => {
+          set: (value: any) => {
             this[REMOTE_PROPERTIES][name] = value;
             updateRemoteElementProperty(this, name, value);
           },
-        });
+        };
+
+        Object.defineProperty(this, name, propertyDescriptor);
+
+        // Allow setting function callbacks using a `_` prefix, which
+        // makes it easy to have framework bindings avoid logic that
+        // auto-converts `on` properties to event listeners.
+        if (property.callback) {
+          Object.defineProperty(this, `_${name}`, propertyDescriptor);
+        }
       });
     }
   }
