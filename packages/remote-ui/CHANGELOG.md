@@ -1,5 +1,11 @@
 # @lemonmade/remote-ui
 
+## 0.1.4
+
+### Patch Changes
+
+- [`c2309e8`](https://github.com/lemonmade/nursery/commit/c2309e8d06523a48e0f2ffeada841944aa8de571) Thanks [@lemonmade](https://github.com/lemonmade)! - Improve RemoteElement properties definition
+
 ## 0.1.3
 
 ### Patch Changes
