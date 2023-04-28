@@ -1,5 +1,11 @@
 # @lemonmade/remote-ui
 
+## 0.1.3
+
+### Patch Changes
+
+- [`9dfd077`](https://github.com/lemonmade/nursery/commit/9dfd077a38f846ccf35b0e18ed5b6d8ccd188e92) Thanks [@lemonmade](https://github.com/lemonmade)! - Fix element insertion
+
 ## 0.1.2
 
 ### Patch Changes
