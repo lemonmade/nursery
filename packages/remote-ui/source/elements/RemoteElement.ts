@@ -1,17 +1,23 @@
 import {REMOTE_PROPERTIES} from '../constants.ts';
 import {updateRemoteElementProperty} from './internals.ts';
 
-export interface RemoteElementPropertyDefinition {
+export interface RemoteElementPropertyDefinition<Value = unknown> {
   attribute?: string | boolean;
-  callback?: boolean;
+  callback?: Value extends (...args: any[]) => any ? true : never;
 }
 
-export interface RemoteElementPropertiesDefinition {
-  [key: string]: RemoteElementPropertyDefinition;
-}
+export type RemoteElementPropertiesDefinition<
+  Properties extends Record<string, any> = Record<string, unknown>,
+> = {
+  [Property in keyof Properties]: RemoteElementPropertyDefinition<
+    Properties[Property]
+  >;
+};
 
-export class RemoteElement extends HTMLElement {
-  static readonly properties: RemoteElementPropertiesDefinition;
+export class RemoteElement<
+  Properties extends Record<string, any> = {},
+> extends HTMLElement {
+  static readonly properties: RemoteElementPropertiesDefinition<any>;
   private static readonly attributeToPropertyMap = new Map<string, string>();
 
   static get observedAttributes() {
@@ -34,7 +40,7 @@ export class RemoteElement extends HTMLElement {
     return [...attributeToPropertyMap.keys()];
   }
 
-  private [REMOTE_PROPERTIES]!: Record<string, unknown>;
+  private [REMOTE_PROPERTIES]!: Properties;
 
   constructor() {
     super();
@@ -56,10 +62,10 @@ export class RemoteElement extends HTMLElement {
           configurable: true,
           enumerable: true,
           get: () => {
-            return this[REMOTE_PROPERTIES][name];
+            return (this[REMOTE_PROPERTIES] as any)[name];
           },
           set: (value: any) => {
-            this[REMOTE_PROPERTIES][name] = value;
+            (this[REMOTE_PROPERTIES] as any)[name] = value;
             updateRemoteElementProperty(this, name, value);
           },
         };
