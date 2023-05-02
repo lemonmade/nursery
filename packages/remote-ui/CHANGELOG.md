@@ -1,5 +1,13 @@
 # @lemonmade/remote-ui
 
+## 0.1.6
+
+### Patch Changes
+
+- [`9df6d2e`](https://github.com/lemonmade/nursery/commit/9df6d2eaa03d0b9c6df4e217097923a4b7923149) Thanks [@lemonmade](https://github.com/lemonmade)! - Improve handling of slots
+
+* [`d162ac6`](https://github.com/lemonmade/nursery/commit/d162ac6f5258cc26c4050b013534c42d663c8b74) Thanks [@lemonmade](https://github.com/lemonmade)! - Fix `callback` property type
+
 ## 0.1.5
 
 ### Patch Changes
