@@ -6,6 +6,8 @@ import {querySelectorAll, querySelector} from './selectors.ts';
 import {serializeNode, serializeChildren, parseHtml} from './serialization.ts';
 
 export class Element extends ParentNode {
+  static readonly observedAttributes?: string[];
+
   nodeType = NodeType.ELEMENT_NODE;
 
   [NS] = NamespaceURI.XHTML;
@@ -15,7 +17,21 @@ export class Element extends ParentNode {
 
   [ATTRIBUTES]!: NamedNodeMap;
 
+  attributeChangedCallback?: (
+    name: string,
+    oldValue: unknown,
+    newValue: unknown,
+  ) => void;
+
   [anyProperty: string]: any;
+
+  get slot() {
+    return this.attributes.getNamedItem('slot')?.value ?? '';
+  }
+
+  set slot(slot: string) {
+    this.attributes.setNamedItem(new Attr('slot', String(slot)));
+  }
 
   get attributes() {
     let attributes = this[ATTRIBUTES];

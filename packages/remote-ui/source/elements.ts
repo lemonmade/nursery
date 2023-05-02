@@ -2,6 +2,10 @@ export {
   RemoteElement,
   type RemoteElementPropertyDefinition,
   type RemoteElementPropertiesDefinition,
+  type RemoteElementSlotDefinition,
+  type RemoteElementSlotsDefinition,
+  type RemotePropertiesFromElementConstructor,
+  type RemoteSlotsFromElementConstructor,
 } from './elements/RemoteElement.ts';
 export {RemoteRootElement} from './elements/RemoteRootElement.ts';
 export {RemoteReceiverElement} from './elements/RemoteReceiverElement.ts';

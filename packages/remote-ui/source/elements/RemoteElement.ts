@@ -14,21 +14,44 @@ export type RemoteElementPropertiesDefinition<
   >;
 };
 
+export interface RemoteElementSlotDefinition {}
+
+export type RemoteElementSlotsDefinition<
+  Slots extends Record<string, any> = {},
+> = {
+  [Slot in keyof Slots]: RemoteElementSlotDefinition;
+};
+
+export type RemotePropertiesFromElementConstructor<T> = T extends {
+  new (): RemoteElement<infer Properties, any>;
+}
+  ? Properties
+  : never;
+
+export type RemoteSlotsFromElementConstructor<T> = T extends {
+  new (): RemoteElement<any, infer Slots>;
+}
+  ? Slots
+  : never;
+
 export class RemoteElement<
   Properties extends Record<string, any> = {},
+  _Slots extends Record<string, any> = {},
 > extends HTMLElement {
-  static readonly properties: RemoteElementPropertiesDefinition<any>;
+  static readonly slottable = true;
+  static readonly remoteSlots: RemoteElementSlotsDefinition<any>;
+  static readonly remoteProperties: RemoteElementPropertiesDefinition<any>;
   private static readonly attributeToPropertyMap = new Map<string, string>();
 
   static get observedAttributes() {
-    const {properties, attributeToPropertyMap} = this;
+    const {remoteProperties, attributeToPropertyMap} = this;
 
-    if (properties == null) {
+    if (remoteProperties == null) {
       return [];
     }
 
-    Object.keys(properties).forEach((name) => {
-      const {attribute = true} = properties[name]!;
+    Object.keys(remoteProperties).forEach((name) => {
+      const {attribute = true} = remoteProperties[name]!;
 
       if (attribute === true) {
         attributeToPropertyMap.set(name, name);
@@ -45,7 +68,24 @@ export class RemoteElement<
   constructor() {
     super();
 
-    const {properties} = this.constructor as typeof RemoteElement;
+    const {slottable, remoteProperties} = this
+      .constructor as typeof RemoteElement;
+
+    if (slottable) {
+      const slotPropertyDescriptor = Object.getOwnPropertyDescriptor(
+        this,
+        'slot',
+      );
+
+      Object.defineProperty(this, 'slot', {
+        set(value: string) {
+          slotPropertyDescriptor!.set!.call(this, value);
+          (this[REMOTE_PROPERTIES] as any).slot = value;
+          updateRemoteElementProperty(this, 'slot', value);
+        },
+        ...slotPropertyDescriptor,
+      });
+    }
 
     Object.defineProperty(this, REMOTE_PROPERTIES, {
       value: {},
@@ -54,9 +94,9 @@ export class RemoteElement<
       enumerable: false,
     });
 
-    if (properties) {
-      Object.keys(properties).forEach((name) => {
-        const property = properties[name]!;
+    if (remoteProperties) {
+      Object.keys(remoteProperties).forEach((name) => {
+        const property = remoteProperties[name]!;
 
         const propertyDescriptor = {
           configurable: true,

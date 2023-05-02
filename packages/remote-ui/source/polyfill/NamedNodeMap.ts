@@ -64,6 +64,7 @@ export class NamedNodeMap {
     while ((attr = attr[NEXT])) {
       if (attr.name === name && attr[NS] == namespaceURI) {
         prev[NEXT] = attr[NEXT];
+        updateElementAttribute(ownerElement, attr.name, null, attr.value);
         hooks.removeAttribute?.(ownerElement as any, name, namespaceURI);
         return attr;
       }
@@ -101,6 +102,13 @@ export class NamedNodeMap {
     }
     // only invoke the protocol if the value changed
     if (!old || old.value !== attr.value) {
+      updateElementAttribute(
+        ownerElement,
+        attr.name,
+        attr.value,
+        old?.value ?? null,
+      );
+
       hooks.setAttribute?.(
         ownerElement as any,
         attr.name,
@@ -114,4 +122,24 @@ export class NamedNodeMap {
   setNamedItemNS(attr: Attr) {
     return this.setNamedItem(attr);
   }
+}
+
+function updateElementAttribute(
+  element: Element,
+  name: string,
+  oldValue: string | null,
+  newValue: string | null,
+) {
+  const {observedAttributes} = element.constructor as typeof Element;
+  const {attributeChangedCallback} = element;
+
+  if (
+    attributeChangedCallback == null ||
+    observedAttributes == null ||
+    !observedAttributes.includes(name)
+  ) {
+    return;
+  }
+
+  return attributeChangedCallback(name, oldValue, newValue);
 }
