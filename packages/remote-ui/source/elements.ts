@@ -7,6 +7,7 @@ export {
   type RemotePropertiesFromElementConstructor,
   type RemoteSlotsFromElementConstructor,
 } from './elements/RemoteElement.ts';
+export {RemoteFragmentElement} from './elements/RemoteFragmentElement.ts';
 export {RemoteRootElement} from './elements/RemoteRootElement.ts';
 export {RemoteReceiverElement} from './elements/RemoteReceiverElement.ts';
 
