@@ -40,12 +40,12 @@ export type RemoteElementConstructor<
 > = {
   new (): RemoteElement<Properties, Slots>;
   readonly remoteSlots?: RemoteElementSlotsDefinition<Slots>;
-  readonly remoteProperties?: RemoteElementPropertiesDefinition<Slots>;
+  readonly remoteProperties?: RemoteElementPropertiesDefinition<Properties>;
 };
 
 export class RemoteElement<
   Properties extends Record<string, any> = {},
-  _Slots extends Record<string, any> = {},
+  Slots extends Record<string, any> = {},
 > extends HTMLElement {
   static readonly slottable = true;
   static readonly remoteSlots?: RemoteElementSlotsDefinition<any>;
@@ -108,6 +108,13 @@ export class RemoteElement<
 
     updateRemoteElementProperty(this, 'slot', newSlot);
   }
+
+  // Just need to use these types so TS doesn’t lose track of them.
+  /** @internal */
+  __slots?: Slots;
+
+  /** @internal */
+  __properties?: Properties;
 
   constructor() {
     super();

@@ -1,15 +1,24 @@
-import type {RemoteElementConstructor} from '@lemonmade/remote-ui/elements';
 import {createElement, isValidElement} from 'react';
+import type {
+  RemoteElementConstructor,
+  RemotePropertiesFromElementConstructor,
+  RemoteSlotsFromElementConstructor,
+} from '@lemonmade/remote-ui/elements';
 
-import type {RemoteComponentType} from './types.ts';
+import type {
+  RemoteComponentType,
+  RemoteComponentTypeFromElementConstructor,
+} from './types.ts';
 
 export function createRemoteComponent<
-  Properties extends Record<string, any>,
-  Slots extends Record<string, any>,
+  ElementConstructor extends RemoteElementConstructor<any, any>,
 >(
-  {remoteProperties, remoteSlots}: RemoteElementConstructor<Properties, Slots>,
+  {remoteProperties, remoteSlots}: ElementConstructor,
   {element}: {element: string},
-): RemoteComponentType<Properties, Slots> {
+): RemoteComponentType<
+  RemotePropertiesFromElementConstructor<ElementConstructor>,
+  RemoteSlotsFromElementConstructor<ElementConstructor>
+> {
   const propertyMap = new Map<string, string>();
   const allowedSlots = new Set(remoteSlots ? Object.keys(remoteSlots) : []);
 
@@ -25,7 +34,7 @@ export function createRemoteComponent<
     }
   }
 
-  const RemoteComponent: RemoteComponentType<Properties, Slots> =
+  const RemoteComponent: RemoteComponentTypeFromElementConstructor<ElementConstructor> =
     propertyMap.size > 0 || allowedSlots.size > 0
       ? function RemoteComponent(props) {
           const updatedProps: Record<string, any> = {};
