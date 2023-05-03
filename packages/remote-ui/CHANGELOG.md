@@ -1,5 +1,13 @@
 # @lemonmade/remote-ui
 
+## 0.1.9
+
+### Patch Changes
+
+- [`be6452f`](https://github.com/lemonmade/nursery/commit/be6452ffe252d76f54dc17106098d2c3598f978e) Thanks [@lemonmade](https://github.com/lemonmade)! - Add RemoteFragmentRenderer custom element
+
+* [`f42adb0`](https://github.com/lemonmade/nursery/commit/f42adb014db75dedbf35741c5ef632cd113f38b8) Thanks [@lemonmade](https://github.com/lemonmade)! - Add RemoteElementConstructor type
+
 ## 0.1.8
 
 ### Patch Changes
