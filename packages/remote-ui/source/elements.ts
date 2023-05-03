@@ -1,5 +1,6 @@
 export {
   RemoteElement,
+  type RemoteElementConstructor,
   type RemoteElementPropertyDefinition,
   type RemoteElementPropertiesDefinition,
   type RemoteElementSlotDefinition,

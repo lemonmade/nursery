@@ -34,13 +34,22 @@ export type RemoteSlotsFromElementConstructor<T> = T extends {
   ? Slots
   : never;
 
+export type RemoteElementConstructor<
+  Properties extends Record<string, any> = {},
+  Slots extends Record<string, any> = {},
+> = {
+  new (): RemoteElement<Properties, Slots>;
+  readonly remoteSlots?: RemoteElementSlotsDefinition<Slots>;
+  readonly remoteProperties?: RemoteElementPropertiesDefinition<Slots>;
+};
+
 export class RemoteElement<
   Properties extends Record<string, any> = {},
   _Slots extends Record<string, any> = {},
 > extends HTMLElement {
   static readonly slottable = true;
-  static readonly remoteSlots: RemoteElementSlotsDefinition<any>;
-  static readonly remoteProperties: RemoteElementPropertiesDefinition<any>;
+  static readonly remoteSlots?: RemoteElementSlotsDefinition<any>;
+  static readonly remoteProperties?: RemoteElementPropertiesDefinition<any>;
 
   private static finalized = false;
   private static readonly attributeToPropertyMap = new Map<string, string>();
