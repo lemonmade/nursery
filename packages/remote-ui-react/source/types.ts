@@ -15,7 +15,7 @@ export type RemoteComponentProps<
   Slots extends Record<string, any> = {},
 > = Omit<Properties, keyof Slots> & {
   [Slot in keyof Slots]: ReactNode;
-};
+} & {children?: ReactNode};
 
 export type RemoteComponentPropsFromElementConstructor<
   ElementConstructor extends RemoteElementConstructor<any, any>,
