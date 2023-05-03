@@ -2,6 +2,7 @@ export {RemoteReceiver} from '@lemonmade/remote-ui';
 
 export {renderRemoteNode} from './host/node.tsx';
 export {createRemoteComponentRenderer} from './host/component.tsx';
+export {RemoteFragmentRenderer} from './host/RemoteFragmentRenderer.tsx';
 export {
   RemoteTextRenderer,
   type RemoteTextRendererProps,
