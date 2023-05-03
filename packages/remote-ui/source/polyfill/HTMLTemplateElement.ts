@@ -24,6 +24,5 @@ export class HTMLTemplateElement extends Element {
   get innerHTML() {
     const content = this[CONTENT];
     return content ? serializeChildren(content) : '';
-    // return Element.prototype.innerHTML.call(this.content);
   }
 }

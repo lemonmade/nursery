@@ -53,6 +53,8 @@ export class RemoteReceiver {
     Set<(value: RemoteNodeReceived) => void>
   >();
 
+  private readonly parents = new Map<string, string | typeof ROOT_ID>();
+
   readonly receive: RemoteMutationCallback;
 
   constructor({retain, release}: ReceiverOptions = {}) {
@@ -80,6 +82,7 @@ export class RemoteReceiver {
         }
 
         parent.version += 1;
+        this.parents.set(child.id, parent.id);
 
         runSubscribers(parent);
       },
@@ -93,6 +96,7 @@ export class RemoteReceiver {
           1,
         );
         parent.version += 1;
+        this.parents.delete(removed!.id);
 
         detach(removed!);
         runSubscribers(parent);
@@ -109,7 +113,25 @@ export class RemoteReceiver {
         element.properties[property] = value;
         element.version += 1;
 
+        let parentForUpdate: Writable<RemoteParentReceived> | undefined;
+
+        // If the slot changes, inform parent nodes so they can
+        // re-parent it appropriately.
+        if (property === 'slot') {
+          const parentId = this.parents.get(id);
+
+          parentForUpdate =
+            parentId == null
+              ? parentId
+              : (attached.get(parentId) as Writable<RemoteParentReceived>);
+
+          if (parentForUpdate) {
+            parentForUpdate.version += 1;
+          }
+        }
+
         runSubscribers(element);
+        if (parentForUpdate) runSubscribers(parentForUpdate);
 
         release?.(oldValue);
       },
