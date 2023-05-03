@@ -1,5 +1,11 @@
 # @lemonmade/remote-ui-react
 
+## 0.1.3
+
+### Patch Changes
+
+- [`d615019`](https://github.com/lemonmade/nursery/commit/d61501932d7d9380cee5f54606c115a1f6f0a7f5) Thanks [@lemonmade](https://github.com/lemonmade)! - Export RemoteFragmentRenderer
+
 ## 0.1.2
 
 ### Patch Changes
