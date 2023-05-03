@@ -1,5 +1,11 @@
 # @lemonmade/remote-ui
 
+## 0.1.8
+
+### Patch Changes
+
+- [`0b00276`](https://github.com/lemonmade/nursery/commit/0b0027670da9fea637ee8353940302f284f9ae92) Thanks [@lemonmade](https://github.com/lemonmade)! - Run subscriptions for slot changes in children
+
 ## 0.1.7
 
 ### Patch Changes
