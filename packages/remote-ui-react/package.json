@@ -1,0 +1,68 @@
+{
+  "name": "@lemonmade/remote-ui-react",
+  "type": "module",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "@lemonmade/registry": "https://registry.npmjs.org"
+  },
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/<USER>/<REPOSITORY>",
+    "directory": "packages/remote-ui-react"
+  },
+  "exports": {
+    ".": {
+      "types": "./build/typescript/index.d.ts",
+      "quilt:source": "./source/index.ts",
+      "quilt:esnext": "./build/esnext/index.esnext",
+      "import": "./build/esm/index.mjs",
+      "require": "./build/cjs/index.cjs"
+    },
+    "./host": {
+      "types": "./build/typescript/host.d.ts",
+      "quilt:source": "./source/host.ts",
+      "quilt:esnext": "./build/esnext/host.esnext",
+      "import": "./build/esm/host.mjs",
+      "require": "./build/cjs/host.cjs"
+    }
+  },
+  "types": "./build/typescript/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "host": [
+        "./build/typescript/host.d.ts"
+      ]
+    }
+  },
+  "sideEffects": false,
+  "dependencies": {
+    "@lemonmade/remote-ui": "workspace:^0.1.8",
+    "@types/react": "^17.0.0 || ^18.0.0"
+  },
+  "peerDependencies": {
+    "react": "^17.0.0 || ^18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@quilted/testing": "^0.1.0",
+    "react": "npm:@quilted/react@^18.2.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@quilted/eslint-config/project",
+      "@quilted/eslint-config/react"
+    ]
+  },
+  "browserslist": [
+    "extends @quilted/browserslist-config/defaults"
+  ]
+}
