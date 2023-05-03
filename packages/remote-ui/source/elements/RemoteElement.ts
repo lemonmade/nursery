@@ -41,51 +41,69 @@ export class RemoteElement<
   static readonly slottable = true;
   static readonly remoteSlots: RemoteElementSlotsDefinition<any>;
   static readonly remoteProperties: RemoteElementPropertiesDefinition<any>;
+
+  private static finalized = false;
   private static readonly attributeToPropertyMap = new Map<string, string>();
 
   static get observedAttributes() {
-    const {remoteProperties, attributeToPropertyMap} = this;
+    return this.finalize().observedAttributes;
+  }
 
-    if (remoteProperties == null) {
-      return [];
+  private static finalize(): {observedAttributes: string[]} {
+    if (this.finalized) {
+      return {observedAttributes: this.observedAttributes};
     }
 
-    Object.keys(remoteProperties).forEach((name) => {
-      const {attribute = true} = remoteProperties[name]!;
+    this.finalized = true;
 
-      if (attribute === true) {
-        attributeToPropertyMap.set(name, name);
-      } else if (typeof attribute === 'string') {
-        attributeToPropertyMap.set(attribute, name);
-      }
+    const {remoteProperties, attributeToPropertyMap} = this;
+
+    const observedAttributes = [];
+
+    if (remoteProperties != null) {
+      Object.keys(remoteProperties).forEach((name) => {
+        if (name === 'slot') return;
+
+        const {attribute = true} = remoteProperties[name]!;
+
+        if (attribute === true) {
+          attributeToPropertyMap.set(name, name);
+        } else if (typeof attribute === 'string') {
+          attributeToPropertyMap.set(attribute, name);
+        }
+      });
+
+      observedAttributes.push(...attributeToPropertyMap.keys());
+    }
+
+    Object.defineProperty(this, 'observedAttributes', {
+      value: observedAttributes,
     });
 
-    return [...attributeToPropertyMap.keys()];
+    return {observedAttributes};
   }
 
   private [REMOTE_PROPERTIES]!: Properties;
 
+  set slot(value: string) {
+    const currentSlot = this.slot;
+    const newSlot = String(value);
+
+    if (currentSlot === newSlot) return;
+
+    super.slot = value;
+
+    if (!(this.constructor as typeof RemoteElement).slottable) {
+      return;
+    }
+
+    updateRemoteElementProperty(this, 'slot', newSlot);
+  }
+
   constructor() {
     super();
 
-    const {slottable, remoteProperties} = this
-      .constructor as typeof RemoteElement;
-
-    if (slottable) {
-      const slotPropertyDescriptor = Object.getOwnPropertyDescriptor(
-        this,
-        'slot',
-      );
-
-      Object.defineProperty(this, 'slot', {
-        set(value: string) {
-          slotPropertyDescriptor!.set!.call(this, value);
-          (this[REMOTE_PROPERTIES] as any).slot = value;
-          updateRemoteElementProperty(this, 'slot', value);
-        },
-        ...slotPropertyDescriptor,
-      });
-    }
+    const {remoteProperties} = this.constructor as typeof RemoteElement;
 
     Object.defineProperty(this, REMOTE_PROPERTIES, {
       value: {},
@@ -96,16 +114,17 @@ export class RemoteElement<
 
     if (remoteProperties) {
       Object.keys(remoteProperties).forEach((name) => {
+        if (name === 'slot') return;
+
         const property = remoteProperties[name]!;
 
         const propertyDescriptor = {
           configurable: true,
           enumerable: true,
           get: () => {
-            return (this[REMOTE_PROPERTIES] as any)[name];
+            return this[REMOTE_PROPERTIES][name as keyof Properties];
           },
           set: (value: any) => {
-            (this[REMOTE_PROPERTIES] as any)[name] = value;
             updateRemoteElementProperty(this, name, value);
           },
         };
