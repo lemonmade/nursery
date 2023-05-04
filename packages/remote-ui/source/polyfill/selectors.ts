@@ -1,6 +1,7 @@
 import {CHILD, NEXT, PARENT, PREV, NodeType} from './constants.ts';
 import type {Node} from './Node.ts';
 import type {Element} from './Element.ts';
+import type {ParentNode} from './ParentNode.ts';
 
 const enum Combinator {
   Descendant,
@@ -30,7 +31,7 @@ interface Matcher {
   value?: string;
 }
 
-export function querySelector(within: Element, selector: string) {
+export function querySelector(within: ParentNode, selector: string) {
   const parts = parseSelector(selector);
   let result: Element | null = null;
 
@@ -44,7 +45,7 @@ export function querySelector(within: Element, selector: string) {
   return result;
 }
 
-export function querySelectorAll(within: Element, selector: string) {
+export function querySelectorAll(within: ParentNode, selector: string) {
   const parts = parseSelector(selector);
   const results: Element[] = [];
 

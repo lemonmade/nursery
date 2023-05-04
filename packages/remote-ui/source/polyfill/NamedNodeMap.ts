@@ -141,5 +141,5 @@ function updateElementAttribute(
     return;
   }
 
-  return attributeChangedCallback(name, oldValue, newValue);
+  return attributeChangedCallback.call(element, name, oldValue, newValue);
 }

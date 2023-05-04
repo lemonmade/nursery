@@ -2,7 +2,6 @@ import {NS, ATTRIBUTES, NamespaceURI, NodeType} from './constants.ts';
 import {ParentNode} from './ParentNode.ts';
 import {NamedNodeMap} from './NamedNodeMap.ts';
 import {Attr} from './Attr.ts';
-import {querySelectorAll, querySelector} from './selectors.ts';
 import {serializeNode, serializeChildren, parseHtml} from './serialization.ts';
 
 export class Element extends ParentNode {
@@ -76,14 +75,6 @@ export class Element extends ParentNode {
 
   removeAttributeNS(namespace: NamespaceURI | null, name: string) {
     this.attributes.removeNamedItemNS(namespace, name);
-  }
-
-  querySelectorAll(selector: string) {
-    return querySelectorAll(this, selector);
-  }
-
-  querySelector(selector: string) {
-    return querySelector(this, selector);
   }
 
   get outerHTML() {

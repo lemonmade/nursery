@@ -10,6 +10,7 @@ import {
 import type {Node} from './Node.ts';
 import {ChildNode, toNode} from './ChildNode.ts';
 import {NodeList} from './NodeList.ts';
+import {querySelectorAll, querySelector} from './selectors.ts';
 
 export class ParentNode extends ChildNode {
   private _children?: NodeList;
@@ -110,6 +111,14 @@ export class ParentNode extends ChildNode {
     const next = oldChild[NEXT];
     this.removeChild(oldChild);
     this.insertInto(newChild, next);
+  }
+
+  querySelectorAll(selector: string) {
+    return querySelectorAll(this, selector);
+  }
+
+  querySelector(selector: string) {
+    return querySelector(this, selector);
   }
 
   private insertInto(child: Node, before: Node | null) {
