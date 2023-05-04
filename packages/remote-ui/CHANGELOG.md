@@ -1,5 +1,15 @@
 # @lemonmade/remote-ui
 
+## 0.1.11
+
+### Patch Changes
+
+- [`7f429bb`](https://github.com/lemonmade/nursery/commit/7f429bb3d022989e4d480ace424ae0c7435ab2f8) Thanks [@lemonmade](https://github.com/lemonmade)! - Fix query selector on DocumentFragment
+
+* [`7f429bb`](https://github.com/lemonmade/nursery/commit/7f429bb3d022989e4d480ace424ae0c7435ab2f8) Thanks [@lemonmade](https://github.com/lemonmade)! - Fix attributeChangedCallback
+
+- [`8058da9`](https://github.com/lemonmade/nursery/commit/8058da95369d7f1a2048e18ac162f3dec695dbe0) Thanks [@lemonmade](https://github.com/lemonmade)! - Add node cloning methods
+
 ## 0.1.10
 
 ### Patch Changes
