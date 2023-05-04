@@ -1,5 +1,3 @@
 import {Element} from './Element.ts';
 
-export class HTMLElement extends Element {
-  // TODO
-}
+export class HTMLElement extends Element {}

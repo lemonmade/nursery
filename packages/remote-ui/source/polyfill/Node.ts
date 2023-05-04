@@ -5,15 +5,18 @@ import {
   CHILD,
   PREV,
   NEXT,
-  DATA,
   NamespaceURI,
   NodeType,
 } from './constants.ts';
 import type {Document} from './Document.ts';
 import type {ParentNode} from './ParentNode.ts';
-import type {CharacterData} from './CharacterData.ts';
-import type {Text} from './Text.ts';
 import {EventTarget} from './EventTarget.ts';
+import {
+  isCharacterData,
+  isParentNode,
+  isTextNode,
+  cloneNode,
+} from './shared.ts';
 
 export class Node extends EventTarget {
   nodeType = NodeType.NODE;
@@ -129,16 +132,8 @@ export class Node extends EventTarget {
       this.append(data);
     }
   }
-}
 
-function isCharacterData(node: Node): node is CharacterData {
-  return DATA in node;
-}
-
-function isTextNode(node: Node): node is Text {
-  return node.nodeType === NodeType.TEXT_NODE;
-}
-
-function isParentNode(node: Node): node is ParentNode {
-  return 'appendChild' in node;
+  cloneNode(deep?: boolean) {
+    return cloneNode(this, deep);
+  }
 }

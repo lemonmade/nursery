@@ -9,6 +9,7 @@ import {Text} from './Text.ts';
 import {Comment} from './Comment.ts';
 import {DocumentFragment} from './DocumentFragment.ts';
 import {HTMLTemplateElement} from './HTMLTemplateElement.ts';
+import {isParentNode, cloneNode} from './shared.ts';
 
 export class Document extends ParentNode {
   nodeType = NodeType.DOCUMENT_NODE;
@@ -58,6 +59,19 @@ export class Document extends ParentNode {
   createEvent() {
     return new Event('');
   }
+
+  importNode(node: Node, deep?: boolean) {
+    return cloneNode(node, deep, this);
+  }
+
+  adoptNode(node: Node) {
+    if (node[OWNER_DOCUMENT] === this) return node;
+
+    node.parentNode?.removeChild(node);
+    adoptNode(node, this);
+
+    return node;
+  }
 }
 
 export function createNode<T extends Node>(node: T, ownerDocument: Document) {
@@ -85,4 +99,14 @@ export function createElement<T extends Element>(
   }
 
   return element;
+}
+
+export function adoptNode(node: Node, document: Document) {
+  node[OWNER_DOCUMENT] = document;
+
+  if (isParentNode(node)) {
+    for (const child of node.childNodes) {
+      adoptNode(child, document);
+    }
+  }
 }
