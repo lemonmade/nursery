@@ -4,6 +4,7 @@ import {
 } from '../callback.ts';
 import {
   NODE_TYPE_TEXT,
+  NODE_TYPE_COMMENT,
   NODE_TYPE_ELEMENT,
   ROOT_ID,
   REMOTE_ID,
@@ -120,6 +121,12 @@ function createNodeFromRemote(
       (text as any)[REMOTE_ID] = node.id;
       callback?.(text);
       return text;
+    }
+    case NODE_TYPE_COMMENT: {
+      const comment = document.createComment(node.data);
+      (comment as any)[REMOTE_ID] = node.id;
+      callback?.(comment);
+      return comment;
     }
     default: {
       throw new Error(`Unknown node type: ${String(node)}`);

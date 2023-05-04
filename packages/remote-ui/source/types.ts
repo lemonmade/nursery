@@ -1,6 +1,7 @@
 import type {
   NODE_TYPE_ELEMENT,
   NODE_TYPE_TEXT,
+  NODE_TYPE_COMMENT,
   MUTATION_TYPE_INSERT_CHILD,
   MUTATION_TYPE_REMOVE_CHILD,
   MUTATION_TYPE_UPDATE_TEXT,
@@ -10,7 +11,10 @@ import type {
 export type RemoteMutationRecordInsertChild = [
   type: typeof MUTATION_TYPE_INSERT_CHILD,
   id: string,
-  child: RemoteTextSerialization | RemoteElementSerialization,
+  child:
+    | RemoteTextSerialization
+    | RemoteCommentSerialization
+    | RemoteElementSerialization,
   index: number,
 ];
 
@@ -51,6 +55,7 @@ export interface RemoteElementSerialization {
   readonly children: readonly (
     | RemoteElementSerialization
     | RemoteTextSerialization
+    | RemoteCommentSerialization
   )[];
 }
 
@@ -60,6 +65,13 @@ export interface RemoteTextSerialization {
   readonly data: string;
 }
 
+export interface RemoteCommentSerialization {
+  readonly id: string;
+  readonly type: typeof NODE_TYPE_COMMENT;
+  readonly data: string;
+}
+
 export type RemoteNodeSerialization =
   | RemoteTextSerialization
+  | RemoteCommentSerialization
   | RemoteElementSerialization;

@@ -1,4 +1,6 @@
-import {CHILD, NEXT, PARENT, PREV, NodeType} from './constants.ts';
+import {CHILD, NEXT, PARENT, PREV} from './constants.ts';
+import {isElementNode} from './shared.ts';
+
 import type {Node} from './Node.ts';
 import type {Element} from './Element.ts';
 import type {ParentNode} from './ParentNode.ts';
@@ -114,10 +116,6 @@ function matchesSelector(element: Element, selector: string) {
   //   if (!matchesSelectorPart(element, part)) return false;
   // }
   return true;
-}
-
-function isElementNode(node: Node): node is Element {
-  return node.nodeType === NodeType.ELEMENT_NODE;
 }
 
 function walkNodesForSelector(

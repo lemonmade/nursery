@@ -5,11 +5,16 @@ import {
 import {NODE_TYPE_ELEMENT, NODE_TYPE_ROOT, ROOT_ID} from '../constants.ts';
 import type {
   RemoteTextSerialization,
+  RemoteCommentSerialization,
   RemoteElementSerialization,
 } from '../types.ts';
 import {ReceiverOptions} from './shared.ts';
 
 export interface RemoteTextReceived extends RemoteTextSerialization {
+  readonly version: number;
+}
+
+export interface RemoteCommentReceived extends RemoteCommentSerialization {
   readonly version: number;
 }
 
@@ -27,7 +32,10 @@ export interface RemoteRootReceived {
   readonly version: number;
 }
 
-export type RemoteChildReceived = RemoteTextReceived | RemoteElementReceived;
+export type RemoteChildReceived =
+  | RemoteTextReceived
+  | RemoteCommentReceived
+  | RemoteElementReceived;
 export type RemoteNodeReceived = RemoteChildReceived | RemoteRootReceived;
 export type RemoteParentReceived = RemoteElementReceived | RemoteRootReceived;
 
@@ -216,7 +224,10 @@ function addVersion<T>(
 }
 
 function normalizeNode<
-  T extends RemoteTextSerialization | RemoteElementSerialization,
+  T extends
+    | RemoteTextSerialization
+    | RemoteCommentSerialization
+    | RemoteElementSerialization,
   R,
 >(node: T, normalizer: (node: T) => R) {
   if (node.type === NODE_TYPE_ELEMENT) {

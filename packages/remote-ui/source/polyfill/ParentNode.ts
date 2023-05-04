@@ -195,7 +195,3 @@ export class ParentNode extends ChildNode {
     hooks.insertChild?.(this as any, child as any, insertIndex);
   }
 }
-
-// function isElementNode(node: Node): node is Element {
-//   return node.nodeType === NodeType.ELEMENT_NODE;
-// }

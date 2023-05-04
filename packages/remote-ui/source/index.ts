@@ -6,6 +6,7 @@ export {
   type RemoteParentReceived,
   type RemoteRootReceived,
   type RemoteTextReceived,
+  type RemoteCommentReceived,
 } from './receiver/basic.ts';
 export {DOMRemoteReceiver} from './receiver/dom.ts';
 

@@ -40,6 +40,9 @@ export function renderRemoteNode(
         <RemoteTextRenderer key={node.id} remote={node} receiver={receiver} />
       );
     }
+    case 8: {
+      return null;
+    }
     default: {
       throw new Error(`Unknown remote node type: ${String(node)}`);
     }

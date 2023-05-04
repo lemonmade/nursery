@@ -22,7 +22,7 @@ import type {Element} from './Element.ts';
 // const attributeTokenizer = / ([^<>'"\n=\s]+)=(['"])([^>'"\n]*)\2/g;
 
 const elementTokenizer =
-  /(?:<([a-z][a-z0-9-:]*)(\s[^<>'"=\n\s]+(?:=(['"])[^\n]*?\3|=[^>'"\n\s]*|))*\s*(\/?)\s*>|<\/([a-z][a-z0-9-:]*)>|([^&<>]+))/gi;
+  /(?:<([a-z][a-z0-9-:]*)(\s[^<>'"=\n\s]+(?:=(['"])[^\n]*?\3|=[^>'"\n\s]*|))*\s*(\/?)\s*>|<\/([a-z][a-z0-9-:]*)>|<!--(.*?)-->|([^&<>]+))/gi;
 
 const attributeTokenizer =
   /\s([^<>'"=\n\s]+)(?:=(['"])([^\n]*?)\2|=([^>'"\n\s]*)|)/g;
@@ -50,8 +50,10 @@ export function parseHtml(html: string, contextNode: Node) {
       parent = node;
     } else if (token[5]) {
       parent = (stack.pop() as ParentNode) || root;
+    } else if (token[6]) {
+      parent.append(document.createComment(token[6]!));
     } else {
-      parent.append(token[6]!);
+      parent.append(token[7]!);
     }
   }
   return root;

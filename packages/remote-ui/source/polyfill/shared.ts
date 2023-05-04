@@ -2,6 +2,7 @@ import {DATA, OWNER_DOCUMENT, ATTRIBUTES, NodeType} from './constants.ts';
 import type {Document} from './Document.ts';
 import type {DocumentFragment} from './DocumentFragment.ts';
 import type {Node} from './Node.ts';
+import type {Comment} from './Comment.ts';
 import type {ParentNode} from './ParentNode.ts';
 import type {Element} from './Element.ts';
 import type {CharacterData} from './CharacterData.ts';
@@ -13,6 +14,10 @@ export function isCharacterData(node: Node): node is CharacterData {
 
 export function isTextNode(node: Node): node is Text {
   return node.nodeType === NodeType.TEXT_NODE;
+}
+
+export function isCommentNode(node: Node): node is Comment {
+  return node.nodeType === NodeType.COMMENT_NODE;
 }
 
 export function isElementNode(node: Node): node is Element {
@@ -34,6 +39,8 @@ export function cloneNode(
 ): Node {
   if (isTextNode(node)) {
     return document.createTextNode(node.data);
+  } else if (isCommentNode(node)) {
+    return document.createComment(node.data);
   } else if (isElementNode(node)) {
     const cloned = document.createElement(node.localName);
 
