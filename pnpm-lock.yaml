@@ -60,7 +60,7 @@ importers:
   packages/remote-ui-react:
     dependencies:
       '@lemonmade/remote-ui':
-        specifier: workspace:^0.1.10
+        specifier: workspace:^0.1.12
         version: link:../remote-ui
       '@types/react':
         specifier: ^17.0.0 || ^18.0.0

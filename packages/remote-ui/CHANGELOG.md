@@ -1,5 +1,11 @@
 # @lemonmade/remote-ui
 
+## 0.1.12
+
+### Patch Changes
+
+- [`b8a997f`](https://github.com/lemonmade/nursery/commit/b8a997fbd9e0db70000a60e5bd8609302d716c78) Thanks [@lemonmade](https://github.com/lemonmade)! - Fix comment handling
+
 ## 0.1.11
 
 ### Patch Changes
