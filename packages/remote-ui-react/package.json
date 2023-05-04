@@ -6,7 +6,7 @@
     "access": "public",
     "@lemonmade/registry": "https://registry.npmjs.org"
   },
-  "version": "0.1.4",
+  "version": "0.1.5",
   "engines": {
     "node": ">=14.0.0"
   },
@@ -41,7 +41,7 @@
   },
   "sideEffects": false,
   "dependencies": {
-    "@lemonmade/remote-ui": "workspace:^0.1.10",
+    "@lemonmade/remote-ui": "workspace:^0.1.12",
     "@types/react": "^17.0.0 || ^18.0.0"
   },
   "peerDependencies": {
