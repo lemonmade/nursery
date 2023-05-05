@@ -13,41 +13,8 @@ import {NodeList} from './NodeList.ts';
 import {querySelectorAll, querySelector} from './selectors.ts';
 
 export class ParentNode extends ChildNode {
-  private _children?: NodeList;
-  private _childNodes?: NodeList;
-
-  // [CHILD]?: Node | null;
-  get children() {
-    let children = this._children;
-    if (!children) {
-      children = new NodeList();
-      let child = this[CHILD];
-      while (child) {
-        if (child.nodeType !== 1) {
-          child = child[NEXT];
-          continue;
-        }
-        children.push(child);
-        child = child[NEXT];
-      }
-      this._children = children;
-    }
-    return children;
-  }
-
-  get childNodes() {
-    let childNodes = this._childNodes;
-    if (!childNodes) {
-      childNodes = new NodeList();
-      let child = this[CHILD];
-      while (child) {
-        childNodes.push(child);
-        child = child[NEXT];
-      }
-      this._childNodes = childNodes;
-    }
-    return childNodes;
-  }
+  readonly childNodes = new NodeList();
+  readonly children = new NodeList();
 
   appendChild(child: Node) {
     this.insertInto(child, null);
@@ -88,17 +55,15 @@ export class ParentNode extends ChildNode {
     else this[CHILD] = next;
     if (next) next[PREV] = prev;
 
-    const childNodes = this._childNodes;
-
-    if (!childNodes) return;
+    const childNodes = this.childNodes;
 
     const childNodesIndex = childNodes.indexOf(child);
 
     childNodes.splice(childNodesIndex, 1);
 
     if (child.nodeType === 1) {
-      const children = this._children;
-      if (children) children.splice(children.indexOf(child), 1);
+      const children = this.children;
+      children.splice(children.indexOf(child), 1);
     }
 
     hooks.removeChild?.(this as any, child as any, childNodesIndex);
@@ -137,8 +102,6 @@ export class ParentNode extends ChildNode {
       child.parentNode.removeChild(child);
     }
 
-    const isElement = child.nodeType === NodeType.ELEMENT_NODE;
-
     if (before) {
       if (before.parentNode !== this) {
         throw Error('reference node is not a child of this parent');
@@ -162,22 +125,20 @@ export class ParentNode extends ChildNode {
     }
 
     const ownerDocument = this[OWNER_DOCUMENT];
+    const isElement = child.nodeType === NodeType.ELEMENT_NODE;
 
     child[PARENT] = this;
     child[OWNER_DOCUMENT] = ownerDocument;
 
-    // @todo support DocumentFragment insertion
-    const childNodes = this._childNodes;
-    const children = this._children;
+    const childNodes = this.childNodes;
     let insertIndex: number;
-
-    if (childNodes == null) return;
 
     if (before) {
       insertIndex = childNodes.indexOf(before);
       childNodes.splice(insertIndex, 0, child);
 
-      if (children && isElement) {
+      if (isElement) {
+        const children = this.children;
         let ref: Node | null = before;
         while (ref && ref.nodeType !== 1) ref = ref[NEXT];
         if (ref) {
@@ -189,7 +150,7 @@ export class ParentNode extends ChildNode {
     } else {
       insertIndex = childNodes.length;
       childNodes.push(child);
-      if (children && isElement) children.push(child);
+      if (isElement) this.children.push(child);
     }
 
     hooks.insertChild?.(this as any, child as any, insertIndex);

@@ -48,9 +48,9 @@ export function cloneNode(
       for (let i = 0; i < node[ATTRIBUTES].length; i++) {
         const attribute = node[ATTRIBUTES].item(i)!;
         cloned.setAttributeNS(
+          attribute.namespaceURI,
           attribute.name,
           attribute.value,
-          attribute.namespaceURI,
         );
       }
     }

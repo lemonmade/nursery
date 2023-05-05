@@ -74,22 +74,27 @@ export function disconnectRemoteNode(node: Node) {
 }
 
 export function serializeRemoteNode(node: Node): RemoteNodeSerialization {
-  switch (node.nodeType) {
+  const {nodeType} = node;
+
+  switch (nodeType) {
     // Element
     case 1: {
       return {
         id: remoteId(node),
-        type: 1,
+        type: nodeType,
         element: (node as Element).localName,
         properties: remoteProperties(node),
         children: Array.from(node.childNodes).map(serializeRemoteNode),
       };
     }
     // TextNode
-    case 3: {
+    case 3:
+    // Comment
+    // eslint-disable-next-line no-fallthrough
+    case 8: {
       return {
         id: remoteId(node),
-        type: 3,
+        type: nodeType,
         data: (node as Text).data,
       };
     }
