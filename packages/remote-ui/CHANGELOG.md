@@ -1,5 +1,11 @@
 # @lemonmade/remote-ui
 
+## 0.1.13
+
+### Patch Changes
+
+- [`556d0e0`](https://github.com/lemonmade/nursery/commit/556d0e0891da89bcc88b5baba22b8aac76eabad2) Thanks [@lemonmade](https://github.com/lemonmade)! - More DOM polyfill fixes
+
 ## 0.1.12
 
 ### Patch Changes
