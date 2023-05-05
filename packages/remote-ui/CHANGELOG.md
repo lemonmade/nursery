@@ -1,5 +1,11 @@
 # @lemonmade/remote-ui
 
+## 0.1.16
+
+### Patch Changes
+
+- [`885a028`](https://github.com/lemonmade/nursery/commit/885a0280712d461a904e3b4d68767857e9a6b397) Thanks [@lemonmade](https://github.com/lemonmade)! - Fix reading slots on RemoteElements
+
 ## 0.1.15
 
 ### Patch Changes
