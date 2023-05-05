@@ -64,7 +64,7 @@ export class NamedNodeMap {
     while ((attr = attr[NEXT])) {
       if (attr.name === name && attr[NS] == namespaceURI) {
         prev[NEXT] = attr[NEXT];
-        updateElementAttribute(ownerElement, attr.name, null, attr.value);
+        updateElementAttribute(ownerElement, attr.name, attr.value, null);
         hooks.removeAttribute?.(ownerElement as any, name, namespaceURI);
         return attr;
       }
@@ -105,8 +105,8 @@ export class NamedNodeMap {
       updateElementAttribute(
         ownerElement,
         attr.name,
-        attr.value,
         old?.value ?? null,
+        attr.value,
       );
 
       hooks.setAttribute?.(
