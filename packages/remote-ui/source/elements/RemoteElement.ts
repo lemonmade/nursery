@@ -102,6 +102,10 @@ export abstract class RemoteElement<
 
   private [REMOTE_PROPERTIES]!: Properties;
 
+  get slot() {
+    return super.slot;
+  }
+
   set slot(value: string) {
     const currentSlot = this.slot;
     const newSlot = String(value);
