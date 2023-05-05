@@ -43,7 +43,8 @@ export type RemoteElementConstructor<
   readonly remoteProperties?: RemoteElementPropertiesDefinition<Properties>;
 };
 
-export class RemoteElement<
+// Heavily inspired by https://github.com/lit/lit/blob/343187b1acbbdb02ce8d01fa0a0d326870419763/packages/reactive-element/src/reactive-element.ts
+export abstract class RemoteElement<
   Properties extends Record<string, any> = {},
   Slots extends Record<string, any> = {},
 > extends HTMLElement {
@@ -51,23 +52,29 @@ export class RemoteElement<
   static readonly remoteSlots?: RemoteElementSlotsDefinition<any>;
   static readonly remoteProperties?: RemoteElementPropertiesDefinition<any>;
 
-  private static finalized = false;
-  private static readonly attributeToPropertyMap = new Map<string, string>();
+  private static readonly attributeToPropertyMap: Map<string, string>;
+  protected static finalized = true;
 
   static get observedAttributes() {
-    return this.finalize().observedAttributes;
+    return this.finalize()!.observedAttributes;
   }
 
-  private static finalize(): {observedAttributes: string[]} {
-    if (this.finalized) {
-      return {observedAttributes: this.observedAttributes};
+  protected static finalize(): {observedAttributes: string[]} | undefined {
+    // eslint-disable-next-line no-prototype-builtins
+    if (this.hasOwnProperty('finalized')) {
+      return;
     }
 
     this.finalized = true;
 
-    const {remoteProperties, attributeToPropertyMap} = this;
+    // finalize any superclasses
+    const superCtor = Object.getPrototypeOf(this) as typeof RemoteElement;
+    superCtor.finalize();
+
+    const {remoteProperties} = this;
 
     const observedAttributes = [];
+    const attributeToPropertyMap = new Map<string, string>();
 
     if (remoteProperties != null) {
       Object.keys(remoteProperties).forEach((name) => {
@@ -85,8 +92,9 @@ export class RemoteElement<
       observedAttributes.push(...attributeToPropertyMap.keys());
     }
 
-    Object.defineProperty(this, 'observedAttributes', {
-      value: observedAttributes,
+    Object.defineProperties(this, {
+      observedAttributes: {value: observedAttributes},
+      attributeToPropertyMap: {value: attributeToPropertyMap},
     });
 
     return {observedAttributes};
