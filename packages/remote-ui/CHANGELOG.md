@@ -1,5 +1,13 @@
 # @lemonmade/remote-ui
 
+## 0.1.14
+
+### Patch Changes
+
+- [`21f3dfa`](https://github.com/lemonmade/nursery/commit/21f3dfa7375fa9aedf85bac6df86064b9261585a) Thanks [@lemonmade](https://github.com/lemonmade)! - Fix attribute change callback
+
+* [`df3db92`](https://github.com/lemonmade/nursery/commit/df3db92805f3a6ef68ed519d84cbc25969504fc5) Thanks [@lemonmade](https://github.com/lemonmade)! - Fix base class sharing state
+
 ## 0.1.13
 
 ### Patch Changes
