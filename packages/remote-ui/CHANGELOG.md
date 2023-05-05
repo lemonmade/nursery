@@ -1,5 +1,11 @@
 # @lemonmade/remote-ui
 
+## 0.1.15
+
+### Patch Changes
+
+- [`975939e`](https://github.com/lemonmade/nursery/commit/975939e1e46f1b336be89f63d5911c738faf811f) Thanks [@lemonmade](https://github.com/lemonmade)! - Fix slot attribute setter
+
 ## 0.1.14
 
 ### Patch Changes
