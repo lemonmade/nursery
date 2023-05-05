@@ -13,6 +13,7 @@ export const USER_PROPERTIES = Symbol('user_properties');
 export const LISTENERS = Symbol('listeners');
 export const IS_TRUSTED = Symbol('isTrusted');
 export const CONTENT = Symbol('content');
+export const SLOT = Symbol('slot');
 
 // @TODO remove explicit values
 export const enum NodeType {

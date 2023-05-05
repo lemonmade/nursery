@@ -114,7 +114,7 @@ export abstract class RemoteElement<
       return;
     }
 
-    updateRemoteElementProperty(this, 'slot', newSlot);
+    updateRemoteElementProperty(this, 'slot', this.slot);
   }
 
   // Just need to use these types so TS doesn’t lose track of them.
