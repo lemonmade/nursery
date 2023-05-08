@@ -21,6 +21,9 @@ export {
   serializeRemoteNode,
   updateRemoteElementProperty,
 } from './elements/internals.ts';
+
 export {remoteProperty} from './elements/decorators/remote-property.ts';
+
+export {BooleanOrString} from './elements/property-types/BooleanOrString.ts';
 
 export type {RemoteMutationCallback} from './callback.ts';
