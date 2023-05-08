@@ -60,6 +60,10 @@ export type RemoteElementConstructor<
   new (): RemoteElement<Properties, Slots>;
   readonly remoteSlots?: RemoteElementSlotsDefinition<Slots>;
   readonly remoteProperties?: RemoteElementPropertiesDefinition<Properties>;
+  readonly remotePropertyDefinitions?: Map<
+    string,
+    NormalizedRemoteElementPropertyDefinition
+  >;
 };
 
 const SLOT_PROPERTY = 'slot';
@@ -70,19 +74,23 @@ export abstract class RemoteElement<
   Slots extends Record<string, any> = {},
 > extends HTMLElement {
   static readonly slottable = true;
+
   static readonly remoteSlots?: RemoteElementSlotsDefinition<any>;
   static readonly remoteProperties?: RemoteElementPropertiesDefinition<any>;
-
-  protected static __finalized = true;
-  private static readonly __attributeToPropertyMap: Map<string, string>;
-  private static readonly __propertyToOptionsMap: Map<
-    string,
-    NormalizedRemoteElementPropertyDefinition
-  >;
 
   static get observedAttributes() {
     return this.finalize()!.observedAttributes;
   }
+
+  static get remotePropertyDefinitions(): Map<
+    string,
+    NormalizedRemoteElementPropertyDefinition
+  > {
+    return this.finalize()!.remotePropertyDefinitions;
+  }
+
+  protected static __finalized = true;
+  private static readonly __attributeToPropertyMap: Map<string, string>;
 
   static createProperty<Value = unknown>(
     name: string,
@@ -94,12 +102,20 @@ export abstract class RemoteElement<
       name,
       definition,
       this.observedAttributes,
+      this.remotePropertyDefinitions,
       this.__attributeToPropertyMap,
-      this.__propertyToOptionsMap,
     );
   }
 
-  protected static finalize(): {observedAttributes: string[]} | undefined {
+  protected static finalize():
+    | {
+        observedAttributes: string[];
+        remotePropertyDefinitions: Map<
+          string,
+          NormalizedRemoteElementPropertyDefinition
+        >;
+      }
+    | undefined {
     // eslint-disable-next-line no-prototype-builtins
     if (this.hasOwnProperty('__finalized')) {
       return;
@@ -108,17 +124,21 @@ export abstract class RemoteElement<
     this.__finalized = true;
 
     // finalize any superclasses
-    const superCtor = Object.getPrototypeOf(this) as typeof RemoteElement;
-    superCtor.finalize();
+    const SuperConstructor = Object.getPrototypeOf(
+      this,
+    ) as typeof RemoteElement;
+    SuperConstructor.finalize();
 
     const {remoteProperties} = this;
 
-    const observedAttributes: string[] = [];
+    const observedAttributes: string[] = [
+      ...SuperConstructor.observedAttributes,
+    ];
     const attributeToPropertyMap = new Map<string, string>();
-    const propertyToOptionsMap = new Map<
+    const remotePropertyDefinitions = new Map<
       string,
       NormalizedRemoteElementPropertyDefinition
-    >();
+    >(SuperConstructor.remotePropertyDefinitions);
 
     if (remoteProperties != null) {
       Object.keys(remoteProperties).forEach((propertyName) => {
@@ -126,25 +146,24 @@ export abstract class RemoteElement<
           propertyName,
           remoteProperties[propertyName],
           observedAttributes,
+          remotePropertyDefinitions,
           attributeToPropertyMap,
-          propertyToOptionsMap,
         );
       });
     }
 
     Object.defineProperties(this, {
       observedAttributes: {value: observedAttributes},
+      remotePropertyDefinitions: {
+        value: remotePropertyDefinitions,
+      },
       __attributeToPropertyMap: {
         value: attributeToPropertyMap,
         enumerable: false,
       },
-      __propertyToOptionsMap: {
-        value: propertyToOptionsMap,
-        enumerable: false,
-      },
     });
 
-    return {observedAttributes};
+    return {observedAttributes, remotePropertyDefinitions};
   }
 
   get [SLOT_PROPERTY]() {
@@ -177,8 +196,8 @@ export abstract class RemoteElement<
 
   constructor() {
     super();
+    (this.constructor as typeof RemoteElement).finalize();
 
-    const {remoteProperties} = this.constructor as typeof RemoteElement;
     const propertyDescriptors: PropertyDescriptorMap = {};
 
     propertyDescriptors[REMOTE_PROPERTIES] = {
@@ -188,35 +207,31 @@ export abstract class RemoteElement<
       enumerable: false,
     };
 
-    if (remoteProperties) {
-      Object.keys(remoteProperties).forEach((name) => {
-        if (name === SLOT_PROPERTY) return;
+    for (const [property, description] of (
+      this.constructor as typeof RemoteElement
+    ).remotePropertyDefinitions.entries()) {
+      const propertyDescriptor = {
+        configurable: true,
+        enumerable: true,
+        get: () => {
+          return this[REMOTE_PROPERTIES][property];
+        },
+        set: (value: any) => {
+          updateRemoteElementProperty(this, property, value);
+        },
+      };
 
-        const property = remoteProperties[name]!;
+      propertyDescriptors[property] = propertyDescriptor;
 
-        const propertyDescriptor = {
-          configurable: true,
-          enumerable: true,
-          get: () => {
-            return this[REMOTE_PROPERTIES][name as keyof Properties];
-          },
-          set: (value: any) => {
-            updateRemoteElementProperty(this, name, value);
-          },
+      // Allow setting function callbacks using a `_` prefix, which
+      // makes it easy to have framework bindings avoid logic that
+      // auto-converts `on` properties to event listeners.
+      if (description.type === Function) {
+        propertyDescriptors[`_${property}`] = {
+          ...propertyDescriptor,
+          enumerable: false,
         };
-
-        propertyDescriptors[name] = propertyDescriptor;
-
-        // Allow setting function callbacks using a `_` prefix, which
-        // makes it easy to have framework bindings avoid logic that
-        // auto-converts `on` properties to event listeners.
-        if (property.type === Function) {
-          propertyDescriptors[`_${name}`] = {
-            ...propertyDescriptor,
-            enumerable: false,
-          };
-        }
-      });
+      }
     }
 
     Object.defineProperties(this, propertyDescriptors);
@@ -224,20 +239,20 @@ export abstract class RemoteElement<
 
   attributeChangedCallback(key: string, _oldValue: any, newValue: any) {
     const {
+      remotePropertyDefinitions,
       __attributeToPropertyMap: attributeToPropertyMap,
-      __propertyToOptionsMap: propertyToOptionsMap,
     } = this.constructor as typeof RemoteElement;
 
     const property = attributeToPropertyMap.get(key);
 
-    const propertyOptions =
-      property == null ? property : propertyToOptionsMap.get(property);
+    const propertyDefinition =
+      property == null ? property : remotePropertyDefinitions.get(property);
 
-    if (propertyOptions == null) return;
+    if (propertyDefinition == null) return;
 
     (this as any)[property!] = convertAttributeValueToProperty(
       newValue,
-      propertyOptions.type,
+      propertyDefinition.type,
     );
   }
 }
@@ -269,8 +284,11 @@ function saveRemoteProperty<Value = unknown>(
   name: string,
   description: RemoteElementPropertyDefinition<Value> | undefined,
   observedAttributes: string[],
+  remotePropertyDefinitions: Map<
+    string,
+    NormalizedRemoteElementPropertyDefinition
+  >,
   attributeToPropertyMap: Map<string, string>,
-  propertyToOptionsMap: Map<string, NormalizedRemoteElementPropertyDefinition>,
 ) {
   const {
     type = name[0] === 'o' && name[1] === 'n' ? Function : String,
@@ -290,30 +308,40 @@ function saveRemoteProperty<Value = unknown>(
     attributeToPropertyMap.set(attributeName, name);
   }
 
-  propertyToOptionsMap.set(name, {
+  const definition: NormalizedRemoteElementPropertyDefinition = {
     type,
     attribute: attributeName,
-  });
+  };
+
+  remotePropertyDefinitions.set(name, definition);
+
+  return definition;
 }
 
 function convertAttributeValueToProperty<Value = unknown>(
   value: string | null,
   type: RemoteElementPropertyTypeOrBuiltIn<Value>,
 ) {
+  if (value == null) return undefined;
+
   switch (type) {
     case Boolean:
-      return value == null ? undefined : value !== 'false';
+      return value !== 'false';
     case Object:
     case Array:
-      return value == null ? undefined : JSON.parse(value);
+      try {
+        return JSON.parse(value);
+      } catch {
+        return undefined;
+      }
     case String:
-      return value == null ? undefined : String(value);
+      return String(value);
     case Number:
-      return value == null ? undefined : Number.parseFloat(value);
+      return Number.parseFloat(value);
     case Function:
-      return null;
+      return undefined;
     default: {
-      return (type as RemoteElementPropertyType<Value>).parse?.(value) ?? null;
+      return (type as RemoteElementPropertyType<Value>).parse?.(value);
     }
   }
 }

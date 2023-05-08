@@ -13,7 +13,7 @@ import type {
 export function createRemoteComponent<
   ElementConstructor extends RemoteElementConstructor<any, any>,
 >(
-  {remoteProperties, remoteSlots}: ElementConstructor,
+  {remoteSlots, remotePropertyDefinitions}: ElementConstructor,
   {element}: {element: string},
 ): RemoteComponentType<
   RemotePropertiesFromElementConstructor<ElementConstructor>,
@@ -22,13 +22,11 @@ export function createRemoteComponent<
   const propertyMap = new Map<string, string>();
   const allowedSlots = new Set(remoteSlots ? Object.keys(remoteSlots) : []);
 
-  if (remoteProperties != null) {
-    for (const property of Object.keys(remoteProperties)) {
-      const descriptor = remoteProperties[property]!;
-
+  if (remotePropertyDefinitions != null) {
+    for (const [property, definition] of remotePropertyDefinitions.entries()) {
       // Alias callbacks to `_`-prefixed names so that they don’t
       // get converted into event listeners
-      if (descriptor.callback) {
+      if (definition.type === Function) {
         propertyMap.set(property, `_${property}`);
       }
     }
