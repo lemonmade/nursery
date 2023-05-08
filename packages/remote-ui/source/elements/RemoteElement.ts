@@ -60,7 +60,7 @@ export type RemoteElementConstructor<
   Properties extends Record<string, any> = {},
   Slots extends Record<string, any> = {},
 > = {
-  new (): RemoteElement<Properties, Slots>;
+  new (): RemoteElement<Properties, Slots> & Properties;
   readonly remoteSlots?: RemoteElementSlotsDefinition<Slots>;
   readonly remoteProperties?: RemoteElementPropertiesDefinition<Properties>;
   readonly remotePropertyDefinitions: Map<
