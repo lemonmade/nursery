@@ -1,6 +1,7 @@
 export {
   RemoteElement,
   type RemoteElementConstructor,
+  type RemoteElementPropertyType,
   type RemoteElementPropertyDefinition,
   type RemoteElementPropertiesDefinition,
   type RemoteElementSlotDefinition,
@@ -20,5 +21,6 @@ export {
   serializeRemoteNode,
   updateRemoteElementProperty,
 } from './elements/internals.ts';
+export {remoteProperty} from './elements/decorators/remote-property.ts';
 
 export type {RemoteMutationCallback} from './callback.ts';
