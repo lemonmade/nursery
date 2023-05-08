@@ -1,5 +1,13 @@
 # @lemonmade/remote-ui
 
+## 0.1.17
+
+### Patch Changes
+
+- [`69719ba`](https://github.com/lemonmade/nursery/commit/69719baaf376fba0dd94e825efeba84083455e1b) Thanks [@lemonmade](https://github.com/lemonmade)! - Improved element property setting
+
+* [`50cc6ff`](https://github.com/lemonmade/nursery/commit/50cc6ff976cf63f0c440fbd7c3059773058692c9) Thanks [@lemonmade](https://github.com/lemonmade)! - Add helper remote element property types
+
 ## 0.1.16
 
 ### Patch Changes
