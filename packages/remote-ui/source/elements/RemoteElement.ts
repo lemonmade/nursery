@@ -120,7 +120,7 @@ export abstract class RemoteElement<
     return this.finalize()!.remotePropertyDefinitions;
   }
 
-  protected static __finalized = true;
+  protected static __finalized: boolean;
   private static readonly __attributeToPropertyMap: Map<string, string>;
 
   static createProperty<Value = unknown>(
@@ -151,23 +151,29 @@ export abstract class RemoteElement<
     }
 
     this.__finalized = true;
+    const {remoteProperties} = this;
 
     // finalize any superclasses
     const SuperConstructor = Object.getPrototypeOf(
       this,
     ) as typeof RemoteElement;
-    SuperConstructor.finalize();
 
-    const {remoteProperties} = this;
-
-    const observedAttributes: string[] = [
-      ...SuperConstructor.observedAttributes,
-    ];
+    const observedAttributes: string[] = [];
     const attributeToPropertyMap = new Map<string, string>();
     const remotePropertyDefinitions = new Map<
       string,
       NormalizedRemoteElementPropertyDefinition
     >(SuperConstructor.remotePropertyDefinitions);
+
+    if (typeof SuperConstructor.finalize === 'function') {
+      SuperConstructor.finalize();
+      observedAttributes.push(...SuperConstructor.observedAttributes);
+      SuperConstructor.remotePropertyDefinitions.forEach(
+        (definition, property) => {
+          remotePropertyDefinitions.set(property, definition);
+        },
+      );
+    }
 
     if (remoteProperties != null) {
       Object.keys(remoteProperties).forEach((propertyName) => {
@@ -244,7 +250,7 @@ export abstract class RemoteElement<
       // Don’t override actual accessors. This is handled by the
       // `remoteProperty()` decorator applied to the accessor.
       // eslint-disable-next-line no-prototype-builtins
-      if ((this as any).prototype.hasOwnProperty(property)) continue;
+      if (Object.getPrototypeOf(this).hasOwnProperty(property)) continue;
 
       const propertyDescriptor = {
         configurable: true,
