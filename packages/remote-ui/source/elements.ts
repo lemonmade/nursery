@@ -24,6 +24,8 @@ export {
   updateRemoteElementProperty,
 } from './elements/internals.ts';
 
+export {remoteSlots} from './elements/decorators/remote-slots.ts';
+export {remoteProperties} from './elements/decorators/remote-properties.ts';
 export {remoteProperty} from './elements/decorators/remote-property.ts';
 export {customElement} from './elements/decorators/custom-element.ts';
 

@@ -16,7 +16,6 @@ export type RemoteElementPropertyTypeOrBuiltIn<Value = unknown> =
   | RemoteElementPropertyType<Value>;
 
 export interface RemoteElementPropertyDefinition<Value = unknown> {
-  name: string;
   type?: RemoteElementPropertyTypeOrBuiltIn<Value>;
   alias?: string[];
   attribute?: string | boolean;
@@ -30,7 +29,7 @@ interface NormalizedRemoteElementPropertyDefinition<Value = unknown> {
 }
 
 export type RemoteElementPropertiesDefinition<
-  Properties extends Record<string, any> = Record<string, unknown>,
+  Properties extends Record<string, any> = {},
 > = {
   [Property in keyof Properties]: RemoteElementPropertyDefinition<
     Properties[Property]
@@ -64,10 +63,14 @@ export type RemoteElementConstructor<
   new (): RemoteElement<Properties, Slots>;
   readonly remoteSlots?: RemoteElementSlotsDefinition<Slots>;
   readonly remoteProperties?: RemoteElementPropertiesDefinition<Properties>;
-  readonly remotePropertyDefinitions?: Map<
+  readonly remotePropertyDefinitions: Map<
     string,
     NormalizedRemoteElementPropertyDefinition
   >;
+  createProperty<Value = unknown>(
+    name: string,
+    definition?: RemoteElementPropertyDefinition<Value>,
+  ): void;
 };
 
 export interface RemoteElementCreatorOptions<
