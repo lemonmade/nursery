@@ -16,12 +16,16 @@ export type RemoteElementPropertyTypeOrBuiltIn<Value = unknown> =
   | RemoteElementPropertyType<Value>;
 
 export interface RemoteElementPropertyDefinition<Value = unknown> {
+  name: string;
   type?: RemoteElementPropertyTypeOrBuiltIn<Value>;
+  alias?: string[];
   attribute?: string | boolean;
 }
 
 interface NormalizedRemoteElementPropertyDefinition<Value = unknown> {
+  name: string;
   type: RemoteElementPropertyTypeOrBuiltIn<Value>;
+  alias?: string[];
   attribute?: string;
 }
 
@@ -66,6 +70,30 @@ export type RemoteElementConstructor<
   >;
 };
 
+export interface RemoteElementCreatorOptions<
+  Properties extends Record<string, any> = {},
+  Slots extends Record<string, any> = {},
+> {
+  slots?: RemoteElementSlotsDefinition<Slots>;
+  properties?: RemoteElementPropertiesDefinition<Properties>;
+}
+
+export function createRemoteElement<
+  Properties extends Record<string, any> = {},
+  Slots extends Record<string, any> = {},
+>({
+  slots,
+  properties,
+}: RemoteElementCreatorOptions<
+  Properties,
+  Slots
+> = {}): RemoteElementConstructor<Properties, Slots> {
+  return class extends RemoteElement<Properties, Slots> {
+    static readonly remoteSlots = slots;
+    static readonly remoteProperties = properties;
+  } as any;
+}
+
 const SLOT_PROPERTY = 'slot';
 
 // Heavily inspired by https://github.com/lit/lit/blob/343187b1acbbdb02ce8d01fa0a0d326870419763/packages/reactive-element/src/reactive-element.ts
@@ -96,8 +124,6 @@ export abstract class RemoteElement<
     name: string,
     definition?: RemoteElementPropertyDefinition<Value>,
   ) {
-    this.finalize();
-
     saveRemoteProperty(
       name,
       definition,
@@ -210,28 +236,25 @@ export abstract class RemoteElement<
     for (const [property, description] of (
       this.constructor as typeof RemoteElement
     ).remotePropertyDefinitions.entries()) {
+      const aliasedName = description.name;
+
+      // Don’t override actual accessors. This is handled by the
+      // `remoteProperty()` decorator applied to the accessor.
+      // eslint-disable-next-line no-prototype-builtins
+      if ((this as any).prototype.hasOwnProperty(property)) continue;
+
       const propertyDescriptor = {
         configurable: true,
-        enumerable: true,
+        enumerable: property === aliasedName,
         get: () => {
-          return this[REMOTE_PROPERTIES][property];
+          return this[REMOTE_PROPERTIES][aliasedName];
         },
         set: (value: any) => {
-          updateRemoteElementProperty(this, property, value);
+          updateRemoteElementProperty(this, aliasedName, value);
         },
       };
 
       propertyDescriptors[property] = propertyDescriptor;
-
-      // Allow setting function callbacks using a `_` prefix, which
-      // makes it easy to have framework bindings avoid logic that
-      // auto-converts `on` properties to event listeners.
-      if (description.type === Function) {
-        propertyDescriptors[`_${property}`] = {
-          ...propertyDescriptor,
-          enumerable: false,
-        };
-      }
     }
 
     Object.defineProperties(this, propertyDescriptors);
@@ -290,9 +313,14 @@ function saveRemoteProperty<Value = unknown>(
   >,
   attributeToPropertyMap: Map<string, string>,
 ) {
+  if (remotePropertyDefinitions.has(name)) {
+    return remotePropertyDefinitions.get(name)!;
+  }
+
   const {
     type = name[0] === 'o' && name[1] === 'n' ? Function : String,
     attribute = type !== Function,
+    alias = type === Function ? [`_${name}`] : undefined,
   } = description ?? ({} as RemoteElementPropertyDefinition<Value>);
 
   let attributeName: string | undefined;
@@ -309,11 +337,19 @@ function saveRemoteProperty<Value = unknown>(
   }
 
   const definition: NormalizedRemoteElementPropertyDefinition = {
+    name,
     type,
+    alias,
     attribute: attributeName,
   };
 
   remotePropertyDefinitions.set(name, definition);
+
+  if (alias) {
+    for (const propertyAlias of alias) {
+      remotePropertyDefinitions.set(propertyAlias, definition);
+    }
+  }
 
   return definition;
 }

@@ -13,55 +13,37 @@ import type {
 export function createRemoteComponent<
   ElementConstructor extends RemoteElementConstructor<any, any>,
 >(
-  {remoteSlots, remotePropertyDefinitions}: ElementConstructor,
+  ElementType: ElementConstructor,
   {element}: {element: string},
 ): RemoteComponentType<
   RemotePropertiesFromElementConstructor<ElementConstructor>,
   RemoteSlotsFromElementConstructor<ElementConstructor>
 > {
-  const propertyMap = new Map<string, string>();
-  const allowedSlots = new Set(remoteSlots ? Object.keys(remoteSlots) : []);
-
-  if (remotePropertyDefinitions != null) {
-    for (const [property, definition] of remotePropertyDefinitions.entries()) {
-      // Alias callbacks to `_`-prefixed names so that they don’t
-      // get converted into event listeners
-      if (definition.type === Function) {
-        propertyMap.set(property, `_${property}`);
-      }
-    }
-  }
+  const allowedSlots = new Set(
+    ElementType.remoteSlots ? Object.keys(ElementType.remoteSlots) : [],
+  );
 
   const RemoteComponent: RemoteComponentTypeFromElementConstructor<ElementConstructor> =
-    propertyMap.size > 0 || allowedSlots.size > 0
-      ? function RemoteComponent(props) {
-          const updatedProps: Record<string, any> = {};
-          const children = toChildren(props.children);
+    function RemoteComponent(props) {
+      const updatedProps: Record<string, any> = {};
+      const children = toChildren(props.children);
 
-          for (const prop in props) {
-            const propValue = props[prop];
+      for (const prop in props) {
+        const propValue = props[prop];
 
-            if (allowedSlots.has(prop) && isValidElement(propValue)) {
-              children.push(
-                createElement('remote-fragment', {slot: prop}, propValue),
-              );
-              continue;
-            }
-
-            const propertyAlias = propertyMap.get(prop);
-
-            if (propertyAlias) {
-              updatedProps[propertyAlias] = propValue;
-            } else {
-              updatedProps[prop] = propValue;
-            }
-          }
-
-          return createElement(element, updatedProps, ...children);
+        if (allowedSlots.has(prop) && isValidElement(propValue)) {
+          children.push(
+            createElement('remote-fragment', {slot: prop}, propValue),
+          );
+          continue;
         }
-      : function RemoteComponent(props) {
-          return createElement(element, props);
-        };
+
+        const definition = ElementType.remotePropertyDefinitions?.get(prop);
+        updatedProps[definition?.name ?? prop] = propValue;
+      }
+
+      return createElement(element, updatedProps, ...children);
+    };
 
   RemoteComponent.displayName = `RemoteComponent(${element})`;
 
