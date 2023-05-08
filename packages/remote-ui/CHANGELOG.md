@@ -1,5 +1,15 @@
 # @lemonmade/remote-ui
 
+## 0.1.19
+
+### Patch Changes
+
+- [`df53fc1`](https://github.com/lemonmade/nursery/commit/df53fc10a8e0073208588fd5a1ffeaf61469c3d4) Thanks [@lemonmade](https://github.com/lemonmade)! - Remove unnecessary `name` property from property definition
+
+* [`df53fc1`](https://github.com/lemonmade/nursery/commit/df53fc10a8e0073208588fd5a1ffeaf61469c3d4) Thanks [@lemonmade](https://github.com/lemonmade)! - Add class decorators for slots and properties
+
+- [`ff7fcc8`](https://github.com/lemonmade/nursery/commit/ff7fcc88bc540c2f17385cbd544b367fc3fb1408) Thanks [@lemonmade](https://github.com/lemonmade)! - Improve RemoteElement types
+
 ## 0.1.18
 
 ### Patch Changes
