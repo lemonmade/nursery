@@ -1,5 +1,11 @@
 # @lemonmade/remote-ui
 
+## 0.1.18
+
+### Patch Changes
+
+- [`f02f444`](https://github.com/lemonmade/nursery/commit/f02f44417b1b31b345536dd4df00fe3193bee301) Thanks [@lemonmade](https://github.com/lemonmade)! - Fix decorators
+
 ## 0.1.17
 
 ### Patch Changes
