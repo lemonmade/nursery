@@ -1,5 +1,11 @@
 # @lemonmade/remote-ui-react
 
+## 0.1.6
+
+### Patch Changes
+
+- [`9a39fb4`](https://github.com/lemonmade/nursery/commit/9a39fb4f11b07d424c06c31ec49e3e8d916117e0) Thanks [@lemonmade](https://github.com/lemonmade)! - Update React component creation
+
 ## 0.1.5
 
 ### Patch Changes
