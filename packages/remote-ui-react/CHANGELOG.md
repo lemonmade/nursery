@@ -1,5 +1,11 @@
 # @lemonmade/remote-ui-react
 
+## 0.1.8
+
+### Patch Changes
+
+- [`6f0c0ac`](https://github.com/lemonmade/nursery/commit/6f0c0acc9618c23f3fce077fdcbc2f8b18c0164a) Thanks [@lemonmade](https://github.com/lemonmade)! - Fix react function aliasing
+
 ## 0.1.7
 
 ### Patch Changes
