@@ -250,7 +250,9 @@ export abstract class RemoteElement<
       // Don’t override actual accessors. This is handled by the
       // `remoteProperty()` decorator applied to the accessor.
       // eslint-disable-next-line no-prototype-builtins
-      if (Object.getPrototypeOf(this).hasOwnProperty(property)) continue;
+      if (Object.getPrototypeOf(this).hasOwnProperty(property)) {
+        continue;
+      }
 
       const propertyDescriptor = {
         configurable: true,

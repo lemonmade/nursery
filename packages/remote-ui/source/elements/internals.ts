@@ -37,6 +37,8 @@ export function updateRemoteElementProperty(
     (node as any)[REMOTE_PROPERTIES] = properties;
   }
 
+  if (properties[property] === value) return;
+
   properties[property] = value;
 
   const callback = (node as any)[REMOTE_CALLBACK];

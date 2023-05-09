@@ -53,23 +53,21 @@ export class NamedNodeMap {
   removeNamedItemNS(namespaceURI: NamespaceURI | null, name: string) {
     const ownerElement = this[OWNER_ELEMENT];
     let attr = this[CHILD];
+    let prev: typeof attr | null = null;
 
-    if (!attr) return null;
-    if (attr.name === name && attr[NS] == namespaceURI) {
-      this[CHILD] = attr[NEXT];
-      hooks.removeAttribute?.(ownerElement as any, name, namespaceURI);
-      return attr;
-    }
-    let prev = attr;
-    while ((attr = attr[NEXT])) {
+    while (attr != null) {
       if (attr.name === name && attr[NS] == namespaceURI) {
-        prev[NEXT] = attr[NEXT];
+        if (prev) prev[NEXT] = attr[NEXT];
+        if (this[CHILD] === attr) this[CHILD] = attr[NEXT];
         updateElementAttribute(ownerElement, attr.name, attr.value, null);
         hooks.removeAttribute?.(ownerElement as any, name, namespaceURI);
         return attr;
       }
+
       prev = attr;
+      attr = attr[NEXT];
     }
+
     return null;
   }
 
