@@ -39,7 +39,11 @@ export function createRemoteComponent<
         }
 
         const definition = ElementType.remotePropertyDefinitions?.get(prop);
-        updatedProps[definition?.name ?? prop] = propValue;
+        const aliasTo =
+          definition && definition.type === Function
+            ? definition.alias?.[0]
+            : undefined;
+        updatedProps[aliasTo ?? prop] = propValue;
       }
 
       return createElement(element, updatedProps, ...children);
