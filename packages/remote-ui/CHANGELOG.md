@@ -1,5 +1,13 @@
 # @lemonmade/remote-ui
 
+## 0.1.20
+
+### Patch Changes
+
+- [`f9c00a9`](https://github.com/lemonmade/nursery/commit/f9c00a9cdbb73addab8eeb37476aa4fa25331630) Thanks [@lemonmade](https://github.com/lemonmade)! - Fix element edge cases
+
+* [`57307bf`](https://github.com/lemonmade/nursery/commit/57307bf347e9df8005e69eae8c9bc401710e8382) Thanks [@lemonmade](https://github.com/lemonmade)! - Fix RemoteElement super constructor
+
 ## 0.1.19
 
 ### Patch Changes
