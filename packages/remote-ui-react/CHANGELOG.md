@@ -1,5 +1,11 @@
 # @lemonmade/remote-ui-react
 
+## 0.1.9
+
+### Patch Changes
+
+- [`3f8dea3`](https://github.com/lemonmade/nursery/commit/3f8dea3539fab3b739dfda6c2e781e483aa85242) Thanks [@lemonmade](https://github.com/lemonmade)! - Export additional React host helper types
+
 ## 0.1.8
 
 ### Patch Changes
