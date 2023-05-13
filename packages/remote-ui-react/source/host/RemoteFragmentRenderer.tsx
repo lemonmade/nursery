@@ -2,23 +2,23 @@ import type {FunctionComponent} from 'react';
 
 import {renderRemoteNode} from './node.tsx';
 import {useRemoteReceived} from './hooks.ts';
-import type {RemoteComponentRendererProps} from './component.tsx';
+import type {RemoteComponentRendererProps} from './types.ts';
 
 export const RemoteFragmentRenderer: FunctionComponent<RemoteComponentRendererProps> =
   function RemoteFragmentRenderer({
-    remote,
+    element,
     receiver,
     components,
   }: RemoteComponentRendererProps) {
-    const component = useRemoteReceived(remote, receiver);
+    const fragments = useRemoteReceived(element, receiver);
 
-    if (!component) return null;
+    if (!fragments) return null;
 
     const renderOptions = {receiver, components};
 
     return (
       <>
-        {component.children.map((child) =>
+        {fragments.children.map((child) =>
           renderRemoteNode(child, renderOptions),
         )}
       </>

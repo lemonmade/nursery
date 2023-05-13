@@ -4,17 +4,16 @@ import {
 } from '@lemonmade/remote-ui';
 
 import {RemoteTextRenderer} from './RemoteTextRenderer.tsx';
-import type {RemoteComponentRendererMap} from './component.tsx';
+import type {RemoteComponentRendererMap} from './types.ts';
+
+export interface RenderRemoteNodeOptions {
+  receiver: RemoteReceiver;
+  components: RemoteComponentRendererMap<any>;
+}
 
 export function renderRemoteNode(
   node: RemoteChildReceived,
-  {
-    receiver,
-    components,
-  }: {
-    receiver: RemoteReceiver;
-    components: RemoteComponentRendererMap;
-  },
+  {receiver, components}: RenderRemoteNodeOptions,
 ) {
   switch (node.type) {
     case 1: {
@@ -29,7 +28,7 @@ export function renderRemoteNode(
       return (
         <Component
           key={node.id}
-          remote={node}
+          element={node}
           receiver={receiver}
           components={components}
         />

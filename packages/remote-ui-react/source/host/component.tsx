@@ -1,60 +1,32 @@
-import type {ReactNode, ComponentType} from 'react';
-import type {RemoteReceiver, RemoteElementReceived} from '@lemonmade/remote-ui';
+import type {ComponentType, FunctionComponent} from 'react';
 
-import {useRemoteReceived} from './hooks.ts';
-import {renderRemoteNode} from './node.tsx';
-
-export interface RemoteComponentRendererProps {
-  remote: RemoteElementReceived;
-  receiver: RemoteReceiver;
-  components: RemoteComponentRendererMap;
-  children?: ReactNode;
-}
-
-export type RemoteComponentRendererMap<Elements extends string = string> = Map<
-  Elements,
-  ComponentType<RemoteComponentRendererProps>
->;
+import {useRemoteReceived} from './hooks/remote-received.ts';
+import {useReactPropsForElement} from './hooks/react-props-for-element.ts';
+import type {RemoteComponentRendererProps} from './types.ts';
 
 export function createRemoteComponentRenderer<
   Props extends Record<string, any> = {},
 >(
   Component: ComponentType<Props>,
-): ComponentType<RemoteComponentRendererProps> {
-  function RemoteComponentRenderer({
-    remote,
-    receiver,
-    components,
-  }: RemoteComponentRendererProps) {
-    const component = useRemoteReceived(remote, receiver);
+): FunctionComponent<RemoteComponentRendererProps> {
+  const RemoteComponentRenderer: FunctionComponent<RemoteComponentRendererProps> =
+    function RemoteComponentRenderer({
+      element,
+      receiver,
+      components,
+    }: RemoteComponentRendererProps) {
+      const currentElement = useRemoteReceived(element, receiver);
+      const props = useReactPropsForElement<Props>(currentElement, {
+        receiver,
+        components,
+      });
 
-    if (!component) return null;
+      return props ? <Component {...props} /> : null;
+    };
 
-    const renderOptions = {receiver, components};
-
-    const {children, properties} = component;
-    const normalizedChildren: ReactNode[] = [];
-    const normalizedProps: Record<string, any> = {...properties};
-
-    for (const child of children) {
-      if (child.type === 1 && child.properties.slot) {
-        normalizedProps[child.properties.slot as string] = renderRemoteNode(
-          child,
-          renderOptions,
-        );
-      } else {
-        normalizedChildren.push(renderRemoteNode(child, renderOptions));
-      }
-    }
-
-    return (
-      <Component {...(normalizedProps as any)}>{normalizedChildren}</Component>
-    );
-  }
-
-  (RemoteComponentRenderer as any).displayName = `RemoteComponentRenderer(${
+  RemoteComponentRenderer.displayName = `RemoteComponentRenderer(${
     Component.displayName ?? Component.name ?? 'Component'
   })`;
 
-  return RemoteComponentRenderer as any;
+  return RemoteComponentRenderer;
 }

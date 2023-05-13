@@ -1,13 +1,7 @@
-import type {RemoteReceiver} from '@lemonmade/remote-ui';
-
 import {useRemoteReceived} from './hooks.ts';
-import {renderRemoteNode} from './node.tsx';
-import type {RemoteComponentRendererMap} from './component.tsx';
+import {renderRemoteNode, type RenderRemoteNodeOptions} from './node.tsx';
 
-export interface RemoteRootRendererProps {
-  receiver: RemoteReceiver;
-  components: RemoteComponentRendererMap;
-}
+export interface RemoteRootRendererProps extends RenderRemoteNodeOptions {}
 
 export function RemoteRootRenderer(props: RemoteRootRendererProps) {
   const {receiver} = props;
