@@ -11,8 +11,8 @@ export interface RemoteComponentRendererProps {
   children?: ReactNode;
 }
 
-export type RemoteComponentRendererMap = Map<
-  string,
+export type RemoteComponentRendererMap<Elements extends string = string> = Map<
+  Elements,
   ComponentType<RemoteComponentRendererProps>
 >;
 
