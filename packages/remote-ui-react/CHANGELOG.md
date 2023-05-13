@@ -1,5 +1,11 @@
 # @lemonmade/remote-ui-react
 
+## 0.1.10
+
+### Patch Changes
+
+- [`c97e71f`](https://github.com/lemonmade/nursery/commit/c97e71fa44871ff8e4b5e1440a7ace5e0c023aaa) Thanks [@lemonmade](https://github.com/lemonmade)! - Add generic type for component renderer map keys
+
 ## 0.1.9
 
 ### Patch Changes
