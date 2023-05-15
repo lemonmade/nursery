@@ -1,32 +1,52 @@
-import type {ComponentType, FunctionComponent} from 'react';
+import type {RemoteElementReceived} from '@lemonmade/remote-ui';
+import {
+  forwardRef,
+  type ForwardRefRenderFunction,
+  type ForwardRefExoticComponent,
+} from 'react';
 
 import {useRemoteReceived} from './hooks/remote-received.ts';
 import {useReactPropsForElement} from './hooks/react-props-for-element.ts';
+import {
+  REMOTE_ELEMENT_PROP,
+  REMOTE_ELEMENT_ATTACHED_PROP,
+} from './constants.ts';
 import type {RemoteComponentRendererProps} from './types.ts';
+
+export interface RemoteComponentRendererAdditionalProps {
+  readonly [REMOTE_ELEMENT_PROP]: RemoteElementReceived;
+  readonly [REMOTE_ELEMENT_ATTACHED_PROP]: boolean;
+}
 
 export function createRemoteComponentRenderer<
   Props extends Record<string, any> = {},
+  Instance = never,
 >(
-  Component: ComponentType<Props>,
-): FunctionComponent<RemoteComponentRendererProps> {
-  const RemoteComponentRenderer: FunctionComponent<RemoteComponentRendererProps> =
-    function RemoteComponentRenderer({
-      element,
+  Component: ForwardRefRenderFunction<Instance, Props>,
+  {name}: {name?: string} = {},
+): ForwardRefExoticComponent<RemoteComponentRendererProps> {
+  const RemoteComponentRenderer = forwardRef<
+    Instance,
+    RemoteComponentRendererProps
+  >(function RemoteComponentRenderer({element, receiver, components}, ref) {
+    const attachedElement = useRemoteReceived(element, receiver);
+    const resolvedElement = attachedElement ?? element;
+    const props = useReactPropsForElement<Props>(resolvedElement, {
       receiver,
       components,
-    }: RemoteComponentRendererProps) {
-      const currentElement = useRemoteReceived(element, receiver);
-      const props = useReactPropsForElement<Props>(currentElement, {
-        receiver,
-        components,
-      });
+    });
 
-      return props ? <Component {...props} /> : null;
-    };
+    (props as any)[REMOTE_ELEMENT_PROP] = resolvedElement;
+    (props as any)[REMOTE_ELEMENT_ATTACHED_PROP] = attachedElement != null;
 
-  RemoteComponentRenderer.displayName = `RemoteComponentRenderer(${
-    Component.displayName ?? Component.name ?? 'Component'
-  })`;
+    return Component(props, ref);
+  });
+
+  RemoteComponentRenderer.displayName =
+    name ??
+    `RemoteComponentRenderer(${
+      Component.displayName ?? Component.name ?? 'Component'
+    })`;
 
   return RemoteComponentRenderer;
 }
