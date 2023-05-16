@@ -38,6 +38,8 @@ export type RemoteElementPropertiesDefinition<
 
 export interface RemoteElementSlotDefinition {}
 
+interface NormalizedRemoteElementSlotDefinition {}
+
 export type RemoteElementSlotsDefinition<
   Slots extends Record<string, any> = {},
 > = {
@@ -61,8 +63,16 @@ export type RemoteElementConstructor<
   Slots extends Record<string, any> = {},
 > = {
   new (): RemoteElement<Properties, Slots> & Properties;
-  readonly remoteSlots?: RemoteElementSlotsDefinition<Slots>;
-  readonly remoteProperties?: RemoteElementPropertiesDefinition<Properties>;
+  readonly remoteSlots?:
+    | RemoteElementSlotsDefinition<Slots>
+    | readonly (keyof Slots)[];
+  readonly remoteSlotDefinitions: Map<
+    string,
+    NormalizedRemoteElementSlotDefinition
+  >;
+  readonly remoteProperties?:
+    | RemoteElementPropertiesDefinition<Properties>
+    | readonly (keyof Properties)[];
   readonly remotePropertyDefinitions: Map<
     string,
     NormalizedRemoteElementPropertyDefinition
@@ -77,8 +87,8 @@ export interface RemoteElementCreatorOptions<
   Properties extends Record<string, any> = {},
   Slots extends Record<string, any> = {},
 > {
-  slots?: RemoteElementSlotsDefinition<Slots>;
-  properties?: RemoteElementPropertiesDefinition<Properties>;
+  slots?: RemoteElementConstructor<Properties, Slots>['remoteSlots'];
+  properties?: RemoteElementConstructor<Properties, Slots>['remoteProperties'];
 }
 
 export function createRemoteElement<
@@ -106,8 +116,8 @@ export abstract class RemoteElement<
 > extends HTMLElement {
   static readonly slottable = true;
 
-  static readonly remoteSlots?: RemoteElementSlotsDefinition<any>;
-  static readonly remoteProperties?: RemoteElementPropertiesDefinition<any>;
+  static readonly remoteSlots?: any;
+  static readonly remoteProperties?: any;
 
   static get observedAttributes() {
     return this.finalize()!.observedAttributes;
@@ -118,6 +128,13 @@ export abstract class RemoteElement<
     NormalizedRemoteElementPropertyDefinition
   > {
     return this.finalize()!.remotePropertyDefinitions;
+  }
+
+  static get remoteSlotDefinitions(): Map<
+    string,
+    NormalizedRemoteElementSlotDefinition
+  > {
+    return this.finalize()!.remoteSlotDefinitions;
   }
 
   protected static __finalized: boolean;
@@ -139,6 +156,10 @@ export abstract class RemoteElement<
   protected static finalize():
     | {
         observedAttributes: string[];
+        remoteSlotDefinitions: Map<
+          string,
+          NormalizedRemoteElementSlotDefinition
+        >;
         remotePropertyDefinitions: Map<
           string,
           NormalizedRemoteElementPropertyDefinition
@@ -151,7 +172,7 @@ export abstract class RemoteElement<
     }
 
     this.__finalized = true;
-    const {remoteProperties} = this;
+    const {remoteSlots, remoteProperties} = this;
 
     // finalize any superclasses
     const SuperConstructor = Object.getPrototypeOf(
@@ -160,6 +181,10 @@ export abstract class RemoteElement<
 
     const observedAttributes: string[] = [];
     const attributeToPropertyMap = new Map<string, string>();
+    const remoteSlotDefinitions = new Map<
+      string,
+      NormalizedRemoteElementSlotDefinition
+    >(SuperConstructor.remoteSlotDefinitions);
     const remotePropertyDefinitions = new Map<
       string,
       NormalizedRemoteElementPropertyDefinition
@@ -175,20 +200,43 @@ export abstract class RemoteElement<
       );
     }
 
-    if (remoteProperties != null) {
-      Object.keys(remoteProperties).forEach((propertyName) => {
-        saveRemoteProperty(
-          propertyName,
-          remoteProperties[propertyName],
-          observedAttributes,
-          remotePropertyDefinitions,
-          attributeToPropertyMap,
-        );
+    if (remoteSlots != null) {
+      const slotNames = Array.isArray(remoteSlots)
+        ? remoteSlots
+        : Object.keys(remoteSlots);
+
+      slotNames.forEach((slotName) => {
+        remoteSlotDefinitions.set(slotName, {});
       });
+    }
+
+    if (remoteProperties != null) {
+      if (Array.isArray(remoteProperties)) {
+        remoteProperties.forEach((propertyName) => {
+          saveRemoteProperty(
+            propertyName,
+            undefined,
+            observedAttributes,
+            remotePropertyDefinitions,
+            attributeToPropertyMap,
+          );
+        });
+      } else {
+        Object.keys(remoteProperties).forEach((propertyName) => {
+          saveRemoteProperty(
+            propertyName,
+            (remoteProperties as any)[propertyName],
+            observedAttributes,
+            remotePropertyDefinitions,
+            attributeToPropertyMap,
+          );
+        });
+      }
     }
 
     Object.defineProperties(this, {
       observedAttributes: {value: observedAttributes},
+      remoteSlotDefinitions: {value: remoteSlotDefinitions},
       remotePropertyDefinitions: {
         value: remotePropertyDefinitions,
       },
@@ -198,7 +246,11 @@ export abstract class RemoteElement<
       },
     });
 
-    return {observedAttributes, remotePropertyDefinitions};
+    return {
+      observedAttributes,
+      remoteSlotDefinitions,
+      remotePropertyDefinitions,
+    };
   }
 
   get [SLOT_PROPERTY]() {

@@ -15,7 +15,7 @@ export {
   type RemoteRootRendererProps,
 } from './host/RemoteRootRenderer.tsx';
 
-export {useRemoteReceived, useReactPropsForElement} from './host/hooks.ts';
+export {useRemoteReceived, usePropsForRemoteElement} from './host/hooks.ts';
 
 export type {
   RemoteComponentRendererMap,

@@ -2,15 +2,18 @@ import type {RemoteElementReceived} from '@lemonmade/remote-ui';
 
 import {renderRemoteNode, type RenderRemoteNodeOptions} from '../node.tsx';
 
-export function useReactPropsForElement<Props extends Record<string, any> = {}>(
-  element: RemoteElementReceived,
-  options: RenderRemoteNodeOptions,
-): Props;
-export function useReactPropsForElement<Props extends Record<string, any> = {}>(
+export function usePropsForRemoteElement<
+  Props extends Record<string, any> = {},
+>(element: RemoteElementReceived, options: RenderRemoteNodeOptions): Props;
+export function usePropsForRemoteElement<
+  Props extends Record<string, any> = {},
+>(
   element: RemoteElementReceived | undefined,
   options: RenderRemoteNodeOptions,
 ): Props | undefined;
-export function useReactPropsForElement<Props extends Record<string, any> = {}>(
+export function usePropsForRemoteElement<
+  Props extends Record<string, any> = {},
+>(
   element: RemoteElementReceived | undefined,
   options: RenderRemoteNodeOptions,
 ): Props | undefined {

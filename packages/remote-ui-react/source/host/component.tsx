@@ -6,7 +6,7 @@ import {
 } from 'react';
 
 import {useRemoteReceived} from './hooks/remote-received.ts';
-import {useReactPropsForElement} from './hooks/react-props-for-element.ts';
+import {usePropsForRemoteElement} from './hooks/props-for-element.ts';
 import {
   REMOTE_ELEMENT_PROP,
   REMOTE_ELEMENT_ATTACHED_PROP,
@@ -31,7 +31,7 @@ export function createRemoteComponentRenderer<
   >(function RemoteComponentRenderer({element, receiver, components}, ref) {
     const attachedElement = useRemoteReceived(element, receiver);
     const resolvedElement = attachedElement ?? element;
-    const props = useReactPropsForElement<Props>(resolvedElement, {
+    const props = usePropsForRemoteElement<Props>(resolvedElement, {
       receiver,
       components,
     });
