@@ -6,6 +6,7 @@
     {"path": "./packages/create-create-tester"},
     {"path": "./packages/graphql-live"},
     {"path": "./packages/remote-ui"},
+    {"path": "./packages/remote-ui-preact"},
     {"path": "./packages/remote-ui-react"}
   ]
 }

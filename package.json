@@ -17,12 +17,12 @@
     "@changesets/changelog-github": "^0.4.3",
     "@changesets/cli": "^2.21.1",
     "@quilted/browserslist-config": "^0.1.9",
-    "@quilted/craft": "^0.1.200",
+    "@quilted/craft": "^0.1.201",
     "@quilted/eslint-config": "^0.1.17",
     "@quilted/prettier": "^0.2.11",
     "@quilted/testing": "^0.1.5",
     "@quilted/typescript": "^0.2.19",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.4"
   },
   "prettier": "@quilted/prettier",
   "eslintConfig": {
