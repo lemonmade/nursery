@@ -25,6 +25,8 @@ jobs:
           git checkout origin/main -- .changeset
 
       - uses: quilt-framework/action-build@v2
+        with:
+          cache-key: v2
       - name: Deploy preview versions to NPM
         run: pnpm deploy:preview
         env:
