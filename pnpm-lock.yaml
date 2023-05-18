@@ -70,7 +70,7 @@ importers:
   packages/remote-ui-react:
     dependencies:
       '@lemonmade/remote-ui':
-        specifier: ^0.1.18
+        specifier: ^0.1.21
         version: link:../remote-ui
       '@types/react':
         specifier: ^17.0.0 || ^18.0.0
@@ -6674,7 +6674,7 @@ packages:
   /jsonfile@4.0.0:
     resolution: {integrity: sha1-h3Gq4HmbZAdrdmQPygWPnBDjPss=}
     optionalDependencies:
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
     dev: true
 
   /jsx-ast-utils@3.3.0:

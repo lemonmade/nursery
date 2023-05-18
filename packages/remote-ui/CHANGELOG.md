@@ -1,5 +1,11 @@
 # @lemonmade/remote-ui
 
+## 0.1.21
+
+### Patch Changes
+
+- [`e968b73`](https://github.com/lemonmade/nursery/commit/e968b73ff1902c6ed12e4826bdbd6b904da5ac31) Thanks [@lemonmade](https://github.com/lemonmade)! - Improve slots and React utilities
+
 ## 0.1.20
 
 ### Patch Changes
