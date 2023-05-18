@@ -1,4 +1,4 @@
-import {useRemoteReceived} from './hooks.ts';
+import {useRemoteReceived} from './hooks/remote-received.ts';
 import {renderRemoteNode, type RenderRemoteNodeOptions} from './node.tsx';
 
 export interface RemoteRootRendererProps extends RenderRemoteNodeOptions {}

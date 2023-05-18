@@ -1,7 +1,7 @@
 import type {FunctionComponent} from 'react';
 
 import {renderRemoteNode} from './node.tsx';
-import {useRemoteReceived} from './hooks.ts';
+import {useRemoteReceived} from './hooks/remote-received.ts';
 import type {RemoteComponentRendererProps} from './types.ts';
 
 export const RemoteFragmentRenderer: FunctionComponent<RemoteComponentRendererProps> =
