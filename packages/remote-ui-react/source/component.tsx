@@ -1,5 +1,6 @@
 import {createElement, isValidElement} from 'react';
 import type {
+  RemoteElement,
   RemoteElementConstructor,
   RemotePropertiesFromElementConstructor,
   RemoteSlotsFromElementConstructor,
@@ -11,18 +12,23 @@ import type {
 } from './types.ts';
 
 export function createRemoteComponent<
-  ElementConstructor extends RemoteElementConstructor<any, any>,
+  Tag extends keyof HTMLElementTagNameMap,
+  ElementConstructor extends RemoteElementConstructor<
+    any,
+    any
+  > = HTMLElementTagNameMap[Tag] extends RemoteElement<
+    infer Properties,
+    infer Slots
+  >
+    ? RemoteElementConstructor<Properties, Slots>
+    : never,
 >(
-  ElementType: ElementConstructor,
-  {element}: {element: string},
+  tag: Tag,
+  Element: ElementConstructor | undefined = customElements.get(tag) as any,
 ): RemoteComponentType<
   RemotePropertiesFromElementConstructor<ElementConstructor>,
   RemoteSlotsFromElementConstructor<ElementConstructor>
 > {
-  const allowedSlots = new Set(
-    ElementType.remoteSlots ? Object.keys(ElementType.remoteSlots) : [],
-  );
-
   const RemoteComponent: RemoteComponentTypeFromElementConstructor<ElementConstructor> =
     function RemoteComponent(props) {
       const updatedProps: Record<string, any> = {};
@@ -31,14 +37,17 @@ export function createRemoteComponent<
       for (const prop in props) {
         const propValue = props[prop];
 
-        if (allowedSlots.has(prop) && isValidElement(propValue)) {
+        if (
+          Element.remoteSlotDefinitions.has(prop) &&
+          isValidElement(propValue)
+        ) {
           children.push(
             createElement('remote-fragment', {slot: prop}, propValue),
           );
           continue;
         }
 
-        const definition = ElementType.remotePropertyDefinitions?.get(prop);
+        const definition = Element.remotePropertyDefinitions.get(prop);
         const aliasTo =
           definition && definition.type === Function
             ? definition.alias?.[0]
@@ -46,10 +55,10 @@ export function createRemoteComponent<
         updatedProps[aliasTo ?? prop] = propValue;
       }
 
-      return createElement(element, updatedProps, ...children);
+      return createElement(tag, updatedProps, ...children);
     };
 
-  RemoteComponent.displayName = `RemoteComponent(${element})`;
+  RemoteComponent.displayName = `RemoteComponent(${tag})`;
 
   return RemoteComponent;
 }

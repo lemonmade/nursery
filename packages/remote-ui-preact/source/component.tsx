@@ -1,5 +1,6 @@
 import {createElement, isValidElement} from 'preact';
 import type {
+  RemoteElement,
   RemoteElementConstructor,
   RemotePropertiesFromElementConstructor,
   RemoteSlotsFromElementConstructor,
@@ -11,10 +12,19 @@ import type {
 } from './types.ts';
 
 export function createRemoteComponent<
-  ElementConstructor extends RemoteElementConstructor<any, any>,
+  Tag extends keyof HTMLElementTagNameMap,
+  ElementConstructor extends RemoteElementConstructor<
+    any,
+    any
+  > = HTMLElementTagNameMap[Tag] extends RemoteElement<
+    infer Properties,
+    infer Slots
+  >
+    ? RemoteElementConstructor<Properties, Slots>
+    : never,
 >(
-  ElementType: ElementConstructor,
-  {element}: {element: string},
+  tag: Tag,
+  Element: ElementConstructor | undefined = customElements.get(tag) as any,
 ): RemoteComponentType<
   RemotePropertiesFromElementConstructor<ElementConstructor>,
   RemoteSlotsFromElementConstructor<ElementConstructor>
@@ -28,7 +38,7 @@ export function createRemoteComponent<
         const propValue = props[prop];
 
         if (
-          ElementType.remoteSlotDefinitions.has(prop) &&
+          Element.remoteSlotDefinitions.has(prop) &&
           isValidElement(propValue)
         ) {
           children.push(
@@ -37,7 +47,7 @@ export function createRemoteComponent<
           continue;
         }
 
-        const definition = ElementType.remotePropertyDefinitions?.get(prop);
+        const definition = Element.remotePropertyDefinitions.get(prop);
         const aliasTo =
           definition && definition.type === Function
             ? definition.alias?.[0]
@@ -45,10 +55,10 @@ export function createRemoteComponent<
         updatedProps[aliasTo ?? prop] = propValue;
       }
 
-      return createElement(element, updatedProps, ...children);
+      return createElement(tag, updatedProps, ...children);
     };
 
-  RemoteComponent.displayName = `RemoteComponent(${element})`;
+  RemoteComponent.displayName = `RemoteComponent(${tag})`;
 
   return RemoteComponent;
 }
