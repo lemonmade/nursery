@@ -1,5 +1,20 @@
 # @lemonmade/remote-ui-react
 
+## 0.1.12
+
+### Patch Changes
+
+- [`2303e8b`](https://github.com/lemonmade/nursery/commit/2303e8bf4eee0e03bd88620a0dc8b0e56611fc02) Thanks [@lemonmade](https://github.com/lemonmade)! - Improve React host utilities
+
+* [`e046e4c`](https://github.com/lemonmade/nursery/commit/e046e4ce9c353b7b61595dd7fa7fac78291c9d51) Thanks [@lemonmade](https://github.com/lemonmade)! - Fix circular dependencies
+
+- [`ed21c14`](https://github.com/lemonmade/nursery/commit/ed21c148158367e592b5f1cd870ee292214977a2) Thanks [@lemonmade](https://github.com/lemonmade)! - Improve type definition for useReactPropsForElement
+
+* [`e968b73`](https://github.com/lemonmade/nursery/commit/e968b73ff1902c6ed12e4826bdbd6b904da5ac31) Thanks [@lemonmade](https://github.com/lemonmade)! - Improve slots and React utilities
+
+* Updated dependencies [[`e968b73`](https://github.com/lemonmade/nursery/commit/e968b73ff1902c6ed12e4826bdbd6b904da5ac31)]:
+  - @lemonmade/remote-ui@0.1.21
+
 ## 0.1.11
 
 ### Patch Changes
