@@ -1,15 +1,7 @@
-import {
-  NS,
-  SLOT,
-  STYLE,
-  ATTRIBUTES,
-  NamespaceURI,
-  NodeType,
-} from './constants.ts';
+import {NS, SLOT, ATTRIBUTES, NamespaceURI, NodeType} from './constants.ts';
 import {ParentNode} from './ParentNode.ts';
 import {NamedNodeMap} from './NamedNodeMap.ts';
 import {Attr} from './Attr.ts';
-import {CSSStyleDeclaration} from './CSSStyleDeclaration.ts';
 import {serializeNode, serializeChildren, parseHtml} from './serialization.ts';
 
 export class Element extends ParentNode {
@@ -28,7 +20,6 @@ export class Element extends ParentNode {
   }
 
   [ATTRIBUTES]!: NamedNodeMap;
-  [STYLE]?: CSSStyleDeclaration;
 
   attributeChangedCallback?: (
     name: string,
@@ -110,18 +101,5 @@ export class Element extends ParentNode {
       const fragment = parseHtml(String(html), this);
       this.replaceChildren(fragment);
     }
-  }
-
-  set style(cssText) {
-    this.style.cssText = String(cssText);
-  }
-
-  get style() {
-    let style = this[STYLE];
-    if (!style) {
-      style = new CSSStyleDeclaration();
-      this[STYLE] = style;
-    }
-    return style;
   }
 }
