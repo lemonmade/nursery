@@ -22,6 +22,8 @@ export class Window extends EventTarget {
   top = this;
   document = new Document(this);
   customElements = new CustomElementRegistryImplementation();
+  location = globalThis.location;
+  navigator = globalThis.navigator;
   Event = Event;
   Node = Node;
   ParentNode = ParentNode;

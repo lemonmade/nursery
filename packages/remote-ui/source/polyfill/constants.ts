@@ -14,6 +14,7 @@ export const LISTENERS = Symbol('listeners');
 export const IS_TRUSTED = Symbol('isTrusted');
 export const CONTENT = Symbol('content');
 export const SLOT = Symbol('slot');
+export const STYLE = Symbol('style');
 
 // @TODO remove explicit values
 export const enum NodeType {
