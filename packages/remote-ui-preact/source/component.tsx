@@ -47,9 +47,14 @@ export function createRemoteComponent<
           continue;
         }
 
+        // Preact assumes any properties starting with `on` are event listeners.
+        // If we are in this situation, we try to use one of the property’s aliases,
+        // which should be a name *not* starting with `on`.
         const definition = Element.remotePropertyDefinitions.get(prop);
         const aliasTo =
-          definition && definition.type === Function
+          definition &&
+          definition.type === Function &&
+          definition.name.startsWith('on')
             ? definition.alias?.[0]
             : undefined;
         updatedProps[aliasTo ?? prop] = propValue;
