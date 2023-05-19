@@ -1,5 +1,11 @@
 # @lemonmade/remote-ui
 
+## 0.1.24
+
+### Patch Changes
+
+- [`e88878d`](https://github.com/lemonmade/nursery/commit/e88878d164c4877402be055bf3c26763c1a3d055) Thanks [@lemonmade](https://github.com/lemonmade)! - Fix subclassing issues
+
 ## 0.1.23
 
 ### Patch Changes
