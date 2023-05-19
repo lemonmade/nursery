@@ -1,5 +1,11 @@
 # @lemonmade/remote-ui
 
+## 0.1.26
+
+### Patch Changes
+
+- [`c436897`](https://github.com/lemonmade/nursery/commit/c4368979173a2372260de583dcf3ac9814626b69) Thanks [@lemonmade](https://github.com/lemonmade)! - More attempted React polyfill fixes
+
 ## 0.1.25
 
 ### Patch Changes
