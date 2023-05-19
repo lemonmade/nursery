@@ -1,5 +1,14 @@
 # @lemonmade/remote-ui-react
 
+## 0.1.4
+
+### Patch Changes
+
+- [`2baf3ee`](https://github.com/lemonmade/nursery/commit/2baf3eeb958f281a7c71d506df65dbeb938fda87) Thanks [@lemonmade](https://github.com/lemonmade)! - Improve function property handling for Preact
+
+- Updated dependencies [[`3f7c8cf`](https://github.com/lemonmade/nursery/commit/3f7c8cfd9286f9e08c2571473b5a5a8618c36295)]:
+  - @lemonmade/remote-ui@0.1.25
+
 ## 0.1.3
 
 ### Patch Changes
