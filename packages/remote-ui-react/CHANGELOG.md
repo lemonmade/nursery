@@ -1,5 +1,14 @@
 # @lemonmade/remote-ui-react
 
+## 0.1.16
+
+### Patch Changes
+
+- [`491c0ab`](https://github.com/lemonmade/nursery/commit/491c0ab5f720b8bf2f38787fed7c6b87531421d3) Thanks [@lemonmade](https://github.com/lemonmade)! - Fix React package utility for creating element wrappers
+
+- Updated dependencies [[`3f7c8cf`](https://github.com/lemonmade/nursery/commit/3f7c8cfd9286f9e08c2571473b5a5a8618c36295)]:
+  - @lemonmade/remote-ui@0.1.25
+
 ## 0.1.15
 
 ### Patch Changes

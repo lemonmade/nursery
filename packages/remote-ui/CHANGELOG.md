@@ -1,5 +1,11 @@
 # @lemonmade/remote-ui
 
+## 0.1.25
+
+### Patch Changes
+
+- [`3f7c8cf`](https://github.com/lemonmade/nursery/commit/3f7c8cfd9286f9e08c2571473b5a5a8618c36295) Thanks [@lemonmade](https://github.com/lemonmade)! - Fix missing DOM globals for React
+
 ## 0.1.24
 
 ### Patch Changes
