@@ -1,4 +1,4 @@
-import {createElement, isValidElement} from 'react';
+import {useRef, useLayoutEffect, createElement, isValidElement} from 'react';
 import type {
   RemoteElement,
   RemoteElementConstructor,
@@ -31,7 +31,11 @@ export function createRemoteComponent<
 > {
   const RemoteComponent: RemoteComponentTypeFromElementConstructor<ElementConstructor> =
     function RemoteComponent(props) {
-      const updatedProps: Record<string, any> = {};
+      const ref = useRef<any>();
+      const lastRemotePropertiesRef = useRef<Record<string, any>>();
+
+      const updatedProps: Record<string, any> = {ref};
+      const remoteProperties: Record<string, any> = {};
       const children = toChildren(props.children);
 
       for (const prop in props) {
@@ -48,12 +52,26 @@ export function createRemoteComponent<
         }
 
         const definition = Element.remotePropertyDefinitions.get(prop);
-        const aliasTo =
-          definition && definition.type === Function
-            ? definition.alias?.[0]
-            : undefined;
-        updatedProps[aliasTo ?? prop] = propValue;
+
+        if (definition) {
+          remoteProperties[prop] = propValue;
+        } else {
+          updatedProps[prop] = propValue;
+        }
       }
+
+      useLayoutEffect(() => {
+        if (ref.current == null) return;
+
+        const propsToUpdate =
+          lastRemotePropertiesRef.current ?? remoteProperties;
+
+        for (const prop in propsToUpdate) {
+          ref.current[prop] = remoteProperties[prop];
+        }
+
+        lastRemotePropertiesRef.current = remoteProperties;
+      });
 
       return createElement(tag, updatedProps, ...children);
     };
