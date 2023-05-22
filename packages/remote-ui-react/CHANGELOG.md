@@ -1,5 +1,11 @@
 # @lemonmade/remote-ui-react
 
+## 0.1.18
+
+### Patch Changes
+
+- [`ab59c50`](https://github.com/lemonmade/nursery/commit/ab59c505626ed9edf77ffebbe61a084adcf47de3) Thanks [@lemonmade](https://github.com/lemonmade)! - Fix children in React component adaptors
+
 ## 0.1.17
 
 ### Patch Changes
