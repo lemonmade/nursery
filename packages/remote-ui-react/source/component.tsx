@@ -84,6 +84,6 @@ export function createRemoteComponent<
 // Simple version of React.Children.toArray()
 function toChildren(value: any) {
   if (value == null) return [];
-  if (Array.isArray(value)) return value;
+  if (Array.isArray(value)) return [...value];
   return [value];
 }
