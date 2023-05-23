@@ -9,7 +9,7 @@ export class HTMLTemplateElement extends Element {
   get content() {
     let content = this[CONTENT];
     if (!content) {
-      content = new DocumentFragment();
+      content = this.ownerDocument.createDocumentFragment();
       this[CONTENT] = content;
     }
     return content;
