@@ -1,5 +1,11 @@
 # @lemonmade/remote-ui
 
+## 0.1.27
+
+### Patch Changes
+
+- [`c68ce1a`](https://github.com/lemonmade/nursery/commit/c68ce1a95e6fa81477202abb7dd0ac77f77bb1b8) Thanks [@lemonmade](https://github.com/lemonmade)! - Fix document nodes with missing owners
+
 ## 0.1.26
 
 ### Patch Changes
