@@ -1,5 +1,11 @@
 # @lemonmade/remote-ui-react
 
+## 0.1.19
+
+### Patch Changes
+
+- [`dbf2705`](https://github.com/lemonmade/nursery/commit/dbf27050de8239c6256bfd122bc9b1f3e5c756df) Thanks [@lemonmade](https://github.com/lemonmade)! - Fix more React/ Preact remote property integrations
+
 ## 0.1.18
 
 ### Patch Changes
