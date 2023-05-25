@@ -37,6 +37,11 @@ export function createRemoteComponent<
       for (const prop in props) {
         const propValue = props[prop];
 
+        if (prop === 'slot') {
+          updatedProps.slot = propValue;
+          continue;
+        }
+
         if (
           Element.remoteSlotDefinitions.has(prop) &&
           isValidElement(propValue)
@@ -51,10 +56,9 @@ export function createRemoteComponent<
         // If we are in this situation, we try to use one of the property’s aliases,
         // which should be a name *not* starting with `on`.
         const definition = Element.remotePropertyDefinitions.get(prop);
+        if (definition == null) continue;
         const aliasTo =
-          definition &&
-          definition.type === Function &&
-          definition.name.startsWith('on')
+          definition.type === Function && definition.name.startsWith('on')
             ? definition.alias?.[0]
             : undefined;
         updatedProps[aliasTo ?? prop] = propValue;

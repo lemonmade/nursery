@@ -34,12 +34,16 @@ export function createRemoteComponent<
       const ref = useRef<any>();
       const lastRemotePropertiesRef = useRef<Record<string, any>>();
 
-      const updatedProps: Record<string, any> = {ref};
       const remoteProperties: Record<string, any> = {};
       const children = toChildren(props.children);
 
       for (const prop in props) {
         const propValue = props[prop];
+
+        if (prop === 'slot') {
+          remoteProperties.slot = propValue;
+          continue;
+        }
 
         if (
           Element.remoteSlotDefinitions.has(prop) &&
@@ -55,8 +59,6 @@ export function createRemoteComponent<
 
         if (definition) {
           remoteProperties[prop] = propValue;
-        } else {
-          updatedProps[prop] = propValue;
         }
       }
 
@@ -73,7 +75,7 @@ export function createRemoteComponent<
         lastRemotePropertiesRef.current = remoteProperties;
       });
 
-      return createElement(tag, updatedProps, ...children);
+      return createElement(tag, {ref}, ...children);
     };
 
   RemoteComponent.displayName = `RemoteComponent(${tag})`;
