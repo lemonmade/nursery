@@ -409,6 +409,8 @@ export abstract class RemoteElement<
           return this.dispatchEvent(event);
         },
       };
+
+      remoteEvents.events.set(type, remoteEvent);
     }
 
     const normalizedListener =
@@ -528,12 +530,33 @@ function saveRemoteProperty<Value = unknown>(
 
   const looksLikeEventCallback = name[0] === 'o' && name[1] === 'n';
 
+  const resolvedDescription =
+    description ?? ({} as RemoteElementPropertyDefinition<Value>);
+  let {alias} = resolvedDescription;
   const {
     type = looksLikeEventCallback ? Function : String,
     attribute = type !== Function,
-    alias = looksLikeEventCallback ? [`_${name}`] : undefined,
     event = looksLikeEventCallback,
-  } = description ?? ({} as RemoteElementPropertyDefinition<Value>);
+  } = resolvedDescription;
+
+  if (alias == null) {
+    // Svelte lowercases property names before assigning them to elements,
+    // this ensures that those properties are forwarded to their canonical
+    // names.
+    const lowercaseProperty = name.toLowerCase();
+    if (lowercaseProperty !== name) {
+      alias = [lowercaseProperty];
+    }
+
+    // Preact (and others) automatically treat properties that start with
+    // `on` as being event listeners, and uses an actual event listener for
+    // them. This alias gives wrapping components an alternative property
+    // to write to that won't be treated as an event listener.
+    if (looksLikeEventCallback) {
+      alias ??= [];
+      alias.push(`_${name}`);
+    }
+  }
 
   let attributeName: string | undefined;
 

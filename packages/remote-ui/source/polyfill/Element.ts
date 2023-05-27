@@ -51,11 +51,11 @@ export class Element extends ParentNode {
   }
 
   setAttribute(name: string, value: string) {
-    this.attributes.setNamedItem(new Attr(name, value));
+    this.attributes.setNamedItem(new Attr(name, String(value)));
   }
 
   setAttributeNS(namespace: NamespaceURI | null, name: string, value: string) {
-    this.attributes.setNamedItemNS(new Attr(name, value, namespace));
+    this.attributes.setNamedItemNS(new Attr(name, String(value), namespace));
   }
 
   getAttribute(name: string) {
