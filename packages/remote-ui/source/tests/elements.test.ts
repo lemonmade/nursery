@@ -438,11 +438,266 @@ describe('RemoteElement', () => {
         ]);
       });
     });
+
+    describe('event listeners', () => {
+      it('does not create a property for an unrecognized event', () => {
+        const ButtonElement = createRemoteElement<{
+          onPress(): void;
+          press: boolean;
+        }>({
+          properties: {
+            press: {},
+            onPress: {event: false},
+          },
+        });
+
+        const {element, receiver} =
+          createAndConnectRemoteElement(ButtonElement);
+
+        const listener = jest.fn();
+        element.addEventListener('press', listener);
+
+        expect(element.onPress).toBe(undefined);
+        expect(receiver.receive).not.toHaveBeenCalledWith([
+          [
+            MUTATION_TYPE_UPDATE_PROPERTY,
+            expect.anything(),
+            expect.anything(),
+            expect.anything(),
+          ],
+        ]);
+      });
+
+      it('proxies event listeners for the inferred event name of an `onX` property by default', () => {
+        const ButtonElement = createRemoteElement<{onPress(): void}>({
+          properties: {onPress: {}},
+        });
+
+        const {element, receiver} =
+          createAndConnectRemoteElement(ButtonElement);
+
+        const listener = jest.fn();
+        element.addEventListener('press', listener);
+
+        expect(element.onPress).toBeInstanceOf(Function);
+        expect(receiver.receive).toHaveBeenLastCalledWith([
+          [
+            MUTATION_TYPE_UPDATE_PROPERTY,
+            remoteId(element),
+            'onPress',
+            element.onPress,
+          ],
+        ]);
+      });
+
+      it('proxies event listeners for a property that is declared as an event listener', () => {
+        const ButtonElement = createRemoteElement<{press(): void}>({
+          properties: {press: {event: true}},
+        });
+
+        const {element, receiver} =
+          createAndConnectRemoteElement(ButtonElement);
+
+        const listener = jest.fn();
+        element.addEventListener('press', listener);
+
+        expect(element.press).toBeInstanceOf(Function);
+        expect(receiver.receive).toHaveBeenLastCalledWith([
+          [
+            MUTATION_TYPE_UPDATE_PROPERTY,
+            remoteId(element),
+            'press',
+            element.press,
+          ],
+        ]);
+      });
+
+      it('proxies event listeners to a custom event name', () => {
+        const ButtonElement = createRemoteElement<{onPress(): void}>({
+          properties: {onPress: {event: 'click'}},
+        });
+
+        const {element, receiver} =
+          createAndConnectRemoteElement(ButtonElement);
+
+        const listener = jest.fn();
+        element.addEventListener('click', listener);
+
+        expect(element.onPress).toBeInstanceOf(Function);
+        expect(receiver.receive).toHaveBeenLastCalledWith([
+          [
+            MUTATION_TYPE_UPDATE_PROPERTY,
+            remoteId(element),
+            'onPress',
+            element.onPress,
+          ],
+        ]);
+      });
+
+      it('proxies event listeners to kebab-cased event names', () => {
+        const ButtonElement = createRemoteElement<{onMouseEnter(): void}>({
+          properties: {onMouseEnter: {}},
+        });
+
+        const {element, receiver} =
+          createAndConnectRemoteElement(ButtonElement);
+
+        const listener = jest.fn();
+        element.addEventListener('mouse-enter', listener);
+
+        expect(element.onMouseEnter).toBeInstanceOf(Function);
+        expect(receiver.receive).toHaveBeenLastCalledWith([
+          [
+            MUTATION_TYPE_UPDATE_PROPERTY,
+            remoteId(element),
+            'onMouseEnter',
+            element.onMouseEnter,
+          ],
+        ]);
+      });
+
+      it('calls event listeners with a CustomEvent containing a single function argument as the detail', () => {
+        const ButtonElement = createRemoteElement<{onPress(detail: any): void}>(
+          {
+            properties: {onPress: {}},
+          },
+        );
+
+        const {element} = createAndConnectRemoteElement(ButtonElement);
+
+        const listener = jest.fn();
+        element.addEventListener('press', listener);
+
+        const detail = {hello: 'world'};
+
+        element.onPress(detail);
+
+        expect(listener).toHaveBeenCalledWith(expect.any(CustomEvent));
+        expect(listener).toHaveBeenCalledWith(
+          expect.objectContaining({type: 'press', detail}),
+        );
+      });
+
+      it('calls event listeners with a CustomEvent containing multiple function argument as the detail', () => {
+        const ButtonElement = createRemoteElement<{
+          onPress(...detail: any[]): void;
+        }>({
+          properties: {onPress: {}},
+        });
+
+        const {element} = createAndConnectRemoteElement(ButtonElement);
+
+        const listener = jest.fn();
+        element.addEventListener('press', listener);
+
+        const detail = ['123', {hello: 'world'}];
+
+        element.onPress(...detail);
+
+        expect(listener).toHaveBeenCalledWith(expect.any(CustomEvent));
+        expect(listener).toHaveBeenCalledWith(
+          expect.objectContaining({type: 'press', detail}),
+        );
+      });
+
+      it('removes an event listener property when the last event listener is removed', () => {
+        const ButtonElement = createRemoteElement<{onPress(): void}>({
+          properties: {onPress: {}},
+        });
+
+        const {element, receiver} =
+          createAndConnectRemoteElement(ButtonElement);
+
+        const firstListener = jest.fn();
+        const secondListener = jest.fn();
+
+        element.addEventListener('press', firstListener);
+
+        receiver.receive.mockClear();
+
+        element.addEventListener('press', secondListener);
+
+        expect(element.onPress).toBeInstanceOf(Function);
+        expect(receiver.receive).not.toHaveBeenCalled();
+
+        element.removeEventListener('press', secondListener);
+
+        expect(element.onPress).toBeInstanceOf(Function);
+        expect(receiver.receive).not.toHaveBeenCalled();
+
+        element.removeEventListener('press', firstListener);
+
+        expect(element.onPress).toBeUndefined();
+        expect(receiver.receive).toHaveBeenLastCalledWith([
+          [
+            MUTATION_TYPE_UPDATE_PROPERTY,
+            remoteId(element),
+            'onPress',
+            undefined,
+          ],
+        ]);
+      });
+
+      it('removes an event listener property declared with once', () => {
+        const ButtonElement = createRemoteElement<{onPress(): void}>({
+          properties: {onPress: {}},
+        });
+
+        const {element, receiver} =
+          createAndConnectRemoteElement(ButtonElement);
+
+        const listener = jest.fn();
+
+        element.addEventListener('press', listener, {once: true});
+
+        element.onPress();
+
+        expect(element.onPress).toBeUndefined();
+        expect(receiver.receive).toHaveBeenLastCalledWith([
+          [
+            MUTATION_TYPE_UPDATE_PROPERTY,
+            remoteId(element),
+            'onPress',
+            undefined,
+          ],
+        ]);
+      });
+
+      it('removes an event listener property declared with an abort signal', () => {
+        const ButtonElement = createRemoteElement<{onPress(): void}>({
+          properties: {onPress: {}},
+        });
+
+        const {element, receiver} =
+          createAndConnectRemoteElement(ButtonElement);
+
+        const listener = jest.fn();
+        const abort = new AbortController();
+
+        element.addEventListener('press', listener, {signal: abort.signal});
+
+        abort.abort();
+
+        expect(element.onPress).toBeUndefined();
+        expect(receiver.receive).toHaveBeenLastCalledWith([
+          [
+            MUTATION_TYPE_UPDATE_PROPERTY,
+            remoteId(element),
+            'onPress',
+            undefined,
+          ],
+        ]);
+      });
+    });
   });
 });
 
 class TestRemoteReceiver extends RemoteReceiver {
-  readonly receive: RemoteReceiver['receive'] = jest.fn(this.receive);
+  readonly receive: RemoteReceiver['receive'] &
+    jest.Mock<
+      ReturnType<RemoteReceiver['receive']>,
+      Parameters<RemoteReceiver['receive']>
+    > = jest.fn(this.receive);
 }
 
 function createAndConnectRemoteElement<

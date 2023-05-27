@@ -8,6 +8,8 @@ export const enum EventPhase {
   BUBBLING_PHASE = 3,
 }
 
+export const CAPTURE_MARKER = '@';
+
 export interface EventInit {
   bubbles?: boolean;
   cancelable?: boolean;
@@ -91,59 +93,44 @@ export class Event {
   }
 }
 
-export function dispatchEvent<T extends object = Record<string, unknown>>(
-  this: EventTarget,
-  type: string,
-  eventInit?: T,
-) {
-  const ev = new Event(type, eventInit) as Event & T;
-  ev[IS_TRUSTED] = true;
-  // Copy host event properties except `type`. This is important
-  // because the local `type` can have different casing from the host.
-  // Object.assign(ev, event);
-  // ev.type = type;
-  for (const i in eventInit) {
-    // if (i in ev) continue;
-    if (i === 'isTrusted' || i === 'type') continue;
-    // just to make TS happy:
-    Reflect.set(ev, i, eventInit[i]);
-    // ev[i] = event[i];
-  }
-  return this.dispatchEvent(ev);
-}
-
 export function fireEvent(
   event: Event,
   target: EventTarget,
   phase: EventPhase,
 ) {
   const listeners = target[LISTENERS];
-  const list = listeners && listeners.get(event.type);
+  const list = listeners?.get(
+    `${event.type}${
+      phase === EventPhase.CAPTURING_PHASE ? CAPTURE_MARKER : ''
+    }`,
+  );
   if (!list) return false;
+
   let defaultPrevented = false;
-  for (const listener of Array.from(list)) {
+
+  for (const listener of list) {
     event.eventPhase = phase;
     event.currentTarget = target;
-    let ret;
+
     try {
       if (typeof listener === 'object') {
-        listener.handleEvent(event);
+        listener.handleEvent(event as any);
       } else {
-        listener.call(target, event);
+        listener.call(target, event as any);
       }
     } catch (err) {
       setTimeout(thrower, 0, err);
     }
-    if (ret === false) {
-      event.defaultPrevented = true;
-    }
+
     if (event.defaultPrevented === true) {
       defaultPrevented = true;
     }
+
     if (event.immediatePropagationStopped) {
       break;
     }
   }
+
   return defaultPrevented;
 }
 

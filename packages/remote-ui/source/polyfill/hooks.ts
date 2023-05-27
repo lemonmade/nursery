@@ -11,15 +11,17 @@ export interface Hooks {
   setText(text: Text, data: string): void;
   insertChild(parent: Element, node: Element | Text, index: number): void;
   removeChild(parent: Element, node: Element | Text, index: number): void;
-  addListener(
+  addEventListener(
     element: EventTarget,
     type: string,
-    listener: <T = {}>(eventInit?: T) => boolean,
+    listener: EventListenerOrEventListenerObject | null,
+    options?: boolean | AddEventListenerOptions,
   ): void;
-  removeListener(
+  removeEventListener(
     element: EventTarget,
     type: string,
-    listener: <T = {}>(eventInit?: T) => boolean,
+    listener: EventListenerOrEventListenerObject | null,
+    options?: boolean | EventListenerOptions,
   ): void;
 }
 

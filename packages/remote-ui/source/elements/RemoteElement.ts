@@ -18,6 +18,7 @@ export type RemoteElementPropertyTypeOrBuiltIn<Value = unknown> =
 export interface RemoteElementPropertyDefinition<Value = unknown> {
   type?: RemoteElementPropertyTypeOrBuiltIn<Value>;
   alias?: string[];
+  event?: boolean | string;
   attribute?: string | boolean;
 }
 
@@ -25,6 +26,7 @@ interface NormalizedRemoteElementPropertyDefinition<Value = unknown> {
   name: string;
   type: RemoteElementPropertyTypeOrBuiltIn<Value>;
   alias?: string[];
+  event?: string;
   attribute?: string;
 }
 
@@ -108,6 +110,19 @@ export function createRemoteElement<
 }
 
 const SLOT_PROPERTY = 'slot';
+const REMOTE_EVENTS = Symbol('remote.events');
+
+interface RemoteEvent {
+  readonly name: string;
+  readonly property: string;
+  readonly listeners: Set<EventListenerOrEventListenerObject>;
+  dispatch(...args: any[]): boolean;
+}
+
+type RemoteEventListenerRecord = [
+  EventListenerOrEventListenerObject,
+  RemoteEvent,
+];
 
 // Heavily inspired by https://github.com/lit/lit/blob/343187b1acbbdb02ce8d01fa0a0d326870419763/packages/reactive-element/src/reactive-element.ts
 export abstract class RemoteElement<
@@ -140,6 +155,7 @@ export abstract class RemoteElement<
   protected static __finalized = true;
   private static readonly __observedAttributes: string[] = [];
   private static readonly __attributeToPropertyMap = new Map<string, string>();
+  private static readonly __eventToPropertyMap = new Map<string, string>();
   private static readonly __remotePropertyDefinitions = new Map<
     string,
     NormalizedRemoteElementPropertyDefinition
@@ -159,6 +175,7 @@ export abstract class RemoteElement<
       this.observedAttributes,
       this.remotePropertyDefinitions,
       this.__attributeToPropertyMap,
+      this.__eventToPropertyMap,
     );
   }
 
@@ -178,6 +195,7 @@ export abstract class RemoteElement<
 
     const observedAttributes: string[] = [];
     const attributeToPropertyMap = new Map<string, string>();
+    const eventToPropertyMap = new Map<string, string>();
     const remoteSlotDefinitions = new Map<
       string,
       NormalizedRemoteElementSlotDefinition
@@ -219,6 +237,7 @@ export abstract class RemoteElement<
             observedAttributes,
             remotePropertyDefinitions,
             attributeToPropertyMap,
+            eventToPropertyMap,
           );
         });
       } else {
@@ -229,6 +248,7 @@ export abstract class RemoteElement<
             observedAttributes,
             remotePropertyDefinitions,
             attributeToPropertyMap,
+            eventToPropertyMap,
           );
         });
       }
@@ -249,6 +269,10 @@ export abstract class RemoteElement<
       },
       __attributeToPropertyMap: {
         value: attributeToPropertyMap,
+        enumerable: false,
+      },
+      __eventToPropertyMap: {
+        value: eventToPropertyMap,
         enumerable: false,
       },
     });
@@ -283,6 +307,13 @@ export abstract class RemoteElement<
   __properties?: Properties;
 
   private [REMOTE_PROPERTIES]!: Properties;
+  private [REMOTE_EVENTS]?: {
+    readonly events: Map<string, RemoteEvent>;
+    readonly listeners: WeakMap<
+      EventListenerOrEventListenerObject,
+      RemoteEventListenerRecord
+    >;
+  };
 
   constructor() {
     super();
@@ -344,6 +375,117 @@ export abstract class RemoteElement<
       propertyDefinition.type,
     );
   }
+
+  addEventListener(
+    type: string,
+    listener: EventListenerOrEventListenerObject,
+    options?: boolean | AddEventListenerOptions,
+  ) {
+    const {__eventToPropertyMap: eventToPropertyMap} = this
+      .constructor as typeof RemoteElement;
+    const property = eventToPropertyMap.get(type);
+
+    if (property == null) {
+      return super.addEventListener(type, listener, options);
+    }
+
+    let remoteEvents = this[REMOTE_EVENTS];
+    if (remoteEvents == null) {
+      remoteEvents = {events: new Map(), listeners: new WeakMap()};
+      this[REMOTE_EVENTS] = remoteEvents;
+    }
+
+    let remoteEvent = remoteEvents.events.get(type);
+    if (remoteEvent == null) {
+      remoteEvent = {
+        name: type,
+        property,
+        listeners: new Set(),
+        dispatch: (...args: any[]) => {
+          const event = new CustomEvent(type, {
+            detail: args.length > 1 ? args : args[0],
+          });
+
+          return this.dispatchEvent(event);
+        },
+      };
+    }
+
+    const normalizedListener =
+      typeof options === 'object' && options?.once
+        ? (...args: Parameters<EventListener>) => {
+            const result =
+              typeof listener === 'object'
+                ? listener.handleEvent(...args)
+                : listener.call(this, ...args);
+            removeRemoteListener.call(this, type, listener, listenerRecord);
+            return result;
+          }
+        : listener;
+
+    const listenerRecord: RemoteEventListenerRecord = [
+      normalizedListener,
+      remoteEvent,
+    ];
+
+    remoteEvent.listeners.add(listener);
+    remoteEvents.listeners.set(listener, listenerRecord);
+
+    super.addEventListener(type, normalizedListener, options);
+
+    if (typeof options === 'object' && options.signal) {
+      options.signal.addEventListener(
+        'abort',
+        () => {
+          removeRemoteListener.call(this, type, listener, listenerRecord);
+        },
+        {once: true},
+      );
+    }
+
+    const currentPropertyValue = this[REMOTE_PROPERTIES][property];
+
+    if (currentPropertyValue != null) return;
+
+    updateRemoteElementProperty(this, property!, remoteEvent.dispatch);
+  }
+
+  removeEventListener(
+    type: string,
+    listener: EventListenerOrEventListenerObject,
+    options?: boolean | EventListenerOptions,
+  ) {
+    const remoteEvents = this[REMOTE_EVENTS];
+    const listenerRecord = remoteEvents?.listeners.get(listener);
+    const normalizedListener = listenerRecord ? listenerRecord[0] : listener;
+
+    super.removeEventListener(type, normalizedListener, options);
+
+    if (listenerRecord == null) return;
+
+    removeRemoteListener.call(this, type, listener, listenerRecord);
+  }
+}
+
+function removeRemoteListener(
+  this: RemoteElement<any, any>,
+  type: string,
+  listener: EventListenerOrEventListenerObject,
+  listenerRecord: RemoteEventListenerRecord,
+) {
+  const remoteEvents = this[REMOTE_EVENTS]!;
+
+  const remoteEvent = listenerRecord[1];
+  remoteEvent.listeners.delete(listener);
+  remoteEvents.listeners.delete(listener);
+
+  if (remoteEvent.listeners.size > 0) return;
+
+  remoteEvents.events.delete(type);
+
+  if (this[REMOTE_PROPERTIES][remoteEvent.property] === remoteEvent.dispatch) {
+    updateRemoteElementProperty(this, remoteEvent.property, undefined);
+  }
 }
 
 // function convertPropertyValueToAttribute<Value = unknown>(
@@ -378,15 +520,19 @@ function saveRemoteProperty<Value = unknown>(
     NormalizedRemoteElementPropertyDefinition
   >,
   attributeToPropertyMap: Map<string, string>,
+  eventToPropertyMap: Map<string, string>,
 ) {
   if (remotePropertyDefinitions.has(name)) {
     return remotePropertyDefinitions.get(name)!;
   }
 
+  const looksLikeEventCallback = name[0] === 'o' && name[1] === 'n';
+
   const {
-    type = name[0] === 'o' && name[1] === 'n' ? Function : String,
+    type = looksLikeEventCallback ? Function : String,
     attribute = type !== Function,
-    alias = type === Function ? [`_${name}`] : undefined,
+    alias = looksLikeEventCallback ? [`_${name}`] : undefined,
+    event = looksLikeEventCallback,
   } = description ?? ({} as RemoteElementPropertyDefinition<Value>);
 
   let attributeName: string | undefined;
@@ -402,10 +548,23 @@ function saveRemoteProperty<Value = unknown>(
     attributeToPropertyMap.set(attributeName, name);
   }
 
+  let eventName: string | undefined;
+
+  if (event === true) {
+    eventName = camelToKebabCase(looksLikeEventCallback ? name.slice(2) : name);
+  } else if (typeof event === 'string') {
+    eventName = event;
+  }
+
+  if (eventName) {
+    eventToPropertyMap.set(eventName, name);
+  }
+
   const definition: NormalizedRemoteElementPropertyDefinition = {
     name,
     type,
     alias,
+    event: eventName,
     attribute: attributeName,
   };
 

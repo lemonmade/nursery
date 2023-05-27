@@ -1,6 +1,7 @@
 import {Document} from './Document.ts';
 import {Event} from './Event.ts';
 import {EventTarget} from './EventTarget.ts';
+import {CustomEvent} from './CustomEvent.ts';
 import {Node} from './Node.ts';
 import {ParentNode} from './ParentNode.ts';
 import {ChildNode} from './ChildNode.ts';
@@ -29,6 +30,7 @@ export class Window extends EventTarget {
   ParentNode = ParentNode;
   ChildNode = ChildNode;
   EventTarget = EventTarget;
+  CustomEvent = CustomEvent;
   DocumentFragment = DocumentFragment;
   Document = Document;
   CharacterData = CharacterData;

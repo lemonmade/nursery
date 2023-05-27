@@ -1,55 +1,72 @@
 import {hooks} from './hooks.ts';
 import {LISTENERS} from './constants.ts';
-import {fireEvent, dispatchEvent, EventPhase} from './Event.ts';
-import type {Event} from './Event.ts';
+import {fireEvent, EventPhase} from './Event.ts';
+import {CAPTURE_MARKER, type Event} from './Event.ts';
 import type {ChildNode} from './ChildNode.ts';
 
-export interface EventListenerOptions {
-  capture?: boolean;
-}
-
-export interface EventListener {
-  (evt: Event): void;
-}
-
-export interface EventListenerObject {
-  handleEvent(object: Event): void;
-}
-
-export type EventListenerOrEventListenerObject =
-  | EventListener
-  | EventListenerObject;
+const ONCE_LISTENERS = Symbol('onceListeners');
 
 export class EventTarget {
-  [LISTENERS]?: Map<
-    string,
-    Set<EventListenerOrEventListenerObject> & {proxy?: (event: any) => boolean}
-  >;
+  [LISTENERS]?: Map<string, Set<EventListenerOrEventListenerObject>>;
+  [ONCE_LISTENERS]?: WeakMap<EventListenerOrEventListenerObject, EventListener>;
 
   addEventListener(
     type: string,
     listener: EventListenerOrEventListenerObject | null,
-    options?: boolean | EventListenerOptions,
+    options?: boolean | AddEventListenerOptions,
   ) {
     if (listener == null) return;
 
     const capture = options === true || (options && options.capture === true);
-    const key = type + (capture ? '@' : '');
+    const once = typeof options === 'object' && options.once === true;
+    const signal = typeof options === 'object' ? options.signal : undefined;
+    const key = `${type}${capture ? CAPTURE_MARKER : ''}`;
+    let normalizedListener = listener;
+
+    if (once) {
+      normalizedListener = function normalizedListener(
+        this: EventTarget,
+        ...args: Parameters<EventListener>
+      ) {
+        this.removeEventListener(type, listener, options);
+
+        return typeof listener === 'object'
+          ? listener.handleEvent(...args)
+          : listener.call(this, ...args);
+      };
+
+      let onceListeners = this[ONCE_LISTENERS];
+      if (!onceListeners) {
+        onceListeners = new WeakMap();
+        this[ONCE_LISTENERS] = onceListeners;
+      }
+
+      onceListeners.set(listener, normalizedListener);
+    }
+
     let listeners = this[LISTENERS];
     if (!listeners) {
       listeners = new Map();
       this[LISTENERS] = listeners;
     }
+
     let list = listeners.get(key);
     if (!list) {
       list = new Set();
       listeners.set(key, list);
     }
-    if (list.proxy === undefined) {
-      list.proxy = dispatchEvent.bind(this, type);
-      hooks.addListener?.(this as any, type, list.proxy!);
-    }
-    list.add(listener);
+
+    list.add(normalizedListener);
+
+    signal?.addEventListener(
+      'abort',
+      () => {
+        removeEventListener.call(this, type, listener, options);
+      },
+      {once: true},
+    );
+
+    hooks.addEventListener?.(this as any, type, listener, options);
   }
 
   removeEventListener(
@@ -57,19 +74,7 @@ export class EventTarget {
     listener: EventListenerOrEventListenerObject | null,
     options?: boolean | EventListenerOptions,
   ) {
-    if (listener == null) return;
-
-    const capture = options === true || (options && options.capture === true);
-    const key = `${type}${capture}`;
-    const listeners = this[LISTENERS];
-    const list = listeners && listeners.get(key);
-    if (list) {
-      list.delete(listener);
-      if (list.proxy !== undefined) {
-        hooks.removeListener?.(this as any, type, list.proxy!);
-        list.proxy = undefined;
-      }
-    }
+    return removeEventListener.call(this, type, listener, options);
   }
 
   // function isChildNode(node: EventTarget): node is ChildNode {
@@ -105,5 +110,30 @@ export class EventTarget {
       }
     }
     return !defaultPrevented;
+  }
+}
+
+function removeEventListener(
+  this: EventTarget,
+  type: string,
+  listener: EventListenerOrEventListenerObject | null,
+  options?: boolean | EventListenerOptions,
+) {
+  if (listener == null) return;
+
+  const onceListeners = this[ONCE_LISTENERS];
+  const normalizedListener = onceListeners?.get(listener) ?? listener;
+
+  onceListeners?.delete(listener);
+
+  const capture = options === true || (options && options.capture === true);
+  const key = `${type}${capture ? CAPTURE_MARKER : ''}`;
+  const list = this[LISTENERS]?.get(key);
+
+  if (list) {
+    const deleted = list.delete(normalizedListener);
+    if (deleted) {
+      hooks.removeEventListener?.(this as any, type, listener, options);
+    }
   }
 }
