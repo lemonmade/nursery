@@ -1,5 +1,11 @@
 # @lemonmade/remote-ui
 
+## 0.1.28
+
+### Patch Changes
+
+- [`70dbb56`](https://github.com/lemonmade/nursery/commit/70dbb5623e702676c437b992175bd38f69462c6c) Thanks [@lemonmade](https://github.com/lemonmade)! - Add support for automatic event listener proxying
+
 ## 0.1.27
 
 ### Patch Changes
