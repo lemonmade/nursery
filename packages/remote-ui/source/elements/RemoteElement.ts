@@ -554,7 +554,7 @@ function saveRemoteProperty<Value = unknown>(
     // to write to that won't be treated as an event listener.
     if (looksLikeEventCallback) {
       alias ??= [];
-      alias.push(`_${name}`);
+      alias.unshift(`_${name}`);
     }
   }
 
