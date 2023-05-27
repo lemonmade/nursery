@@ -1,5 +1,11 @@
 # @lemonmade/remote-ui
 
+## 0.1.29
+
+### Patch Changes
+
+- [`c6abd6f`](https://github.com/lemonmade/nursery/commit/c6abd6fbeb8972820a681c6d9b18c92b433de248) Thanks [@lemonmade](https://github.com/lemonmade)! - Alias lowercase property name by default
+
 ## 0.1.28
 
 ### Patch Changes
