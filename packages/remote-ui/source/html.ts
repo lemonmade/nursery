@@ -1,4 +1,4 @@
-import htm from 'htm';
+import htm from 'htm/mini';
 
 const htmlInner = htm.bind(h);
 
