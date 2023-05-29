@@ -1,5 +1,13 @@
 # @lemonmade/remote-ui
 
+## 0.1.30
+
+### Patch Changes
+
+- [`b9c4a91`](https://github.com/lemonmade/nursery/commit/b9c4a91777a7bd5e73feb863b656df1a35f2278c) Thanks [@lemonmade](https://github.com/lemonmade)! - Add `htm` bindings
+
+* [`0ac8e03`](https://github.com/lemonmade/nursery/commit/0ac8e03506838d63c6a7ea6b8f701738f04dbf7a) Thanks [@lemonmade](https://github.com/lemonmade)! - Prefer underscored property alias
+
 ## 0.1.29
 
 ### Patch Changes

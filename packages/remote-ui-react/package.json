@@ -6,7 +6,7 @@
     "access": "public",
     "@lemonmade/registry": "https://registry.npmjs.org"
   },
-  "version": "0.1.19",
+  "version": "0.1.20",
   "engines": {
     "node": ">=14.0.0"
   },
@@ -66,7 +66,7 @@
     "./build/esnext/polyfill.esnext"
   ],
   "dependencies": {
-    "@lemonmade/remote-ui": "^0.1.26",
+    "@lemonmade/remote-ui": "^0.1.30",
     "@types/react": "^17.0.0 || ^18.0.0",
     "htm": "^3.1.1"
   },
