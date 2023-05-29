@@ -1,5 +1,11 @@
 # @lemonmade/remote-ui
 
+## 0.1.31
+
+### Patch Changes
+
+- [`3115371`](https://github.com/lemonmade/nursery/commit/3115371b77f380b977cc6055cfac73526ec4bbb4) Thanks [@lemonmade](https://github.com/lemonmade)! - Fix cached DOM nodes
+
 ## 0.1.30
 
 ### Patch Changes
