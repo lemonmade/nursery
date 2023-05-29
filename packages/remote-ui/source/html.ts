@@ -31,7 +31,7 @@ export function h<
   properties?: Properties,
   ...children: (Node | string | (Node | string)[])[]
 ) {
-  const childNodes = normalizeComponentReturn<Node[] | null>(children);
+  let childNodes = normalizeComponentReturn<Node[] | null>(children);
 
   // Pseudo-components, where they get DOM nodes as children.
   if (typeof name === 'function') {
@@ -44,9 +44,15 @@ export function h<
 
   if (properties) {
     for (const property in properties) {
-      const value = properties[property];
+      const value = properties[property] as any;
 
-      if (property in element) {
+      if (value instanceof Node) {
+        childNodes ??= [];
+        const fragment = document.createElement('remote-fragment');
+        fragment.slot = property;
+        fragment.append(value);
+        childNodes.push(fragment);
+      } else if (property in element) {
         (element as any)[property] = value;
       } else if (value === true) {
         element.setAttribute(property, '');

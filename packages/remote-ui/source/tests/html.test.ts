@@ -5,7 +5,10 @@ class Button extends HTMLElement {
   emphasized = false;
 }
 
+class RemoteFragment extends HTMLElement {}
+
 customElements.define('ui-button', Button);
+customElements.define('remote-fragment', RemoteFragment);
 
 describe('html', () => {
   it('renders a text node', () => {
@@ -39,7 +42,19 @@ describe('html', () => {
 
   it('renders an element with properties', () => {
     const element = html<Button>`<ui-button emphasized>Press me!</ui-button>`;
+
     expect(element.emphasized).toBe(true);
+  });
+
+  it('renders a node passed as a property to a slot with a matching name', () => {
+    const icon = html`<ui-icon name="check" />`;
+    const button = html<Button>`<ui-button icon=${icon}>Press me!</ui-button>`;
+
+    expect(button.childNodes).toStrictEqual(
+      expect.arrayContaining([expect.any(Text), expect.any(RemoteFragment)]),
+    );
+    expect(button.childNodes[1]!.childNodes).toStrictEqual([icon]);
+    expect((button.childNodes[1] as RemoteFragment).slot).toBe('icon');
   });
 
   it('renders multiple children', () => {
@@ -55,7 +70,7 @@ describe('html', () => {
   });
 
   it('can embed existing DOM nodes', () => {
-    const text = html`Click me!`;
+    const text = html`Press me!`;
     const icon = html`<ui-icon slot="icon" name="check" />`;
     const button = html<Button>`<ui-button>${text}${icon}</ui-button>`;
 
@@ -77,10 +92,10 @@ describe('html', () => {
 
   it('ignores falsy children', () => {
     const button = html<Button>`
-      <ui-button>${false}${null}${undefined}Click me!<//>
+      <ui-button>${false}${null}${undefined}Press me!<//>
     `;
 
-    expect(button.outerHTML).toBe('<ui-button>Click me!</ui-button>');
+    expect(button.outerHTML).toBe('<ui-button>Press me!</ui-button>');
     expect(button.childNodes).toStrictEqual([expect.any(Text)]);
   });
 
