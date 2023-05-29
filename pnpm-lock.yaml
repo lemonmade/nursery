@@ -52,6 +52,10 @@ importers:
         version: 16.5.0
 
   packages/remote-ui:
+    dependencies:
+      htm:
+        specifier: ^3.1.1
+        version: 3.1.1
     devDependencies:
       '@quilted/testing':
         specifier: ^0.1.0
@@ -62,6 +66,9 @@ importers:
       '@lemonmade/remote-ui':
         specifier: ^0.1.25
         version: link:../remote-ui
+      htm:
+        specifier: ^3.1.1
+        version: 3.1.1
     devDependencies:
       preact:
         specifier: ^10.14.0
@@ -75,6 +82,9 @@ importers:
       '@types/react':
         specifier: ^17.0.0 || ^18.0.0
         version: 17.0.0
+      htm:
+        specifier: ^3.1.1
+        version: 3.1.1
     devDependencies:
       '@quilted/testing':
         specifier: ^0.1.0
@@ -5657,6 +5667,10 @@ packages:
     dependencies:
       lru-cache: 6.0.0
     dev: true
+
+  /htm@3.1.1:
+    resolution: {integrity: sha512-983Vyg8NwUE7JkZ6NmOqpCZ+sh1bKv2iYTlUkzlWmA5JD2acKoxd4KVxbMmxX/85mtfdnDmTFoNKcg5DGAvxNQ==}
+    dev: false
 
   /html-encoding-sniffer@3.0.0:
     resolution: {integrity: sha512-oWv4T4yJ52iKrufjnyZPkrN0CH3QnrUqdB6In1g5Fe1mia8GmF36gnfNySxoZtxD5+NmYw1EElVXiBk93UeskA==}

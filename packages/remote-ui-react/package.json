@@ -30,6 +30,13 @@
       "import": "./build/esm/host.mjs",
       "require": "./build/cjs/host.cjs"
     },
+    "./html": {
+      "types": "./build/typescript/html.d.ts",
+      "quilt:source": "./source/html.ts",
+      "quilt:esnext": "./build/esnext/html.esnext",
+      "import": "./build/esm/html.mjs",
+      "require": "./build/cjs/html.cjs"
+    },
     "./polyfill": {
       "types": "./build/typescript/polyfill.d.ts",
       "quilt:source": "./source/polyfill.ts",
@@ -44,6 +51,9 @@
       "host": [
         "./build/typescript/host.d.ts"
       ],
+      "html": [
+        "./build/typescript/html.d.ts"
+      ],
       "polyfill": [
         "./build/typescript/polyfill.d.ts"
       ]
@@ -57,7 +67,8 @@
   ],
   "dependencies": {
     "@lemonmade/remote-ui": "^0.1.26",
-    "@types/react": "^17.0.0 || ^18.0.0"
+    "@types/react": "^17.0.0 || ^18.0.0",
+    "htm": "^3.1.1"
   },
   "peerDependencies": {
     "react": "^17.0.0 || ^18.0.0"

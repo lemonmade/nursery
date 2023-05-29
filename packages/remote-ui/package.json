@@ -30,6 +30,13 @@
       "import": "./build/esm/elements.mjs",
       "require": "./build/cjs/elements.cjs"
     },
+    "./html": {
+      "types": "./build/typescript/html.d.ts",
+      "quilt:source": "./source/html.ts",
+      "quilt:esnext": "./build/esnext/html.esnext",
+      "import": "./build/esm/html.mjs",
+      "require": "./build/cjs/html.cjs"
+    },
     "./polyfill": {
       "types": "./build/typescript/polyfill.d.ts",
       "quilt:source": "./source/polyfill.ts",
@@ -39,6 +46,19 @@
     }
   },
   "types": "./build/typescript/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "elements": [
+        "./build/typescript/elements.d.ts"
+      ],
+      "html": [
+        "./build/typescript/html.d.ts"
+      ],
+      "polyfill": [
+        "./build/typescript/polyfill.d.ts"
+      ]
+    }
+  },
   "sideEffects": [
     "./source/polyfill.ts",
     "./source/polyfill/**/*",
@@ -49,7 +69,9 @@
     "./build/esnext/polyfill.esnext",
     "./build/esnext/polyfill/**/*"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "htm": "^3.1.1"
+  },
   "peerDependencies": {},
   "peerDependenciesMeta": {},
   "devDependencies": {

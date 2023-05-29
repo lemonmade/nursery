@@ -29,6 +29,13 @@
       "quilt:esnext": "./build/esnext/host.esnext",
       "import": "./build/esm/host.mjs",
       "require": "./build/cjs/host.cjs"
+    },
+    "./html": {
+      "types": "./build/typescript/html.d.ts",
+      "quilt:source": "./source/html.ts",
+      "quilt:esnext": "./build/esnext/html.esnext",
+      "import": "./build/esm/html.mjs",
+      "require": "./build/cjs/html.cjs"
     }
   },
   "types": "./build/typescript/index.d.ts",
@@ -36,12 +43,16 @@
     "*": {
       "host": [
         "./build/typescript/host.d.ts"
+      ],
+      "html": [
+        "./build/typescript/html.d.ts"
       ]
     }
   },
   "sideEffects": false,
   "dependencies": {
-    "@lemonmade/remote-ui": "^0.1.25"
+    "@lemonmade/remote-ui": "^0.1.25",
+    "htm": "^3.1.1"
   },
   "peerDependencies": {
     "preact": "^10.0.0"
