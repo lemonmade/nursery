@@ -15,6 +15,7 @@ export {RemoteFragmentElement} from './elements/RemoteFragmentElement.ts';
 export {RemoteRootElement} from './elements/RemoteRootElement.ts';
 export {RemoteReceiverElement} from './elements/RemoteReceiverElement.ts';
 
+export {RemoteEvent} from './elements/RemoteEvent.ts';
 export {RemoteMutationObserver} from './elements/RemoteMutationObserver.ts';
 
 export {

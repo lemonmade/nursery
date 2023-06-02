@@ -1,4 +1,5 @@
 import {REMOTE_PROPERTIES} from '../constants.ts';
+import {RemoteEvent} from './RemoteEvent.ts';
 import {updateRemoteElementProperty} from './internals.ts';
 
 export interface RemoteElementPropertyType<Value = unknown> {
@@ -112,16 +113,16 @@ export function createRemoteElement<
 const SLOT_PROPERTY = 'slot';
 const REMOTE_EVENTS = Symbol('remote.events');
 
-interface RemoteEvent {
+interface RemoteEventRecord {
   readonly name: string;
   readonly property: string;
   readonly listeners: Set<EventListenerOrEventListenerObject>;
-  dispatch(...args: any[]): boolean;
+  dispatch(...args: any[]): unknown;
 }
 
 type RemoteEventListenerRecord = [
   EventListenerOrEventListenerObject,
-  RemoteEvent,
+  RemoteEventRecord,
 ];
 
 // Heavily inspired by https://github.com/lit/lit/blob/343187b1acbbdb02ce8d01fa0a0d326870419763/packages/reactive-element/src/reactive-element.ts
@@ -308,7 +309,7 @@ export abstract class RemoteElement<
 
   private [REMOTE_PROPERTIES]!: Properties;
   private [REMOTE_EVENTS]?: {
-    readonly events: Map<string, RemoteEvent>;
+    readonly events: Map<string, RemoteEventRecord>;
     readonly listeners: WeakMap<
       EventListenerOrEventListenerObject,
       RemoteEventListenerRecord
@@ -402,11 +403,13 @@ export abstract class RemoteElement<
         property,
         listeners: new Set(),
         dispatch: (...args: any[]) => {
-          const event = new CustomEvent(type, {
+          const event = new RemoteEvent(type, {
             detail: args.length > 1 ? args : args[0],
           });
 
-          return this.dispatchEvent(event);
+          const ranWithoutPrevention = this.dispatchEvent(event);
+
+          return event.resolved ? event.result : ranWithoutPrevention;
         },
       };
 
