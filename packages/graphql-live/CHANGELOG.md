@@ -1,5 +1,11 @@
 # @lemonmade/graphql-live
 
+## 0.1.15
+
+### Patch Changes
+
+- [`4a8819e`](https://github.com/lemonmade/nursery/commit/4a8819e9fcf98b8ba58b4561b62b2320659e508e) Thanks [@lemonmade](https://github.com/lemonmade)! - Add support for mutation and subscription types
+
 ## 0.1.14
 
 ### Patch Changes
