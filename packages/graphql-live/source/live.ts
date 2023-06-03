@@ -49,6 +49,42 @@ export function createQueryResolver<
   return {__typename: 'Query', ...resolvers} as any;
 }
 
+export function createMutationResolver<
+  Types extends {Mutation: {__typename: 'Mutation'}},
+  Context = Record<string, never>,
+>(
+  createResolvers: (
+    helpers: GraphQLLiveResolverCreateHelper<Types, Context>,
+  ) => Omit<
+    GraphQLLiveResolverObject<Types['Mutation'], Context>,
+    '__typename' | '__context'
+  >,
+): GraphQLLiveResolverObject<Types['Mutation'], Context> {
+  const resolvers = createResolvers({
+    object: createObjectResolver as any,
+  });
+
+  return {__typename: 'Mutation', ...resolvers} as any;
+}
+
+export function createSubscriptionResolver<
+  Types extends {Subscription: {__typename: 'Subscription'}},
+  Context = Record<string, never>,
+>(
+  createResolvers: (
+    helpers: GraphQLLiveResolverCreateHelper<Types, Context>,
+  ) => Omit<
+    GraphQLLiveResolverObject<Types['Subscription'], Context>,
+    '__typename' | '__context'
+  >,
+): GraphQLLiveResolverObject<Types['Subscription'], Context> {
+  const resolvers = createResolvers({
+    object: createObjectResolver as any,
+  });
+
+  return {__typename: 'Subscription', ...resolvers} as any;
+}
+
 export interface GraphQLRunner<Data, _Variables> {
   readonly current: GraphQLResult<Data> | undefined;
   untilAvailable(): Promise<GraphQLResult<Data>>;
@@ -60,9 +96,12 @@ export function run<
   Data = Record<string, unknown>,
   Variables = Record<string, never>,
   Resolver extends GraphQLLiveResolverObject<
-    {__typename: 'Query'},
+    {__typename: 'Query' | 'Mutation' | 'Subscription'},
     Record<string, any>
-  > = GraphQLLiveResolverObject<{__typename: 'Query'}, Record<string, never>>,
+  > = GraphQLLiveResolverObject<
+    {__typename: 'Query' | 'Mutation' | 'Subscription'},
+    Record<string, never>
+  >,
 >(
   document: DocumentNode & GraphQLOperationType<Data, Variables>,
   resolvers: Resolver,
@@ -83,8 +122,7 @@ export function run<
   for (const definition of document.definitions) {
     switch (definition.kind) {
       case 'OperationDefinition': {
-        if (query != null || definition.operation !== 'query') continue;
-        query = definition;
+        query ??= definition;
         break;
       }
       case 'FragmentDefinition': {
