@@ -1,5 +1,13 @@
 # @lemonmade/remote-ui
 
+## 0.1.32
+
+### Patch Changes
+
+- [`e05da83`](https://github.com/lemonmade/nursery/commit/e05da83f3f156dd42b30b68dca5859c8d97df1dd) Thanks [@lemonmade](https://github.com/lemonmade)! - Add automatic slotting of elements as props
+
+* [`1ccf8f6`](https://github.com/lemonmade/nursery/commit/1ccf8f6543f225b11a146aa401881cc071bea777) Thanks [@lemonmade](https://github.com/lemonmade)! - Add RemoteEvent to store custom event responses
+
 ## 0.1.31
 
 ### Patch Changes
