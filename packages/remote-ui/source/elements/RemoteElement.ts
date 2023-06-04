@@ -21,6 +21,7 @@ export interface RemoteElementPropertyDefinition<Value = unknown> {
   alias?: string[];
   event?: boolean | string;
   attribute?: string | boolean;
+  default?: Value;
 }
 
 interface NormalizedRemoteElementPropertyDefinition<Value = unknown> {
@@ -29,6 +30,7 @@ interface NormalizedRemoteElementPropertyDefinition<Value = unknown> {
   alias?: string[];
   event?: string;
   attribute?: string;
+  default?: Value;
 }
 
 export type RemoteElementPropertiesDefinition<
@@ -322,8 +324,9 @@ export abstract class RemoteElement<
 
     const propertyDescriptors: PropertyDescriptorMap = {};
 
+    const remoteProperties: Record<string, unknown> = {};
     propertyDescriptors[REMOTE_PROPERTIES] = {
-      value: {},
+      value: remoteProperties,
       writable: true,
       configurable: true,
       enumerable: false,
@@ -339,6 +342,10 @@ export abstract class RemoteElement<
       // eslint-disable-next-line no-prototype-builtins
       if (Object.getPrototypeOf(this).hasOwnProperty(property)) {
         continue;
+      }
+
+      if (property === aliasedName) {
+        remoteProperties[property] = description.default;
       }
 
       const propertyDescriptor = {
@@ -540,6 +547,7 @@ function saveRemoteProperty<Value = unknown>(
     type = looksLikeEventCallback ? Function : String,
     attribute = type !== Function,
     event = looksLikeEventCallback,
+    default: defaultValue = type === Function ? false : undefined,
   } = resolvedDescription;
 
   if (alias == null) {
@@ -592,6 +600,7 @@ function saveRemoteProperty<Value = unknown>(
     alias,
     event: eventName,
     attribute: attributeName,
+    default: defaultValue,
   };
 
   remotePropertyDefinitions.set(name, definition);
