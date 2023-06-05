@@ -547,7 +547,7 @@ function saveRemoteProperty<Value = unknown>(
     type = looksLikeEventCallback ? Function : String,
     attribute = type !== Function,
     event = looksLikeEventCallback,
-    default: defaultValue = type === Function ? false : undefined,
+    default: defaultValue = type === Boolean ? false : undefined,
   } = resolvedDescription;
 
   if (alias == null) {
