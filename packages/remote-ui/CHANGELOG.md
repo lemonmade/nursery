@@ -1,5 +1,11 @@
 # @lemonmade/remote-ui
 
+## 0.1.33
+
+### Patch Changes
+
+- [`f78da82`](https://github.com/lemonmade/nursery/commit/f78da829240156372336de002fc34fef5b8dc0be) Thanks [@lemonmade](https://github.com/lemonmade)! - Add optional default value for remote properties
+
 ## 0.1.32
 
 ### Patch Changes
