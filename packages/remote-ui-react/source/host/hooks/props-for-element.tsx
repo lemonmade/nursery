@@ -24,10 +24,16 @@ export function usePropsForRemoteElement<
   const slotProperties: Record<string, any> = {...properties};
 
   for (const child of children) {
-    if (child.type === 1 && child.properties.slot) {
-      slotProperties[child.properties.slot as string] = renderRemoteNode(
-        child,
-        options,
+    if (child.type === 1 && typeof child.properties.slot === 'string') {
+      const slot = child.properties.slot;
+      const rendered = renderRemoteNode(child, options);
+      slotProperties[slot] = slotProperties[slot] ? (
+        <>
+          {slotProperties[slot]}
+          {rendered}
+        </>
+      ) : (
+        rendered
       );
     } else {
       reactChildren.push(renderRemoteNode(child, options));

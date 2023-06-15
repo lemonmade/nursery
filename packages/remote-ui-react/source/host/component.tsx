@@ -6,7 +6,7 @@ import {
 } from 'react';
 
 import {useRemoteReceived} from './hooks/remote-received.ts';
-import {usePropsForRemoteElement} from './hooks/props-for-element.ts';
+import {usePropsForRemoteElement} from './hooks/props-for-element.tsx';
 import {
   REMOTE_ELEMENT_PROP,
   REMOTE_ELEMENT_ATTACHED_PROP,

@@ -2,7 +2,7 @@ import type {RemoteElementReceived} from '@lemonmade/remote-ui';
 import {forwardRef, type ForwardFn} from 'preact/compat';
 
 import {useRemoteReceived} from './hooks/remote-received.ts';
-import {usePropsForRemoteElement} from './hooks/props-for-element.ts';
+import {usePropsForRemoteElement} from './hooks/props-for-element.tsx';
 import {
   REMOTE_ELEMENT_PROP,
   REMOTE_ELEMENT_ATTACHED_PROP,
