@@ -3,7 +3,7 @@ export class RemoteEvent<
   Result = unknown,
 > extends CustomEvent<Detail> {
   readonly resolved = false;
-  readonly result?: Promise<Result>;
+  readonly result?: Result;
 
   constructor(type: string, options?: CustomEventInit<Detail>) {
     super(type, options);
@@ -11,6 +11,6 @@ export class RemoteEvent<
 
   resolve(resolver: (detail: Detail) => Result | Promise<Result>) {
     (this as any).resolved = true;
-    (this as any).result = Promise.resolve().then(() => resolver(this.detail));
+    (this as any).result = resolver(this.detail);
   }
 }
