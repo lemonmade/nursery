@@ -1,0 +1,59 @@
+{
+  "name": "@lemonmade/shopify",
+  "type": "module",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "@lemonmade/registry": "https://registry.npmjs.org"
+  },
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/<USER>/<REPOSITORY>",
+    "directory": "packages/shopify"
+  },
+  "exports": {
+    ".": {
+      "types": "./build/typescript/index.d.ts",
+      "quilt:source": "./source/index.ts",
+      "quilt:esnext": "./build/esnext/index.esnext",
+      "import": "./build/esm/index.mjs",
+      "require": "./build/cjs/index.cjs"
+    },
+    "./storefront": {
+      "types": "./build/typescript/storefront.d.ts",
+      "quilt:source": "./source/storefront.ts",
+      "quilt:esnext": "./build/esnext/storefront.esnext",
+      "import": "./build/esm/storefront.mjs",
+      "require": "./build/cjs/storefront.cjs"
+    }
+  },
+  "types": "./build/typescript/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "storefront": [
+        "./build/typescript/storefront.d.ts"
+      ]
+    }
+  },
+  "sideEffects": false,
+  "dependencies": {
+    "@quilted/graphql": "^0.4.61"
+  },
+  "peerDependencies": {},
+  "peerDependenciesMeta": {},
+  "devDependencies": {
+    "@quilted/testing": "^0.1.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@quilted/eslint-config/project"
+    ]
+  },
+  "browserslist": [
+    "extends @quilted/browserslist-config/defaults"
+  ]
+}
