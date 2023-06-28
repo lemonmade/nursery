@@ -71,9 +71,19 @@ export function createStorefrontGraphQLFetch<
       apiVersion,
     });
 
+    let source: string;
+    let operationName: string | undefined;
+
+    if (typeof operation === 'string') {
+      source = operation;
+    } else {
+      source = operation.source;
+      operationName = operation.name;
+    }
+
     // Helpful for debugging operations in the browser developer console
-    if (operation.name) {
-      url.searchParams.set('operation', operation.name);
+    if (operationName) {
+      url.searchParams.set('operation', operationName);
     }
 
     const request: RequestInit = {
@@ -81,9 +91,9 @@ export function createStorefrontGraphQLFetch<
       headers,
       signal: options?.signal,
       body: JSON.stringify({
-        query: operation.source,
+        query: source,
         variables: options?.variables ?? {},
-        operationName: operation.name,
+        operationName,
       }),
     };
 
