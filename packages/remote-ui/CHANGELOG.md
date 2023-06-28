@@ -1,5 +1,11 @@
 # @lemonmade/remote-ui
 
+## 0.1.34
+
+### Patch Changes
+
+- [`533df0c`](https://github.com/lemonmade/nursery/commit/533df0cbe6b32368b8805dea973007db00ffc7c8) Thanks [@lemonmade](https://github.com/lemonmade)! - Pass through RemoteEvent result without extra promise wrapper
+
 ## 0.1.33
 
 ### Patch Changes

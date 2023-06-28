@@ -1,5 +1,14 @@
 # @lemonmade/remote-ui-react
 
+## 0.1.21
+
+### Patch Changes
+
+- [`620309e`](https://github.com/lemonmade/nursery/commit/620309ea8bc0b04132662b17e1f2c1a8fc4060e0) Thanks [@lemonmade](https://github.com/lemonmade)! - Support multiple children with the same slot
+
+- Updated dependencies [[`533df0c`](https://github.com/lemonmade/nursery/commit/533df0cbe6b32368b8805dea973007db00ffc7c8)]:
+  - @lemonmade/remote-ui@0.1.34
+
 ## 0.1.20
 
 ### Patch Changes
