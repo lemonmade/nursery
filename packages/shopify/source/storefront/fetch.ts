@@ -34,7 +34,7 @@ export type StorefrontAccessToken =
        * A server-side authenticated access token.
        * @see https://shopify.dev/docs/api/usage/authentication#getting-started-with-authenticated-access
        */
-      readonly access: 'authenticated';
+      readonly access: 'authenticated' | 'private';
       readonly token: string;
       readonly buyerIP?: string;
     };
@@ -142,10 +142,11 @@ export function createStorefrontGraphQLRequestOptions({
       break;
     }
     // @see https://shopify.dev/docs/api/usage/authentication#getting-started-with-authenticated-access
+    case 'private':
     case 'authenticated': {
       const {token, buyerIP} = accessToken;
       headers.set('Shopify-Storefront-Private-Token', token);
-      if (buyerIP) headers.set('Shopify-Storefront-Private-Token', buyerIP);
+      if (buyerIP) headers.set('Shopify-Storefront-Buyer-IP', buyerIP);
       break;
     }
   }

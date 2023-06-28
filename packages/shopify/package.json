@@ -41,7 +41,7 @@
   },
   "sideEffects": false,
   "dependencies": {
-    "@quilted/graphql": "^0.4.61"
+    "@quilted/graphql": "^0.5.0"
   },
   "peerDependencies": {},
   "peerDependenciesMeta": {},

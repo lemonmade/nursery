@@ -44,8 +44,8 @@ importers:
         specifier: ^0.1.0
         version: 0.1.18
       '@quilted/graphql':
-        specifier: ^0.4.0
-        version: 0.4.57
+        specifier: ^0.5.0
+        version: 0.5.0
     devDependencies:
       graphql:
         specifier: ^16.0.0
@@ -96,8 +96,8 @@ importers:
   packages/shopify:
     dependencies:
       '@quilted/graphql':
-        specifier: ^0.4.61
-        version: 0.4.61
+        specifier: ^0.5.0
+        version: 0.5.0
     devDependencies:
       '@quilted/testing':
         specifier: ^0.1.0
@@ -2886,9 +2886,10 @@ packages:
       graphql: 16.5.0
       is-glob: 4.0.3
       p-limit: 4.0.0
+    dev: true
 
-  /@quilted/graphql@0.4.61:
-    resolution: {integrity: sha512-Ouji4fPFTEPFBvTMxlIglHvCO2JftUhpupQm36s4DaMEWKQ53cKeZ5v5Xe4/GanMKBk3z3hzx3kqsyFimsoicw==}
+  /@quilted/graphql@0.5.0:
+    resolution: {integrity: sha512-WREkKpXS1ROjMQpaHpOvfNE+VE4tC+NNpy67Lkkc6UGp1cbfNLV3fTJCt//AdujqEVdNVfcJpDTbd3BF23RNrQ==}
     hasBin: true
     peerDependencies:
       '@jest/globals': ^27.0.0
