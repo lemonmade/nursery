@@ -1,15 +1,22 @@
+export type {
+  GraphQLFetchContext,
+  GraphQLFetch,
+  GraphQLOperation,
+  GraphQLAnyOperation,
+  GraphQLResult,
+  GraphQLData,
+  GraphQLVariables,
+  GraphQLVariableOptions,
+  GraphQLStreamingFetch,
+  GraphQLStreamingFetchResult,
+  GraphQLStreamingResult,
+  GraphQLStreamingIncrementalResult,
+} from '@quilted/graphql';
+
 export * from './types.ts';
 export type {StorefrontAccessToken} from './storefront/types.ts';
-export {
-  createStorefrontGraphQLFetch,
-  type GraphQLFetch,
-  type GraphQLOperation,
-  type GraphQLResult,
-  type GraphQLData,
-  type GraphQLVariables,
-  type GraphQLVariableOptions,
-  type StorefrontGraphQLFetchContext,
-} from './storefront/fetch.ts';
+export {createStorefrontGraphQLFetch} from './storefront/fetch.ts';
+export {createStorefrontGraphQLStreamingFetch} from './storefront/stream.ts';
 export {
   StorefrontGraphQLRequest,
   StorefrontGraphQLRequestURL,
