@@ -1,7 +1,7 @@
 export * from './types.ts';
+export type {StorefrontAccessToken} from './storefront/types.ts';
 export {
   createStorefrontGraphQLFetch,
-  createStorefrontGraphQLRequestOptions,
   type GraphQLFetch,
   type GraphQLOperation,
   type GraphQLResult,
@@ -9,7 +9,10 @@ export {
   type GraphQLVariables,
   type GraphQLVariableOptions,
   type StorefrontGraphQLFetchContext,
-  type StorefrontGraphQLFetchOptions,
-  type StorefrontGraphQLRequestOptions,
-  type StorefrontAccessToken,
 } from './storefront/fetch.ts';
+export {
+  StorefrontGraphQLRequest,
+  StorefrontGraphQLRequestURL,
+  StorefrontGraphQLRequestHeaders,
+  type StorefrontGraphQLRequestOptions,
+} from './storefront/request.ts';
