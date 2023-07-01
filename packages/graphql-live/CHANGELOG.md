@@ -1,5 +1,11 @@
 # @lemonmade/graphql-live
 
+## 0.1.18
+
+### Patch Changes
+
+- [`6bb0e0e`](https://github.com/lemonmade/nursery/commit/6bb0e0edf23a615c7f6e11a9807609a8d58ed69a) Thanks [@lemonmade](https://github.com/lemonmade)! - Upgrade to support streaming GraphQL client
+
 ## 0.1.17
 
 ### Patch Changes
