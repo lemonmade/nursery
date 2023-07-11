@@ -4,20 +4,20 @@ import type {GraphQLFetch} from '@quilted/graphql';
 import {getCurrentApiVersion} from '../shared/api-version.ts';
 import {
   getShopURLFromEnvironment,
-  StorefrontGraphQLRequestURL,
-  StorefrontGraphQLRequestHeaders,
-  type StorefrontGraphQLRequestOptions,
+  AdminGraphQLRequestURL,
+  AdminGraphQLRequestHeaders,
+  type AdminGraphQLRequestOptions,
 } from './request.ts';
 
-export function createStorefrontGraphQLFetch({
+export function createAdminGraphQLFetch({
   shop = getShopURLFromEnvironment(),
   apiVersion = getCurrentApiVersion(),
   accessToken,
-}: StorefrontGraphQLRequestOptions): GraphQLFetch {
+}: AdminGraphQLRequestOptions): GraphQLFetch {
   return createGraphQLHttpFetch({
     method: 'POST',
     url({name}) {
-      const url = new StorefrontGraphQLRequestURL({shop, apiVersion});
+      const url = new AdminGraphQLRequestURL({shop, apiVersion});
 
       if (name) {
         url.searchParams.set('operationName', name);
@@ -26,7 +26,7 @@ export function createStorefrontGraphQLFetch({
       return url;
     },
     headers() {
-      return new StorefrontGraphQLRequestHeaders({accessToken});
+      return new AdminGraphQLRequestHeaders({accessToken});
     },
   });
 }

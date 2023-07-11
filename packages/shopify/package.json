@@ -23,6 +23,13 @@
       "import": "./build/esm/index.mjs",
       "require": "./build/cjs/index.cjs"
     },
+    "./admin": {
+      "types": "./build/typescript/admin.d.ts",
+      "quilt:source": "./source/admin.ts",
+      "quilt:esnext": "./build/esnext/admin.esnext",
+      "import": "./build/esm/admin.mjs",
+      "require": "./build/cjs/admin.cjs"
+    },
     "./storefront": {
       "types": "./build/typescript/storefront.d.ts",
       "quilt:source": "./source/storefront.ts",
@@ -34,6 +41,9 @@
   "types": "./build/typescript/index.d.ts",
   "typesVersions": {
     "*": {
+      "admin": [
+        "./build/typescript/admin.d.ts"
+      ],
       "storefront": [
         "./build/typescript/storefront.d.ts"
       ]
@@ -41,7 +51,7 @@
   },
   "sideEffects": false,
   "dependencies": {
-    "@quilted/graphql": "^0.6.3"
+    "@quilted/graphql": "^1.0.0"
   },
   "peerDependencies": {},
   "peerDependenciesMeta": {},

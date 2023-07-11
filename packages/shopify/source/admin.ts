@@ -15,12 +15,10 @@ export type {
 export {gql, graphql} from '@quilted/graphql';
 
 export * from './types.ts';
-export type {StorefrontAccessToken} from './storefront/types.ts';
-export {createStorefrontGraphQLFetch} from './storefront/fetch.ts';
-export {createStorefrontGraphQLStreamingFetch} from './storefront/stream.ts';
+export {createAdminGraphQLFetch} from './admin/fetch.ts';
 export {
-  StorefrontGraphQLRequest,
-  StorefrontGraphQLRequestURL,
-  StorefrontGraphQLRequestHeaders,
-  type StorefrontGraphQLRequestOptions,
-} from './storefront/request.ts';
+  AdminGraphQLRequest,
+  AdminGraphQLRequestURL,
+  AdminGraphQLRequestHeaders,
+  type AdminGraphQLRequestOptions,
+} from './admin/request.ts';

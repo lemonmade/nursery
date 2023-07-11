@@ -15,6 +15,7 @@ export function createStorefrontGraphQLStreamingFetch({
   accessToken,
 }: StorefrontGraphQLRequestOptions): GraphQLStreamingFetch {
   return createGraphQLHttpStreamingFetch({
+    method: 'POST',
     url({name}) {
       const url = new StorefrontGraphQLRequestURL({shop, apiVersion});
 

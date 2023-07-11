@@ -1,5 +1,6 @@
 import {
   GraphQLFetchRequest,
+  type GraphQLAnyOperation,
   type GraphQLFetchRequestInit,
 } from '@quilted/graphql';
 
@@ -20,11 +21,17 @@ export class StorefrontGraphQLRequest<
 > extends GraphQLFetchRequest<Data, Variables> {
   constructor(
     {shop, apiVersion, accessToken}: StorefrontGraphQLRequestOptions,
-    init: GraphQLFetchRequestInit<Data, Variables>,
+    operation: GraphQLAnyOperation<Data, Variables>,
+    init?: GraphQLFetchRequestInit<Data, Variables>,
   ) {
-    super(new StorefrontGraphQLRequestURL({shop, apiVersion}), {
+    const headers = new StorefrontGraphQLRequestHeaders(
+      {accessToken},
+      init?.headers,
+    );
+
+    super(new StorefrontGraphQLRequestURL({shop, apiVersion}), operation, {
       ...init,
-      headers: new StorefrontGraphQLRequestHeaders({accessToken}),
+      headers,
     });
   }
 }
@@ -39,13 +46,13 @@ export class StorefrontGraphQLRequestURL extends URL {
 }
 
 export class StorefrontGraphQLRequestHeaders extends Headers {
-  constructor({
-    accessToken: accessTokenOrString,
-  }: Pick<StorefrontGraphQLRequestOptions, 'accessToken'>) {
-    super({
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    });
+  constructor(
+    {
+      accessToken: accessTokenOrString,
+    }: Pick<StorefrontGraphQLRequestOptions, 'accessToken'>,
+    headers?: HeadersInit,
+  ) {
+    super(headers);
 
     const accessToken: StorefrontAccessToken =
       typeof accessTokenOrString === 'string'
