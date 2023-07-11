@@ -1,5 +1,11 @@
 # @lemonmade/graphql-live
 
+## 0.2.0
+
+### Minor Changes
+
+- [`80691ff`](https://github.com/lemonmade/nursery/commit/80691ffd84773d94359f15a91ebcb1c6e29ec418) Thanks [@lemonmade](https://github.com/lemonmade)! - Update GraphQL dependency
+
 ## 0.1.18
 
 ### Patch Changes

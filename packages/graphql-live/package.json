@@ -2,7 +2,7 @@
   "name": "@lemonmade/graphql-live",
   "description": "",
   "type": "module",
-  "version": "0.1.18",
+  "version": "0.2.0",
   "license": "MIT",
   "engines": {
     "node": ">=14.0.0"
