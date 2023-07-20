@@ -1,9 +1,12 @@
 import type {ComponentType} from 'preact';
-import type {RemoteReceiver, RemoteElementReceived} from '@lemonmade/remote-ui';
+import type {
+  SignalRemoteReceiver,
+  SignalRemoteElementReceived,
+} from './receiver.ts';
 
 export interface RemoteComponentRendererProps {
-  element: RemoteElementReceived;
-  receiver: RemoteReceiver;
+  element: SignalRemoteElementReceived;
+  receiver: SignalRemoteReceiver;
   components: RemoteComponentRendererMap<any>;
 }
 

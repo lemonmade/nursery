@@ -1,7 +1,6 @@
 import type {FunctionComponent} from 'preact';
 
 import {renderRemoteNode} from './node.tsx';
-import {useRemoteReceived} from './hooks/remote-received.ts';
 import type {RemoteComponentRendererProps} from './types.ts';
 
 export const RemoteFragmentRenderer: FunctionComponent<RemoteComponentRendererProps> =
@@ -10,15 +9,11 @@ export const RemoteFragmentRenderer: FunctionComponent<RemoteComponentRendererPr
     receiver,
     components,
   }: RemoteComponentRendererProps) {
-    const fragments = useRemoteReceived(element, receiver);
-
-    if (!fragments) return null;
-
     const renderOptions = {receiver, components};
 
     return (
       <>
-        {fragments.children.map((child) =>
+        {element.children.value.map((child) =>
           renderRemoteNode(child, renderOptions),
         )}
       </>

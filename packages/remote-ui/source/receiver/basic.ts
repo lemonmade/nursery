@@ -27,7 +27,7 @@ export interface RemoteElementReceived
 
 export interface RemoteRootReceived {
   readonly id: typeof ROOT_ID;
-  readonly kind: typeof NODE_TYPE_ROOT;
+  readonly type: typeof NODE_TYPE_ROOT;
   readonly children: readonly RemoteChildReceived[];
   readonly version: number;
 }
@@ -46,7 +46,7 @@ type Writable<T> = {
 export class RemoteReceiver {
   readonly root: RemoteRootReceived = {
     id: ROOT_ID,
-    kind: NODE_TYPE_ROOT,
+    type: NODE_TYPE_ROOT,
     children: [],
     version: 0,
   };
@@ -66,7 +66,7 @@ export class RemoteReceiver {
   readonly receive: RemoteMutationCallback;
 
   constructor({retain, release}: ReceiverOptions = {}) {
-    const {attached, subscribers} = this;
+    const {attached, parents, subscribers} = this;
 
     this.receive = createRemoteMutationCallback({
       insertChild: (id, child, index) => {
@@ -168,6 +168,7 @@ export class RemoteReceiver {
 
       if ('children' in child) {
         for (const grandChild of child.children) {
+          parents.set(grandChild.id, child.id);
           attach(grandChild);
         }
       }
@@ -175,6 +176,7 @@ export class RemoteReceiver {
 
     function detach(child: RemoteChildReceived) {
       attached.delete(child.id);
+      parents.delete(child.id);
 
       if ('children' in child) {
         for (const grandChild of child.children) {

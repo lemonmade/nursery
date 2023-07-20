@@ -1,5 +1,13 @@
-export {RemoteReceiver} from '@lemonmade/remote-ui';
-
+export {
+  SignalRemoteReceiver,
+  type SignalRemoteElementReceived,
+  type SignalRemoteTextReceived,
+  type SignalRemoteCommentReceived,
+  type SignalRemoteChildReceived,
+  type SignalRemoteRootReceived,
+  type SignalRemoteNodeReceived,
+  type SignalRemoteParentReceived,
+} from './host/receiver.ts';
 export {renderRemoteNode, type RenderRemoteNodeOptions} from './host/node.tsx';
 export {
   createRemoteComponentRenderer,
@@ -15,16 +23,13 @@ export {
   type RemoteRootRendererProps,
 } from './host/RemoteRootRenderer.tsx';
 
-export {useRemoteReceived, usePropsForRemoteElement} from './host/hooks.ts';
+export {usePropsForRemoteElement} from './host/hooks.ts';
 
 export type {
   RemoteComponentRendererMap,
   RemoteComponentRendererProps,
 } from './host/types.ts';
-export {
-  REMOTE_ELEMENT_PROP,
-  REMOTE_ELEMENT_ATTACHED_PROP,
-} from './host/constants.ts';
+export {REMOTE_ELEMENT_PROP} from './host/constants.ts';
 
 export type {
   RemoteComponentType,

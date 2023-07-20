@@ -70,6 +70,9 @@ importers:
         specifier: ^3.1.1
         version: 3.1.1
     devDependencies:
+      '@preact/signals-core':
+        specifier: ^1.3.0
+        version: 1.3.0
       preact:
         specifier: ^10.14.0
         version: 10.14.0
@@ -2674,6 +2677,10 @@ packages:
       pvtsutils: 1.3.2
       tslib: 2.5.0
       webcrypto-core: 1.7.7
+    dev: true
+
+  /@preact/signals-core@1.3.0:
+    resolution: {integrity: sha512-M+M3ZOtd1dtV/uasyk4SZu1vbfEJ4NeENv0F7F12nijZYedB5wSgbtZcuACyssnTznhF4ctUyrR0dZHuHfyWKA==}
     dev: true
 
   /@prefresh/babel-plugin@0.4.3:
