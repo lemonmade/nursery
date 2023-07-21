@@ -1,5 +1,13 @@
 # @lemonmade/remote-ui
 
+## 0.1.35
+
+### Patch Changes
+
+- [#69](https://github.com/lemonmade/nursery/pull/69) [`3de543b`](https://github.com/lemonmade/nursery/commit/3de543b65bbd5aa47fa0512d6f48526b730d52ba) Thanks [@lemonmade](https://github.com/lemonmade)! - Export additional constants
+
+* [#69](https://github.com/lemonmade/nursery/pull/69) [`3de543b`](https://github.com/lemonmade/nursery/commit/3de543b65bbd5aa47fa0512d6f48526b730d52ba) Thanks [@lemonmade](https://github.com/lemonmade)! - Improve RemoteReceiver types
+
 ## 0.1.34
 
 ### Patch Changes
