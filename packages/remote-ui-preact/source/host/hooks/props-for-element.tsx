@@ -1,23 +1,23 @@
-import type {SignalRemoteElementReceived} from '../receiver.ts';
+import type {SignalRemoteReceiverElement} from '../receiver.ts';
 
 import {renderRemoteNode, type RenderRemoteNodeOptions} from '../node.tsx';
 
 export function usePropsForRemoteElement<
   Props extends Record<string, any> = {},
 >(
-  element: SignalRemoteElementReceived,
+  element: SignalRemoteReceiverElement,
   options: RenderRemoteNodeOptions,
 ): Props;
 export function usePropsForRemoteElement<
   Props extends Record<string, any> = {},
 >(
-  element: SignalRemoteElementReceived | undefined,
+  element: SignalRemoteReceiverElement | undefined,
   options: RenderRemoteNodeOptions,
 ): Props | undefined;
 export function usePropsForRemoteElement<
   Props extends Record<string, any> = {},
 >(
-  element: SignalRemoteElementReceived | undefined,
+  element: SignalRemoteReceiverElement | undefined,
   options: RenderRemoteNodeOptions,
 ): Props | undefined {
   if (!element) return undefined;

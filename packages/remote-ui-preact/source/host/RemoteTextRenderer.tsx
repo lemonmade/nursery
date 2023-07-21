@@ -1,10 +1,10 @@
 import type {
   SignalRemoteReceiver,
-  SignalRemoteTextReceived,
+  SignalRemoteReceiverText,
 } from './receiver.ts';
 
 export interface RemoteTextRendererProps {
-  text: SignalRemoteTextReceived;
+  text: SignalRemoteReceiverText;
   receiver: SignalRemoteReceiver;
 }
 

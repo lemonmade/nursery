@@ -1,6 +1,6 @@
 import {
   type RemoteReceiver,
-  type RemoteChildReceived,
+  type RemoteReceiverNode,
 } from '@lemonmade/remote-ui';
 
 import {RemoteTextRenderer} from './RemoteTextRenderer.tsx';
@@ -12,7 +12,7 @@ export interface RenderRemoteNodeOptions {
 }
 
 export function renderRemoteNode(
-  node: RemoteChildReceived,
+  node: RemoteReceiverNode,
   {receiver, components}: RenderRemoteNodeOptions,
 ) {
   switch (node.type) {

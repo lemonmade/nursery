@@ -8,50 +8,50 @@ import {
   NODE_TYPE_TEXT,
   createRemoteMutationCallback,
   type RemoteMutationCallback,
-  type RemoteReceiver,
+  type RemoteReceiverOptions,
   type RemoteNodeSerialization,
   type RemoteTextSerialization,
   type RemoteCommentSerialization,
   type RemoteElementSerialization,
 } from '@lemonmade/remote-ui';
 
-export interface SignalRemoteTextReceived
+export interface SignalRemoteReceiverText
   extends Omit<RemoteTextSerialization, 'data'> {
   readonly data: ReadonlySignal<RemoteTextSerialization['data']>;
 }
 
-export interface SignalRemoteCommentReceived
+export interface SignalRemoteReceiverComment
   extends Omit<RemoteCommentSerialization, 'data'> {
   readonly data: ReadonlySignal<RemoteCommentSerialization['data']>;
 }
 
-export interface SignalRemoteElementReceived
+export interface SignalRemoteReceiverElement
   extends Omit<RemoteElementSerialization, 'children' | 'properties'> {
   readonly properties: ReadonlySignal<
     NonNullable<RemoteElementSerialization['properties']>
   >;
-  readonly children: ReadonlySignal<readonly SignalRemoteChildReceived[]>;
+  readonly children: ReadonlySignal<readonly SignalRemoteReceiverNode[]>;
 }
 
-export interface SignalRemoteRootReceived {
+export interface SignalRemoteReceiverRoot {
   readonly id: typeof ROOT_ID;
   readonly type: typeof NODE_TYPE_ROOT;
-  readonly children: ReadonlySignal<readonly SignalRemoteChildReceived[]>;
+  readonly children: ReadonlySignal<readonly SignalRemoteReceiverNode[]>;
 }
 
-export type SignalRemoteChildReceived =
-  | SignalRemoteTextReceived
-  | SignalRemoteCommentReceived
-  | SignalRemoteElementReceived;
-export type SignalRemoteNodeReceived =
-  | SignalRemoteChildReceived
-  | SignalRemoteRootReceived;
-export type SignalRemoteParentReceived =
-  | SignalRemoteElementReceived
-  | SignalRemoteRootReceived;
+export type SignalRemoteReceiverNode =
+  | SignalRemoteReceiverText
+  | SignalRemoteReceiverComment
+  | SignalRemoteReceiverElement;
+export type SignalRemoteReceiverNodeOrRoot =
+  | SignalRemoteReceiverNode
+  | SignalRemoteReceiverRoot;
+export type SignalRemoteReceiverParent =
+  | SignalRemoteReceiverElement
+  | SignalRemoteReceiverRoot;
 
 export class SignalRemoteReceiver {
-  readonly root: SignalRemoteRootReceived = {
+  readonly root: SignalRemoteReceiverRoot = {
     id: ROOT_ID,
     type: NODE_TYPE_ROOT,
     children: signal([]),
@@ -59,22 +59,19 @@ export class SignalRemoteReceiver {
 
   private readonly attached = new Map<
     string | typeof ROOT_ID,
-    SignalRemoteNodeReceived
+    SignalRemoteReceiverNodeOrRoot
   >([[ROOT_ID, this.root]]);
 
   private readonly parents = new Map<string, string | typeof ROOT_ID>();
 
   readonly receive: RemoteMutationCallback;
 
-  constructor({
-    retain,
-    release,
-  }: ConstructorParameters<typeof RemoteReceiver>[0] = {}) {
+  constructor({retain, release}: RemoteReceiverOptions = {}) {
     const {attached, parents} = this;
 
     this.receive = createRemoteMutationCallback({
       insertChild: (id, child, index) => {
-        const parent = attached.get(id) as SignalRemoteParentReceived;
+        const parent = attached.get(id) as SignalRemoteReceiverParent;
         const newChildren = [...parent.children.peek()];
 
         const normalizedChild = attach(child, parent);
@@ -88,19 +85,18 @@ export class SignalRemoteReceiver {
         (parent.children as any).value = newChildren;
       },
       removeChild: (id, index) => {
-        const parent = attached.get(id) as SignalRemoteParentReceived;
+        const parent = attached.get(id) as SignalRemoteReceiverParent;
 
         const newChildren = [...parent.children.peek()];
 
         const [removed] = newChildren.splice(index, 1);
-        detach(removed!);
 
         (parent.children as any).value = newChildren;
 
-        release?.(removed);
+        detach(removed!);
       },
       updateProperty: (id, property, value) => {
-        const element = attached.get(id) as SignalRemoteElementReceived;
+        const element = attached.get(id) as SignalRemoteReceiverElement;
         const oldProperties = element.properties.peek();
         const oldValue = oldProperties[property];
 
@@ -120,7 +116,7 @@ export class SignalRemoteReceiver {
           const parent =
             parentId == null
               ? parentId
-              : (attached.get(parentId) as SignalRemoteParentReceived);
+              : (attached.get(parentId) as SignalRemoteReceiverParent);
 
           if (parent) {
             (parent.children as any).value = [...parent.children.peek()];
@@ -130,16 +126,16 @@ export class SignalRemoteReceiver {
         release?.(oldValue);
       },
       updateText: (id, newText) => {
-        const text = attached.get(id) as SignalRemoteTextReceived;
+        const text = attached.get(id) as SignalRemoteReceiverText;
         (text.data as any).value = newText;
       },
     });
 
     function attach(
       child: RemoteNodeSerialization,
-      parent: SignalRemoteParentReceived,
-    ): SignalRemoteChildReceived {
-      let normalizedChild: SignalRemoteChildReceived;
+      parent: SignalRemoteReceiverParent,
+    ): SignalRemoteReceiverNode {
+      let normalizedChild: SignalRemoteReceiverNode;
 
       switch (child.type) {
         case NODE_TYPE_TEXT:
@@ -150,7 +146,7 @@ export class SignalRemoteReceiver {
             id,
             type,
             data: signal(data),
-          } satisfies SignalRemoteTextReceived | SignalRemoteCommentReceived;
+          } satisfies SignalRemoteReceiverText | SignalRemoteReceiverComment;
 
           break;
         }
@@ -158,17 +154,17 @@ export class SignalRemoteReceiver {
           const {id, type, element, children, properties} = child;
           retain?.(properties);
 
-          const resolvedChildren: SignalRemoteNodeReceived[] = [];
+          const resolvedChildren: SignalRemoteReceiverNode[] = [];
 
           normalizedChild = {
             id,
             type,
             element,
             children: signal(
-              resolvedChildren as readonly SignalRemoteChildReceived[],
+              resolvedChildren as readonly SignalRemoteReceiverNode[],
             ),
             properties: signal(properties ?? {}),
-          } satisfies SignalRemoteElementReceived;
+          } satisfies SignalRemoteReceiverElement;
 
           for (const grandChild of children) {
             resolvedChildren.push(attach(grandChild, normalizedChild));
@@ -177,8 +173,7 @@ export class SignalRemoteReceiver {
           break;
         }
         default: {
-          // @ts-expect-error We should never get here
-          throw new Error(`Unknown node type: ${child.type}`);
+          throw new Error(`Unknown node type: ${JSON.stringify(child)}`);
         }
       }
 
@@ -188,9 +183,13 @@ export class SignalRemoteReceiver {
       return normalizedChild;
     }
 
-    function detach(child: SignalRemoteChildReceived) {
+    function detach(child: SignalRemoteReceiverNode) {
       attached.delete(child.id);
       parents.delete(child.id);
+
+      if (release && 'properties' in child) {
+        release(child.properties.peek());
+      }
 
       if ('children' in child) {
         for (const grandChild of child.children.peek()) {
@@ -200,7 +199,9 @@ export class SignalRemoteReceiver {
     }
   }
 
-  get<T extends SignalRemoteNodeReceived>({id}: Pick<T, 'id'>): T | undefined {
+  get<T extends SignalRemoteReceiverNodeOrRoot>({
+    id,
+  }: Pick<T, 'id'>): T | undefined {
     return this.attached.get(id) as any;
   }
 }

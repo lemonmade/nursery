@@ -1,4 +1,4 @@
-import type {RemoteElementReceived} from '@lemonmade/remote-ui';
+import type {RemoteReceiverElement} from '@lemonmade/remote-ui';
 import {forwardRef, type ForwardFn} from 'preact/compat';
 
 import {usePropsForRemoteElement} from './hooks/props-for-element.tsx';
@@ -6,7 +6,7 @@ import {REMOTE_ELEMENT_PROP} from './constants.ts';
 import type {RemoteComponentRendererProps} from './types.ts';
 
 export interface RemoteComponentRendererAdditionalProps {
-  readonly [REMOTE_ELEMENT_PROP]: RemoteElementReceived;
+  readonly [REMOTE_ELEMENT_PROP]: RemoteReceiverElement;
 }
 
 export function createRemoteComponentRenderer<

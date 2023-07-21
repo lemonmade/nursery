@@ -1,14 +1,14 @@
 export {
   RemoteReceiver,
-  type RemoteChildReceived,
-  type RemoteElementReceived,
-  type RemoteNodeReceived,
-  type RemoteParentReceived,
-  type RemoteRootReceived,
-  type RemoteTextReceived,
-  type RemoteCommentReceived,
+  type RemoteReceiverElement,
+  type RemoteReceiverNode,
+  type RemoteReceiverParent,
+  type RemoteReceiverRoot,
+  type RemoteReceiverText,
+  type RemoteReceiverComment,
 } from './receiver/basic.ts';
 export {DOMRemoteReceiver} from './receiver/dom.ts';
+export type {RemoteReceiverOptions} from './receiver/shared.ts';
 
 export {
   createRemoteMutationCallback,

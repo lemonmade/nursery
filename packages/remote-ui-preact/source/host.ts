@@ -1,12 +1,11 @@
 export {
   SignalRemoteReceiver,
-  type SignalRemoteElementReceived,
-  type SignalRemoteTextReceived,
-  type SignalRemoteCommentReceived,
-  type SignalRemoteChildReceived,
-  type SignalRemoteRootReceived,
-  type SignalRemoteNodeReceived,
-  type SignalRemoteParentReceived,
+  type SignalRemoteReceiverElement,
+  type SignalRemoteReceiverText,
+  type SignalRemoteReceiverComment,
+  type SignalRemoteReceiverRoot,
+  type SignalRemoteReceiverNode,
+  type SignalRemoteReceiverParent,
 } from './host/receiver.ts';
 export {renderRemoteNode, type RenderRemoteNodeOptions} from './host/node.tsx';
 export {

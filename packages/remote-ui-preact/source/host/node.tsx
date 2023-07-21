@@ -8,7 +8,7 @@ import {RemoteTextRenderer} from './RemoteTextRenderer.tsx';
 import type {RemoteComponentRendererMap} from './types.ts';
 import type {
   SignalRemoteReceiver,
-  SignalRemoteChildReceived,
+  SignalRemoteReceiverNode,
 } from './receiver.ts';
 
 export interface RenderRemoteNodeOptions {
@@ -17,7 +17,7 @@ export interface RenderRemoteNodeOptions {
 }
 
 export function renderRemoteNode(
-  node: SignalRemoteChildReceived,
+  node: SignalRemoteReceiverNode,
   {receiver, components}: RenderRemoteNodeOptions,
 ) {
   switch (node.type) {

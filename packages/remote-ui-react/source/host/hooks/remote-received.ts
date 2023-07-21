@@ -1,17 +1,20 @@
 import {useState, useDebugValue, useEffect} from 'react';
-import type {RemoteReceiver, RemoteNodeReceived} from '@lemonmade/remote-ui';
+import type {
+  RemoteReceiver,
+  RemoteReceiverNode,
+  RemoteReceiverRoot,
+} from '@lemonmade/remote-ui';
 
-interface ReceivedState<T extends RemoteNodeReceived> {
+interface ReceivedState<T extends RemoteReceiverNode | RemoteReceiverRoot> {
   receiver: RemoteReceiver;
-  id: RemoteNodeReceived['id'];
-  version?: RemoteNodeReceived['version'];
+  id: RemoteReceiverNode['id'];
+  version?: RemoteReceiverNode['version'];
   value?: T;
 }
 
-export function useRemoteReceived<T extends RemoteNodeReceived>(
-  remote: T,
-  receiver: RemoteReceiver,
-) {
+export function useRemoteReceived<
+  T extends RemoteReceiverNode | RemoteReceiverRoot,
+>(remote: T, receiver: RemoteReceiver): T | undefined {
   const [state, setState] = useState<ReceivedState<T>>(() => {
     const value = receiver.get<T>(remote);
 

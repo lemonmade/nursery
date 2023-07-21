@@ -1,11 +1,11 @@
 import type {ComponentType} from 'preact';
 import type {
   SignalRemoteReceiver,
-  SignalRemoteElementReceived,
+  SignalRemoteReceiverElement,
 } from './receiver.ts';
 
 export interface RemoteComponentRendererProps {
-  element: SignalRemoteElementReceived;
+  element: SignalRemoteReceiverElement;
   receiver: SignalRemoteReceiver;
   components: RemoteComponentRendererMap<any>;
 }

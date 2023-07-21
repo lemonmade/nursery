@@ -1,8 +1,8 @@
-import type {RemoteReceiver, RemoteTextReceived} from '@lemonmade/remote-ui';
+import type {RemoteReceiver, RemoteReceiverText} from '@lemonmade/remote-ui';
 import {useRemoteReceived} from './hooks/remote-received.ts';
 
 export interface RemoteTextRendererProps {
-  remote: RemoteTextReceived;
+  remote: RemoteReceiverText;
   receiver: RemoteReceiver;
 }
 
