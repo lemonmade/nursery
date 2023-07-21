@@ -1,5 +1,14 @@
 # @lemonmade/remote-ui-react
 
+## 0.1.22
+
+### Patch Changes
+
+- [#69](https://github.com/lemonmade/nursery/pull/69) [`3de543b`](https://github.com/lemonmade/nursery/commit/3de543b65bbd5aa47fa0512d6f48526b730d52ba) Thanks [@lemonmade](https://github.com/lemonmade)! - Improve RemoteReceiver types
+
+- Updated dependencies [[`3de543b`](https://github.com/lemonmade/nursery/commit/3de543b65bbd5aa47fa0512d6f48526b730d52ba), [`3de543b`](https://github.com/lemonmade/nursery/commit/3de543b65bbd5aa47fa0512d6f48526b730d52ba)]:
+  - @lemonmade/remote-ui@0.1.35
+
 ## 0.1.21
 
 ### Patch Changes
