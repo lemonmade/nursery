@@ -1,22 +1,27 @@
 import {
-  type RemoteReceiver,
-  type RemoteChildReceived,
+  NODE_TYPE_ELEMENT,
+  NODE_TYPE_TEXT,
+  NODE_TYPE_COMMENT,
 } from '@lemonmade/remote-ui';
 
 import {RemoteTextRenderer} from './RemoteTextRenderer.tsx';
 import type {RemoteComponentRendererMap} from './types.ts';
+import type {
+  SignalRemoteReceiver,
+  SignalRemoteReceiverNode,
+} from './receiver.ts';
 
 export interface RenderRemoteNodeOptions {
-  receiver: RemoteReceiver;
+  receiver: SignalRemoteReceiver;
   components: RemoteComponentRendererMap<any>;
 }
 
 export function renderRemoteNode(
-  node: RemoteChildReceived,
+  node: SignalRemoteReceiverNode,
   {receiver, components}: RenderRemoteNodeOptions,
 ) {
   switch (node.type) {
-    case 1: {
+    case NODE_TYPE_ELEMENT: {
       const Component = components.get(node.element);
 
       if (Component == null) {
@@ -34,12 +39,12 @@ export function renderRemoteNode(
         />
       );
     }
-    case 3: {
+    case NODE_TYPE_TEXT: {
       return (
-        <RemoteTextRenderer key={node.id} remote={node} receiver={receiver} />
+        <RemoteTextRenderer key={node.id} text={node} receiver={receiver} />
       );
     }
-    case 8: {
+    case NODE_TYPE_COMMENT: {
       return null;
     }
     default: {

@@ -2,82 +2,86 @@ import {
   createRemoteMutationCallback,
   type RemoteMutationCallback,
 } from '../callback.ts';
-import {NODE_TYPE_ELEMENT, NODE_TYPE_ROOT, ROOT_ID} from '../constants.ts';
+import {
+  NODE_TYPE_COMMENT,
+  NODE_TYPE_ELEMENT,
+  NODE_TYPE_ROOT,
+  NODE_TYPE_TEXT,
+  ROOT_ID,
+} from '../constants.ts';
 import type {
   RemoteTextSerialization,
   RemoteCommentSerialization,
   RemoteElementSerialization,
+  RemoteNodeSerialization,
 } from '../types.ts';
-import {ReceiverOptions} from './shared.ts';
+import type {RemoteReceiverOptions} from './shared.ts';
 
-export interface RemoteTextReceived extends RemoteTextSerialization {
+export interface RemoteReceiverText extends RemoteTextSerialization {
   readonly version: number;
 }
 
-export interface RemoteCommentReceived extends RemoteCommentSerialization {
+export interface RemoteReceiverComment extends RemoteCommentSerialization {
   readonly version: number;
 }
 
-export interface RemoteElementReceived
+export interface RemoteReceiverElement
   extends Omit<RemoteElementSerialization, 'children' | 'properties'> {
   readonly properties: NonNullable<RemoteElementSerialization['properties']>;
-  readonly children: readonly RemoteChildReceived[];
+  readonly children: readonly RemoteReceiverNode[];
   readonly version: number;
 }
 
-export interface RemoteRootReceived {
+export interface RemoteReceiverRoot {
   readonly id: typeof ROOT_ID;
-  readonly kind: typeof NODE_TYPE_ROOT;
-  readonly children: readonly RemoteChildReceived[];
+  readonly type: typeof NODE_TYPE_ROOT;
+  readonly children: readonly RemoteReceiverNode[];
   readonly version: number;
 }
 
-export type RemoteChildReceived =
-  | RemoteTextReceived
-  | RemoteCommentReceived
-  | RemoteElementReceived;
-export type RemoteNodeReceived = RemoteChildReceived | RemoteRootReceived;
-export type RemoteParentReceived = RemoteElementReceived | RemoteRootReceived;
+export type RemoteReceiverNode =
+  | RemoteReceiverText
+  | RemoteReceiverComment
+  | RemoteReceiverElement;
+export type RemoteReceiverParent = RemoteReceiverElement | RemoteReceiverRoot;
+type RemoteReceiverNodeOrRoot = RemoteReceiverNode | RemoteReceiverRoot;
 
 type Writable<T> = {
   -readonly [P in keyof T]: T[P];
 };
 
 export class RemoteReceiver {
-  readonly root: RemoteRootReceived = {
+  readonly root: RemoteReceiverRoot = {
     id: ROOT_ID,
-    kind: NODE_TYPE_ROOT,
+    type: NODE_TYPE_ROOT,
     children: [],
     version: 0,
   };
 
   private readonly attached = new Map<
     string | typeof ROOT_ID,
-    RemoteNodeReceived
+    RemoteReceiverNodeOrRoot
   >([[ROOT_ID, this.root]]);
 
   private readonly subscribers = new Map<
     string | typeof ROOT_ID,
-    Set<(value: RemoteNodeReceived) => void>
+    Set<(value: RemoteReceiverNodeOrRoot) => void>
   >();
 
   private readonly parents = new Map<string, string | typeof ROOT_ID>();
 
   readonly receive: RemoteMutationCallback;
 
-  constructor({retain, release}: ReceiverOptions = {}) {
-    const {attached, subscribers} = this;
+  constructor({retain, release}: RemoteReceiverOptions = {}) {
+    const {attached, parents, subscribers} = this;
 
     this.receive = createRemoteMutationCallback({
       insertChild: (id, child, index) => {
-        const parent = attached.get(id) as Writable<RemoteParentReceived>;
+        const parent = attached.get(id) as Writable<RemoteReceiverParent>;
 
         const {children} = parent;
 
-        const normalizedChild = normalizeNode(child, addVersion);
-
-        retain?.(normalizedChild);
-        attach(normalizedChild);
+        const normalizedChild = attach(child, parent);
 
         if (index === children.length) {
           (children as Writable<typeof children>).push(normalizedChild);
@@ -95,7 +99,7 @@ export class RemoteReceiver {
         runSubscribers(parent);
       },
       removeChild: (id, index) => {
-        const parent = attached.get(id) as Writable<RemoteParentReceived>;
+        const parent = attached.get(id) as Writable<RemoteReceiverParent>;
 
         const {children} = parent;
 
@@ -104,15 +108,13 @@ export class RemoteReceiver {
           1,
         );
         parent.version += 1;
-        this.parents.delete(removed!.id);
 
-        detach(removed!);
         runSubscribers(parent);
 
-        release?.(removed);
+        detach(removed!);
       },
       updateProperty: (id, property, value) => {
-        const element = attached.get(id) as Writable<RemoteElementReceived>;
+        const element = attached.get(id) as Writable<RemoteReceiverElement>;
 
         retain?.(value);
 
@@ -121,7 +123,7 @@ export class RemoteReceiver {
         element.properties[property] = value;
         element.version += 1;
 
-        let parentForUpdate: Writable<RemoteParentReceived> | undefined;
+        let parentForUpdate: Writable<RemoteReceiverParent> | undefined;
 
         // If the slot changes, inform parent nodes so they can
         // re-parent it appropriately.
@@ -131,7 +133,7 @@ export class RemoteReceiver {
           parentForUpdate =
             parentId == null
               ? parentId
-              : (attached.get(parentId) as Writable<RemoteParentReceived>);
+              : (attached.get(parentId) as Writable<RemoteReceiverParent>);
 
           if (parentForUpdate) {
             parentForUpdate.version += 1;
@@ -144,7 +146,7 @@ export class RemoteReceiver {
         release?.(oldValue);
       },
       updateText: (id, newText) => {
-        const text = attached.get(id) as Writable<RemoteTextReceived>;
+        const text = attached.get(id) as Writable<RemoteReceiverText>;
 
         text.data = newText;
         text.version += 1;
@@ -153,7 +155,7 @@ export class RemoteReceiver {
       },
     });
 
-    function runSubscribers(attached: RemoteNodeReceived) {
+    function runSubscribers(attached: RemoteReceiverNodeOrRoot) {
       const subscribed = subscribers.get(attached.id);
 
       if (subscribed) {
@@ -163,18 +165,65 @@ export class RemoteReceiver {
       }
     }
 
-    function attach(child: RemoteChildReceived) {
-      attached.set(child.id, child);
+    function attach(
+      child: RemoteNodeSerialization,
+      parent: RemoteReceiverParent,
+    ): RemoteReceiverNode {
+      let normalizedChild: RemoteReceiverNode;
 
-      if ('children' in child) {
-        for (const grandChild of child.children) {
-          attach(grandChild);
+      switch (child.type) {
+        case NODE_TYPE_TEXT:
+        case NODE_TYPE_COMMENT: {
+          const {id, type, data} = child;
+
+          normalizedChild = {
+            id,
+            type,
+            data,
+            version: 0,
+          } satisfies RemoteReceiverText | RemoteReceiverComment;
+
+          break;
+        }
+        case NODE_TYPE_ELEMENT: {
+          const {id, type, element, children, properties} = child;
+          retain?.(properties);
+
+          const resolvedChildren: RemoteReceiverNode[] = [];
+
+          normalizedChild = {
+            id,
+            type,
+            element,
+            version: 0,
+            children: resolvedChildren as readonly RemoteReceiverNode[],
+            properties: {...properties},
+          } satisfies RemoteReceiverElement;
+
+          for (const grandChild of children) {
+            resolvedChildren.push(attach(grandChild, normalizedChild));
+          }
+
+          break;
+        }
+        default: {
+          throw new Error(`Unknown node type: ${JSON.stringify(child)}`);
         }
       }
+
+      attached.set(normalizedChild.id, normalizedChild);
+      parents.set(normalizedChild.id, parent.id);
+
+      return normalizedChild;
     }
 
-    function detach(child: RemoteChildReceived) {
+    function detach(child: RemoteReceiverNode) {
       attached.delete(child.id);
+      parents.delete(child.id);
+
+      if (release && 'properties' in child) {
+        release(child.properties);
+      }
 
       if ('children' in child) {
         for (const grandChild of child.children) {
@@ -184,11 +233,11 @@ export class RemoteReceiver {
     }
   }
 
-  get<T extends RemoteNodeReceived>({id}: Pick<T, 'id'>): T | undefined {
+  get<T extends RemoteReceiverNodeOrRoot>({id}: Pick<T, 'id'>): T | undefined {
     return this.attached.get(id) as any;
   }
 
-  subscribe<T extends RemoteNodeReceived>(
+  subscribe<T extends RemoteReceiverNodeOrRoot>(
     {id}: T,
     subscriber: (value: T) => void,
     {signal}: {signal?: AbortSignal} = {},
@@ -210,31 +259,4 @@ export class RemoteReceiver {
       }
     });
   }
-}
-
-function addVersion<T>(
-  value: T,
-): T extends RemoteTextSerialization
-  ? RemoteTextReceived
-  : T extends RemoteElementSerialization
-  ? RemoteElementReceived
-  : never {
-  (value as any).version = 0;
-  return value as any;
-}
-
-function normalizeNode<
-  T extends
-    | RemoteTextSerialization
-    | RemoteCommentSerialization
-    | RemoteElementSerialization,
-  R,
->(node: T, normalizer: (node: T) => R) {
-  if (node.type === NODE_TYPE_ELEMENT) {
-    (node as any).properties ??= {};
-    (node as any).children.forEach((child: T) =>
-      normalizeNode(child, normalizer),
-    );
-  }
-  return normalizer(node);
 }

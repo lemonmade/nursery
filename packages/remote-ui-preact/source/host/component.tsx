@@ -1,17 +1,12 @@
-import type {RemoteElementReceived} from '@lemonmade/remote-ui';
+import type {RemoteReceiverElement} from '@lemonmade/remote-ui';
 import {forwardRef, type ForwardFn} from 'preact/compat';
 
-import {useRemoteReceived} from './hooks/remote-received.ts';
 import {usePropsForRemoteElement} from './hooks/props-for-element.tsx';
-import {
-  REMOTE_ELEMENT_PROP,
-  REMOTE_ELEMENT_ATTACHED_PROP,
-} from './constants.ts';
+import {REMOTE_ELEMENT_PROP} from './constants.ts';
 import type {RemoteComponentRendererProps} from './types.ts';
 
 export interface RemoteComponentRendererAdditionalProps {
-  readonly [REMOTE_ELEMENT_PROP]: RemoteElementReceived;
-  readonly [REMOTE_ELEMENT_ATTACHED_PROP]: boolean;
+  readonly [REMOTE_ELEMENT_PROP]: RemoteReceiverElement;
 }
 
 export function createRemoteComponentRenderer<
@@ -25,15 +20,12 @@ export function createRemoteComponentRenderer<
     Instance,
     RemoteComponentRendererProps
   >(function RemoteComponentRenderer({element, receiver, components}, ref) {
-    const attachedElement = useRemoteReceived(element, receiver);
-    const resolvedElement = attachedElement ?? element;
-    const props = usePropsForRemoteElement<Props>(resolvedElement, {
+    const props = usePropsForRemoteElement<Props>(element, {
       receiver,
       components,
     });
 
-    (props as any)[REMOTE_ELEMENT_PROP] = resolvedElement;
-    (props as any)[REMOTE_ELEMENT_ATTACHED_PROP] = attachedElement != null;
+    (props as any)[REMOTE_ELEMENT_PROP] = element;
 
     return Component(props, ref);
   });

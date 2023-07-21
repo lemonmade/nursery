@@ -1,35 +1,42 @@
-import type {RemoteElementReceived} from '@lemonmade/remote-ui';
+import type {SignalRemoteReceiverElement} from '../receiver.ts';
 
 import {renderRemoteNode, type RenderRemoteNodeOptions} from '../node.tsx';
 
 export function usePropsForRemoteElement<
   Props extends Record<string, any> = {},
->(element: RemoteElementReceived, options: RenderRemoteNodeOptions): Props;
+>(
+  element: SignalRemoteReceiverElement,
+  options: RenderRemoteNodeOptions,
+): Props;
 export function usePropsForRemoteElement<
   Props extends Record<string, any> = {},
 >(
-  element: RemoteElementReceived | undefined,
+  element: SignalRemoteReceiverElement | undefined,
   options: RenderRemoteNodeOptions,
 ): Props | undefined;
 export function usePropsForRemoteElement<
   Props extends Record<string, any> = {},
 >(
-  element: RemoteElementReceived | undefined,
+  element: SignalRemoteReceiverElement | undefined,
   options: RenderRemoteNodeOptions,
 ): Props | undefined {
   if (!element) return undefined;
 
   const {children, properties} = element;
   const reactChildren: ReturnType<typeof renderRemoteNode>[] = [];
-  const slotProperties: Record<string, any> = {...properties};
+  const resolvedProperties: Record<string, any> = {...properties.value};
 
-  for (const child of children) {
-    if (child.type === 1 && typeof child.properties.slot === 'string') {
-      const slot = child.properties.slot;
+  for (const child of children.value) {
+    let slot: string | undefined =
+      child.type === 1 ? (child.properties.peek().slot as any) : undefined;
+
+    if (typeof slot !== 'string') slot = undefined;
+
+    if (slot) {
       const rendered = renderRemoteNode(child, options);
-      slotProperties[slot] = slotProperties[slot] ? (
+      resolvedProperties[slot] = resolvedProperties[slot] ? (
         <>
-          {slotProperties[slot]}
+          {resolvedProperties[slot]}
           {rendered}
         </>
       ) : (
@@ -41,8 +48,7 @@ export function usePropsForRemoteElement<
   }
 
   return {
-    ...properties,
-    ...slotProperties,
+    ...resolvedProperties,
     children: reactChildren,
   } as unknown as Props;
 }

@@ -1,15 +1,14 @@
-import type {RemoteReceiver, RemoteTextReceived} from '@lemonmade/remote-ui';
-import {useRemoteReceived} from './hooks/remote-received.ts';
+import type {
+  SignalRemoteReceiver,
+  SignalRemoteReceiverText,
+} from './receiver.ts';
 
 export interface RemoteTextRendererProps {
-  remote: RemoteTextReceived;
-  receiver: RemoteReceiver;
+  text: SignalRemoteReceiverText;
+  receiver: SignalRemoteReceiver;
 }
 
-export function RemoteTextRenderer({
-  remote,
-  receiver,
-}: RemoteTextRendererProps) {
-  const text = useRemoteReceived(remote, receiver);
-  return text ? <>{text.data}</> : null;
+export function RemoteTextRenderer({text}: RemoteTextRendererProps) {
+  const data = text.data.value;
+  return data ? <>{data}</> : null;
 }
