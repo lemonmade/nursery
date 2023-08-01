@@ -1,4 +1,4 @@
-import type {RemoteReceiverElement} from '@lemonmade/remote-ui';
+import type {RemoteReceiverElement} from '@lemonmade/remote-ui/receiver';
 import {forwardRef, type ForwardFn} from 'preact/compat';
 
 import {usePropsForRemoteElement} from './hooks/props-for-element.tsx';

@@ -6,7 +6,7 @@ export {
   type SignalRemoteReceiverRoot,
   type SignalRemoteReceiverNode,
   type SignalRemoteReceiverParent,
-} from './host/receiver.ts';
+} from '@lemonmade/remote-ui/signals';
 export {renderRemoteNode, type RenderRemoteNodeOptions} from './host/node.tsx';
 export {
   createRemoteComponentRenderer,

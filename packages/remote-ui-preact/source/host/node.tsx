@@ -3,13 +3,13 @@ import {
   NODE_TYPE_TEXT,
   NODE_TYPE_COMMENT,
 } from '@lemonmade/remote-ui';
-
-import {RemoteTextRenderer} from './RemoteTextRenderer.tsx';
-import type {RemoteComponentRendererMap} from './types.ts';
 import type {
   SignalRemoteReceiver,
   SignalRemoteReceiverNode,
-} from './receiver.ts';
+} from '@lemonmade/remote-ui/signals';
+
+import {RemoteTextRenderer} from './RemoteTextRenderer.tsx';
+import type {RemoteComponentRendererMap} from './types.ts';
 
 export interface RenderRemoteNodeOptions {
   receiver: SignalRemoteReceiver;

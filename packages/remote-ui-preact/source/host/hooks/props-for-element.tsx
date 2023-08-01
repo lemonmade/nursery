@@ -1,4 +1,4 @@
-import type {SignalRemoteReceiverElement} from '../receiver.ts';
+import type {SignalRemoteReceiverElement} from '@lemonmade/remote-ui/signals';
 
 import {renderRemoteNode, type RenderRemoteNodeOptions} from '../node.tsx';
 

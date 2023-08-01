@@ -6,14 +6,16 @@ import {
   NODE_TYPE_ELEMENT,
   NODE_TYPE_COMMENT,
   NODE_TYPE_TEXT,
-  createRemoteMutationCallback,
-  type RemoteMutationCallback,
-  type RemoteReceiverOptions,
-  type RemoteNodeSerialization,
-  type RemoteTextSerialization,
-  type RemoteCommentSerialization,
-  type RemoteElementSerialization,
-} from '@lemonmade/remote-ui';
+} from '../constants.ts';
+import {createRemoteMutationCallback} from '../callback.ts';
+import type {RemoteReceiverOptions} from '../receiver.ts';
+import type {
+  RemoteMutationCallback,
+  RemoteNodeSerialization,
+  RemoteTextSerialization,
+  RemoteCommentSerialization,
+  RemoteElementSerialization,
+} from '../types.ts';
 
 export interface SignalRemoteReceiverText
   extends Omit<RemoteTextSerialization, 'data'> {

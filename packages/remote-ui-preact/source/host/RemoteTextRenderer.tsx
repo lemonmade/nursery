@@ -1,7 +1,7 @@
 import type {
   SignalRemoteReceiver,
   SignalRemoteReceiverText,
-} from './receiver.ts';
+} from '@lemonmade/remote-ui/signals';
 
 export interface RemoteTextRendererProps {
   text: SignalRemoteReceiverText;
