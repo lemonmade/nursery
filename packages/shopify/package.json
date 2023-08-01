@@ -53,10 +53,8 @@
   "dependencies": {
     "@quilted/graphql": "^1.0.0"
   },
-  "peerDependencies": {},
-  "peerDependenciesMeta": {},
   "devDependencies": {
-    "@quilted/testing": "^0.1.0"
+    "@quilted/testing": "^0.1.6"
   },
   "eslintConfig": {
     "extends": [

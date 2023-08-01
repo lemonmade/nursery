@@ -48,7 +48,10 @@ export class Event {
   data?: any;
   [IS_TRUSTED]!: boolean;
 
-  constructor(public type: string, options?: EventInit) {
+  constructor(
+    public type: string,
+    options?: EventInit,
+  ) {
     Object.defineProperty(this, IS_TRUSTED, {writable: true, value: false});
     if (options) {
       if (options.bubbles) this.bubbles = options.bubbles;

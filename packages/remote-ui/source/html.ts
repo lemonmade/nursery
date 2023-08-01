@@ -17,10 +17,9 @@ export interface Component<
   Properties extends Record<string, any> = {},
   Children extends Node = Node,
 > {
-  (properties: PropertiesWithChildren<Properties, Children>):
-    | Node
-    | string
-    | (Node | string)[];
+  (
+    properties: PropertiesWithChildren<Properties, Children>,
+  ): Node | string | (Node | string)[];
 }
 
 // Inspired by https://github.com/developit/vhtml
