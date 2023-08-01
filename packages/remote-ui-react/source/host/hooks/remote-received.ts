@@ -3,7 +3,7 @@ import type {
   RemoteReceiver,
   RemoteReceiverNode,
   RemoteReceiverRoot,
-} from '@lemonmade/remote-ui';
+} from '@lemonmade/remote-ui/receiver';
 
 interface ReceivedState<T extends RemoteReceiverNode | RemoteReceiverRoot> {
   receiver: RemoteReceiver;

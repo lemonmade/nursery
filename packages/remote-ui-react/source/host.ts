@@ -1,4 +1,12 @@
-export {RemoteReceiver} from '@lemonmade/remote-ui';
+export {
+  RemoteReceiver,
+  type RemoteReceiverElement,
+  type RemoteReceiverText,
+  type RemoteReceiverComment,
+  type RemoteReceiverRoot,
+  type RemoteReceiverNode,
+  type RemoteReceiverParent,
+} from '@lemonmade/remote-ui/receiver';
 
 export {renderRemoteNode, type RenderRemoteNodeOptions} from './host/node.tsx';
 export {

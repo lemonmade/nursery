@@ -1,7 +1,7 @@
 import {
   type RemoteReceiver,
   type RemoteReceiverNode,
-} from '@lemonmade/remote-ui';
+} from '@lemonmade/remote-ui/receiver';
 
 import {RemoteTextRenderer} from './RemoteTextRenderer.tsx';
 import type {RemoteComponentRendererMap} from './types.ts';

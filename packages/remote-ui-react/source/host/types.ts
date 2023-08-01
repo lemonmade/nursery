@@ -1,5 +1,8 @@
 import type {ComponentType} from 'react';
-import type {RemoteReceiver, RemoteReceiverElement} from '@lemonmade/remote-ui';
+import type {
+  RemoteReceiver,
+  RemoteReceiverElement,
+} from '@lemonmade/remote-ui/receiver';
 
 export interface RemoteComponentRendererProps {
   element: RemoteReceiverElement;
