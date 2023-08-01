@@ -1,5 +1,18 @@
 const SHOPIFY_HOST = 'shopify';
+const GID_PREFIX = 'gid://shopify/';
 const INCORRECT_PATHNAME_PREFIX = '//shopify';
+
+export interface ShopifyGIDDetails {
+  /**
+   * The legacy resource ID for the object being identified.
+   */
+  readonly id: string | number;
+
+  /**
+   * The name of the resource that represents the type of object being identified.
+   */
+  readonly resource: string;
+}
 
 /**
  * An object representing a parsed Shopify GID. These GIDs, in the
@@ -11,11 +24,18 @@ const INCORRECT_PATHNAME_PREFIX = '//shopify';
  * constructor. This means that you also have access to properties available
  * on the `URL` object. Most notably, `searchParams` provides a `URLSearchParams`
  * instance, which are sometimes used to pass additional parameters in Shopify
- * GIDs.
+ * GIDs. However, unlike `URL` objects, only the `searchParams` part is mutable.
  *
  * @see https://shopify.dev/docs/api/usage/gids
  */
-export class ShopifyGID extends URL {
+export class ShopifyGID extends URL implements ShopifyGIDDetails {
+  /**
+   * Creates a GID from the details that are serialized in a GID.
+   */
+  static from({id, resource}: ShopifyGIDDetails) {
+    return new ShopifyGID(`${GID_PREFIX}${resource}/${id}`);
+  }
+
   /**
    * The legacy resource ID, parsed from the GID. If you are parsing a GID
    * retrieved from GraphQL just to get this value, you should consider querying
@@ -37,13 +57,11 @@ export class ShopifyGID extends URL {
    */
   readonly resource: string;
 
-  constructor(readonly gid: string) {
-    super(gid);
-
-    const [, resource, parsedId] = this.pathname.split('/');
-
-    this.id = parsedId!;
-    this.resource = resource!;
+  /**
+   * The original GID.
+   */
+  get gid() {
+    return this.href;
   }
 
   // Browsers have inconsistent parsing of the Shopify GID format,
@@ -64,8 +82,17 @@ export class ShopifyGID extends URL {
       ? pathname.slice(INCORRECT_PATHNAME_PREFIX.length)
       : pathname;
   }
+
+  constructor(gid: string) {
+    const [resource, id] = gid.slice(GID_PREFIX.length).split('/');
+
+    super(gid);
+
+    this.id = id!;
+    this.resource = resource!;
+  }
 }
 
-export function parseId(id: string): ShopifyGID {
-  return new ShopifyGID(id);
+export function parseGID(gid: string): ShopifyGID {
+  return new ShopifyGID(gid);
 }

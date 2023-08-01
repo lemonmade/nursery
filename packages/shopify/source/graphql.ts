@@ -1,8 +1,6 @@
 export {
-  parseId,
-  parseId as parseID,
-  parseId as parseGid,
-  parseId as parseGID,
+  parseGID,
+  parseGID as parseGid,
   ShopifyGID,
   ShopifyGID as ShopifyGid,
-} from './graphql/id.ts';
+} from './graphql/gid.ts';
