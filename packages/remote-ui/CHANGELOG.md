@@ -1,5 +1,11 @@
 # @lemonmade/remote-ui
 
+## 0.2.0
+
+### Minor Changes
+
+- [`70efbb9`](https://github.com/lemonmade/nursery/commit/70efbb957d428749f0658411aa9fd610d8d1c820) Thanks [@lemonmade](https://github.com/lemonmade)! - Move signal receiver implementation into main library and add dedicated `receiver` entrypoint.
+
 ## 0.1.35
 
 ### Patch Changes
