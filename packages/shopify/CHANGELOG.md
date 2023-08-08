@@ -1,5 +1,11 @@
 # @lemonmade/shopify
 
+## 0.3.1
+
+### Patch Changes
+
+- [`114eb50`](https://github.com/lemonmade/nursery/commit/114eb50da5e4c65bd29565b31580d261154862e5) Thanks [@lemonmade](https://github.com/lemonmade)! - Update quilt dependencies to 1.0 versions
+
 ## 0.3.0
 
 ### Minor Changes
