@@ -1,5 +1,5 @@
 import {describe, it, expect} from '@quilted/testing';
-import {createEmitter} from '@quilted/events';
+import {EventEmitter} from '@quilted/events';
 
 import {parse} from 'graphql';
 
@@ -663,7 +663,7 @@ function sleep(duration: number) {
 function createAsyncIterator<T>(initialValue: T) {
   let currentValue = initialValue;
 
-  const emitter = createEmitter<{yield: T}>();
+  const emitter = new EventEmitter<{yield: T}>();
 
   emitter.on('yield', (value) => {
     currentValue = value;

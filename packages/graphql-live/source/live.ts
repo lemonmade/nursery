@@ -8,7 +8,7 @@ import type {
 } from 'graphql';
 
 import type {GraphQLOperationType} from '@quilted/graphql';
-import {createEmitter} from '@quilted/events';
+import {EventEmitter} from '@quilted/events';
 
 import {NestedAbortController} from './abort';
 import type {
@@ -136,7 +136,7 @@ export function run<
     throw new Error('No query found');
   }
 
-  const emitter = createEmitter<{
+  const events = new EventEmitter<{
     update: {path: (string | number)[]; value: any; change?: boolean};
   }>();
   const liveFields = new Set<string>();
@@ -195,7 +195,7 @@ export function run<
 
       if (liveFields.size === 0 || rootSignal?.aborted) return;
 
-      for await (const {change = true} of emitter.on('update', {
+      for await (const {change = true} of events.on('update', {
         signal: rootSignal,
       })) {
         if (change) {
@@ -404,7 +404,7 @@ export function run<
                 liveFields.delete(fieldPath);
 
                 if (value === undefined) {
-                  emitter.emit('update', {
+                  events.emit('update', {
                     path: newPath,
                     value: result,
                     change: false,
@@ -429,7 +429,7 @@ export function run<
 
               if (oldError) errors.delete(oldError);
 
-              emitter.emit('update', {path, value: result});
+              events.emit('update', {path, value: result});
 
               consumeNextUpdate(newAbort);
             };
