@@ -26,7 +26,7 @@ jobs:
 
       - uses: quilt-framework/action-build@v2
         with:
-          cache-key: v4
+          cache-key: v5
       - name: Deploy preview versions to NPM
         run: pnpm deploy:preview
         env:

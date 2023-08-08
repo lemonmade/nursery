@@ -23,7 +23,7 @@ jobs:
       - uses: ./.github/workflows/actions/prepare
       - uses: quilt-framework/action-build@v2
         with:
-          cache-key: v4
+          cache-key: v5
       - name: Deploy
         run: pnpm run deploy
         env:
