@@ -27,8 +27,8 @@
   "types": "./build/typescript/index.d.ts",
   "sideEffects": false,
   "dependencies": {
-    "@quilted/events": "^0.1.0",
-    "@quilted/graphql": "^1.0.0"
+    "@quilted/events": "^1.0.0",
+    "@quilted/graphql": "^1.1.0"
   },
   "peerDependencies": {
     "graphql": "^16.0.0"
