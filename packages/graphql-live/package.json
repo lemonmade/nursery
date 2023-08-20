@@ -28,7 +28,7 @@
   "sideEffects": false,
   "dependencies": {
     "@quilted/events": "^1.0.0",
-    "@quilted/graphql": "^1.1.0"
+    "@quilted/graphql": "^1.2.0"
   },
   "peerDependencies": {
     "graphql": "^16.0.0"

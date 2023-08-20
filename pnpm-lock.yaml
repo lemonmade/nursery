@@ -44,8 +44,8 @@ importers:
         specifier: ^1.0.0
         version: 1.0.0
       '@quilted/graphql':
-        specifier: ^1.1.0
-        version: 1.1.0
+        specifier: ^1.2.0
+        version: 1.2.0
     devDependencies:
       graphql:
         specifier: ^16.0.0
@@ -102,8 +102,8 @@ importers:
   packages/shopify:
     dependencies:
       '@quilted/graphql':
-        specifier: ^1.1.0
-        version: 1.1.0
+        specifier: ^1.2.0
+        version: 1.2.0
     devDependencies:
       '@quilted/testing':
         specifier: ^0.1.6
@@ -2916,7 +2916,7 @@ packages:
       '@graphql-tools/graphql-file-loader': 8.0.0(graphql@16.7.1)
       '@graphql-tools/json-file-loader': 8.0.0(graphql@16.7.1)
       '@graphql-tools/load': 8.0.0(graphql@16.7.1)
-      '@quilted/graphql': 1.1.0
+      '@quilted/graphql': 1.2.0
       '@quilted/useful-types': 1.0.0
       arg: 5.0.1
       chokidar: 3.5.3
@@ -2930,8 +2930,8 @@ packages:
       p-limit: 4.0.0
     dev: true
 
-  /@quilted/graphql@1.1.0:
-    resolution: {integrity: sha512-U7s0B65sc2cq+IQGkSC/p/pMbtekedB8HWAFdmAO+Okn+JQP1uhDKE1pqTf3a3n3d5a8/1221mfRXEa81Hi3xw==}
+  /@quilted/graphql@1.2.0:
+    resolution: {integrity: sha512-6oX6sqAfKjMgvxNGoiaRgJ3k1lVEeObwRb3l4IrjBtYugPROWwJYnaDvyFOUZh7RISrCVvsSknnOkb90IV4t2w==}
     dependencies:
       '@quilted/useful-types': 1.0.0
       '@types/chance': 1.1.3
