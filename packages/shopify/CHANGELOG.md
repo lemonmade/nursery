@@ -1,5 +1,11 @@
 # @lemonmade/shopify
 
+## 0.3.2
+
+### Patch Changes
+
+- [`a19241c`](https://github.com/lemonmade/nursery/commit/a19241c71db4e39cb0868e485c79c314edae39ae) Thanks [@lemonmade](https://github.com/lemonmade)! - Upgrade @quilted/graphql peer dependency
+
 ## 0.3.1
 
 ### Patch Changes
