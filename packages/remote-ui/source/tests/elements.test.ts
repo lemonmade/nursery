@@ -697,7 +697,14 @@ class TestRemoteReceiver extends RemoteReceiver {
     jest.Mock<
       ReturnType<RemoteReceiver['receive']>,
       Parameters<RemoteReceiver['receive']>
-    > = jest.fn(super.receive);
+    >;
+
+  constructor() {
+    super();
+    // @ts-expect-error `this.receive` is defined on the superclass,
+    // but `super.receive` isn’t defined. Not sure how else to do this...
+    this.receive = jest.fn(this.receive);
+  }
 }
 
 function createAndConnectRemoteElement<
