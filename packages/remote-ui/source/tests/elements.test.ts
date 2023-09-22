@@ -697,7 +697,7 @@ class TestRemoteReceiver extends RemoteReceiver {
     jest.Mock<
       ReturnType<RemoteReceiver['receive']>,
       Parameters<RemoteReceiver['receive']>
-    > = jest.fn(this.receive);
+    > = jest.fn(super.receive);
 }
 
 function createAndConnectRemoteElement<
