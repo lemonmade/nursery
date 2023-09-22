@@ -1,5 +1,14 @@
 # @lemonmade/remote-ui-react
 
+## 0.3.1
+
+### Patch Changes
+
+- [`1804669`](https://github.com/lemonmade/nursery/commit/18046694efd284bc440d7ea325561c9b5b61c08c) Thanks [@lemonmade](https://github.com/lemonmade)! - Update signal dependencies
+
+- Updated dependencies [[`1804669`](https://github.com/lemonmade/nursery/commit/18046694efd284bc440d7ea325561c9b5b61c08c)]:
+  - @lemonmade/remote-ui@0.2.1
+
 ## 0.3.0
 
 ### Minor Changes
