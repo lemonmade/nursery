@@ -1,5 +1,11 @@
 # @lemonmade/remote-ui
 
+## 0.2.1
+
+### Patch Changes
+
+- [`1804669`](https://github.com/lemonmade/nursery/commit/18046694efd284bc440d7ea325561c9b5b61c08c) Thanks [@lemonmade](https://github.com/lemonmade)! - Update signal dependencies
+
 ## 0.2.0
 
 ### Minor Changes
