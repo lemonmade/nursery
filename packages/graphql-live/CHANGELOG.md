@@ -1,5 +1,11 @@
 # @lemonmade/graphql-live
 
+## 0.3.0
+
+### Minor Changes
+
+- [`2fc9dfd`](https://github.com/lemonmade/nursery/commit/2fc9dfd04aac18f59aa2b50e2697e3b5a9daef23) Thanks [@lemonmade](https://github.com/lemonmade)! - Upgrade `@quilted/graphql` to latest major version
+
 ## 0.2.2
 
 ### Patch Changes
