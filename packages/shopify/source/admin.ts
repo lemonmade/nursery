@@ -1,16 +1,22 @@
 export type {
-  GraphQLFetchContext,
-  GraphQLFetch,
+  GraphQLSource,
   GraphQLOperation,
   GraphQLAnyOperation,
   GraphQLResult,
   GraphQLData,
   GraphQLVariables,
   GraphQLVariableOptions,
+  GraphQLFetch,
+  GraphQLFetchOptions,
+  GraphQLFetchOverHTTPOptions,
+  GraphQLFetchOverHTTPContext,
   GraphQLStreamingFetch,
+  GraphQLStreamingFetchOptions,
   GraphQLStreamingFetchResult,
   GraphQLStreamingResult,
   GraphQLStreamingIncrementalResult,
+  GraphQLStreamingFetchOverHTTPOptions,
+  GraphQLStreamingFetchOverHTTPContext,
 } from '@quilted/graphql';
 export {gql, graphql} from '@quilted/graphql';
 

@@ -51,7 +51,7 @@
   },
   "sideEffects": false,
   "dependencies": {
-    "@quilted/graphql": "^1.2.0"
+    "@quilted/graphql": "^2.0.0"
   },
   "devDependencies": {
     "@quilted/testing": "^0.1.6"

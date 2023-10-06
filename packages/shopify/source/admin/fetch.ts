@@ -1,4 +1,4 @@
-import {createGraphQLHttpFetch} from '@quilted/graphql';
+import {createGraphQLFetchOverHTTP} from '@quilted/graphql';
 
 import {getCurrentApiVersion} from '../shared/api-version.ts';
 import {
@@ -13,7 +13,7 @@ export function createAdminGraphQLFetch({
   apiVersion = getCurrentApiVersion(),
   accessToken,
 }: AdminGraphQLRequestOptions) {
-  return createGraphQLHttpFetch({
+  return createGraphQLFetchOverHTTP({
     method: 'POST',
     url({name}) {
       const url = new AdminGraphQLRequestURL({shop, apiVersion});
