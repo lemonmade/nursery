@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/<USER>/<REPOSITORY>",
+    "url": "https://github.com/lemonmade/nursery",
     "directory": "packages/remote-ui-react"
   },
   "exports": {
@@ -20,29 +20,25 @@
       "types": "./build/typescript/index.d.ts",
       "quilt:source": "./source/index.ts",
       "quilt:esnext": "./build/esnext/index.esnext",
-      "import": "./build/esm/index.mjs",
-      "require": "./build/cjs/index.cjs"
+      "import": "./build/esm/index.mjs"
     },
     "./host": {
       "types": "./build/typescript/host.d.ts",
       "quilt:source": "./source/host.ts",
       "quilt:esnext": "./build/esnext/host.esnext",
-      "import": "./build/esm/host.mjs",
-      "require": "./build/cjs/host.cjs"
+      "import": "./build/esm/host.mjs"
     },
     "./html": {
       "types": "./build/typescript/html.d.ts",
       "quilt:source": "./source/html.ts",
       "quilt:esnext": "./build/esnext/html.esnext",
-      "import": "./build/esm/html.mjs",
-      "require": "./build/cjs/html.cjs"
+      "import": "./build/esm/html.mjs"
     },
     "./polyfill": {
       "types": "./build/typescript/polyfill.d.ts",
       "quilt:source": "./source/polyfill.ts",
       "quilt:esnext": "./build/esnext/polyfill.esnext",
-      "import": "./build/esm/polyfill.mjs",
-      "require": "./build/cjs/polyfill.cjs"
+      "import": "./build/esm/polyfill.mjs"
     }
   },
   "types": "./build/typescript/index.d.ts",
@@ -65,6 +61,9 @@
     "./build/esm/polyfill.mjs",
     "./build/esnext/polyfill.esnext"
   ],
+  "scripts": {
+    "build": "rollup --config rollup.config.js"
+  },
   "dependencies": {
     "@lemonmade/remote-ui": "^0.2.0",
     "@types/react": "^17.0.0 || ^18.0.0",

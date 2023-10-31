@@ -20,43 +20,37 @@
       "types": "./build/typescript/index.d.ts",
       "quilt:source": "./source/index.ts",
       "quilt:esnext": "./build/esnext/index.esnext",
-      "import": "./build/esm/index.mjs",
-      "require": "./build/cjs/index.cjs"
+      "import": "./build/esm/index.mjs"
     },
     "./elements": {
       "types": "./build/typescript/elements.d.ts",
       "quilt:source": "./source/elements.ts",
       "quilt:esnext": "./build/esnext/elements.esnext",
-      "import": "./build/esm/elements.mjs",
-      "require": "./build/cjs/elements.cjs"
+      "import": "./build/esm/elements.mjs"
     },
     "./html": {
       "types": "./build/typescript/html.d.ts",
       "quilt:source": "./source/html.ts",
       "quilt:esnext": "./build/esnext/html.esnext",
-      "import": "./build/esm/html.mjs",
-      "require": "./build/cjs/html.cjs"
+      "import": "./build/esm/html.mjs"
     },
     "./polyfill": {
       "types": "./build/typescript/polyfill.d.ts",
       "quilt:source": "./source/polyfill.ts",
       "quilt:esnext": "./build/esnext/polyfill.esnext",
-      "import": "./build/esm/polyfill.mjs",
-      "require": "./build/cjs/polyfill.cjs"
+      "import": "./build/esm/polyfill.mjs"
     },
     "./receiver": {
       "types": "./build/typescript/receiver.d.ts",
       "quilt:source": "./source/receiver.ts",
       "quilt:esnext": "./build/esnext/receiver.esnext",
-      "import": "./build/esm/receiver.mjs",
-      "require": "./build/cjs/receiver.cjs"
+      "import": "./build/esm/receiver.mjs"
     },
     "./signals": {
       "types": "./build/typescript/signals.d.ts",
       "quilt:source": "./source/signals.ts",
       "quilt:esnext": "./build/esnext/signals.esnext",
-      "import": "./build/esm/signals.mjs",
-      "require": "./build/cjs/signals.cjs"
+      "import": "./build/esm/signals.mjs"
     }
   },
   "types": "./build/typescript/index.d.ts",
@@ -89,6 +83,9 @@
     "./build/esnext/polyfill.esnext",
     "./build/esnext/polyfill/**/*"
   ],
+  "scripts": {
+    "build": "rollup --config rollup.config.js"
+  },
   "dependencies": {
     "htm": "^3.1.1"
   },

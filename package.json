@@ -4,32 +4,29 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "lint": "quilt lint",
-    "test": "quilt test",
-    "type-check": "quilt type-check",
-    "develop": "quilt develop",
-    "build": "quilt build",
-    "deploy": "pnpm publish -r",
-    "deploy:preview": "changeset version --snapshot preview && changeset publish --tag preview --no-git-tag",
+    "build": "pnpm -r run build",
+    "lint": "prettier --check --cache .",
+    "format": "prettier --write --cache .",
+    "test": "vitest",
+    "type-check": "tsc --build --pretty",
     "version-bump": "changeset version && pnpm install --no-frozen-lockfile"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.4.8",
     "@changesets/cli": "^2.26.2",
     "@quilted/browserslist-config": "^0.1.9",
-    "@quilted/craft": "^0.1.235",
-    "@quilted/eslint-config": "^0.2.2",
+    "@quilted/craft": "^0.2.0",
     "@quilted/prettier": "^0.2.11",
-    "@quilted/testing": "^0.1.6",
-    "@quilted/typescript": "^0.2.20",
-    "typescript": "^5.2.2"
+    "@quilted/typescript": "^0.3.0",
+    "prettier": "^3.0.3",
+    "rollup": "^4.1.5",
+    "typescript": "^5.2.2",
+    "vite": "^4.5.0",
+    "vitest": "^0.34.6"
   },
   "prettier": "@quilted/prettier",
-  "eslintConfig": {
-    "extends": "@quilted/eslint-config/workspace"
-  },
   "browserslist": [
     "extends @quilted/browserslist-config/defaults"
   ],
-  "packageManager": "pnpm@8.1.1"
+  "packageManager": "pnpm@8.10.0+sha256.3c5d70d07b0c4849d7e07398b62bf48ca6619ca86f77981125eaab7f5ee82c4c"
 }

@@ -21,10 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/workflows/actions/prepare
-      - uses: quilt-framework/action-build@v2
-        with:
-          cache-key: v5
-      - name: Deploy
-        run: pnpm run deploy
+      - run: pnpm run build
+      - run: pnpm run deploy
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

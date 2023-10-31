@@ -16,28 +16,43 @@ jobs:
   lint:
     name: Lint 💅
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/workflows/actions/prepare
-      - uses: quilt-framework/action-lint@v2
+      - uses: actions/cache@v3
+        id: eslint-cache
+        with:
+          path: node_modules/.eslintcache
+          key: eslint-cache-v1-${{ github.sha }}
+          restore-keys: eslint-cache-v1-
+      - run: pnpm run lint
 
   type-check:
     name: Type check 🧮
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/workflows/actions/prepare
-      - uses: quilt-framework/action-type-check@v2
+      - uses: actions/cache@v3
+        id: typescript-cache
         with:
-          cache-key: v5
+          path: |
+            **/build/typescript/
+            **/*.tsbuildinfo
+          key: typescript-cache-v1-${{ github.sha }}
+          restore-keys: typescript-cache-v1-
+      - run: pnpm run type-check
 
   unit-tests:
     name: Unit tests 🧪
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/workflows/actions/prepare
-      - uses: quilt-framework/action-test@v2
+      - run: pnpm run test
 
   build:
     name: Build 🏗
@@ -46,6 +61,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/workflows/actions/prepare
-      - uses: quilt-framework/action-build@v2
-        with:
-          cache-key: v5
+      - run: pnpm run build

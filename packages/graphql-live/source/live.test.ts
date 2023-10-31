@@ -1,4 +1,4 @@
-import {describe, it, expect} from '@quilted/testing';
+import {describe, it, expect, vi} from 'vitest';
 import {EventEmitter} from '@quilted/events';
 
 import {parse} from 'graphql';
@@ -207,7 +207,7 @@ describe('run()', () => {
     it('uses field resolvers that are functions', async () => {
       const query = parse(`query { version }`);
 
-      const spy = jest.fn(() => 'v1');
+      const spy = vi.fn(() => 'v1');
 
       const resolver = createQueryResolver(() => ({
         version: spy,
@@ -267,7 +267,7 @@ describe('run()', () => {
       it('passes static variables to field resolvers', async () => {
         const query = parse(`query { me { pet(name: "Winston") { age } } }`);
 
-        const spy = jest.fn();
+        const spy = vi.fn();
 
         const resolver = createQueryResolver(({object}) => {
           spy.mockReturnValue(object('Dog', {name: 'Winston', age: 10}));
@@ -297,7 +297,7 @@ describe('run()', () => {
           `query Pet($name: String!) { me { pet(name: $name) { age } } }`,
         );
 
-        const spy = jest.fn();
+        const spy = vi.fn();
 
         const resolver = createQueryResolver(({object}) => {
           spy.mockReturnValue(object('Dog', {name: 'Winston', age: 10}));
@@ -376,7 +376,7 @@ describe('run()', () => {
 
   describe('iterators', () => {
     it('yields for field values that return iterators', async () => {
-      const spy = jest.fn();
+      const spy = vi.fn();
       const query = parse(`query { version }`);
 
       const resolver = createQueryResolver(() => ({
@@ -392,7 +392,7 @@ describe('run()', () => {
     });
 
     it('yields for iterators in nested selections', async () => {
-      const spy = jest.fn();
+      const spy = vi.fn();
       const query = parse(`query { me { name } }`);
 
       const resolver = createQueryResolver(({object}) => ({
@@ -411,7 +411,7 @@ describe('run()', () => {
     });
 
     it('yields for nested iterators', async () => {
-      const spy = jest.fn();
+      const spy = vi.fn();
       const query = parse(`query { me { pets { name age } } }`);
 
       const resolver = createQueryResolver(({object}) => ({
@@ -454,13 +454,13 @@ describe('run()', () => {
       const highSchool = {
         name: 'Gloucester High School',
         currentAge: createAsyncIterator(20),
-        ageAbortSpy: jest.fn(),
+        ageAbortSpy: vi.fn(),
       };
 
       const university = {
         name: 'Carleton University',
         currentAge: createAsyncIterator(10),
-        ageAbortSpy: jest.fn(),
+        ageAbortSpy: vi.fn(),
       };
 
       const currentSchool = createAsyncIterator(highSchool);
@@ -514,7 +514,7 @@ describe('run()', () => {
 
       await highSchool.currentAge.yield(21);
 
-      const nextPromiseSpy = jest.fn((value) => value);
+      const nextPromiseSpy = vi.fn((value) => value);
       const nextPromise = iterator.next().then(nextPromiseSpy);
 
       await new Promise<void>((resolve) => {
