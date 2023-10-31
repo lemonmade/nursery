@@ -1,5 +1,16 @@
 # @lemonmade/remote-ui-react
 
+## 0.4.0
+
+### Minor Changes
+
+- [`46eca9f`](https://github.com/lemonmade/nursery/commit/46eca9f324732d0df433412d11b04e6bdb506f40) Thanks [@lemonmade](https://github.com/lemonmade)! - Removed CommonJS outputs
+
+### Patch Changes
+
+- Updated dependencies [[`46eca9f`](https://github.com/lemonmade/nursery/commit/46eca9f324732d0df433412d11b04e6bdb506f40)]:
+  - @lemonmade/remote-ui@0.3.0
+
 ## 0.3.1
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @lemonmade/create-create-tester
 
+## 0.2.0
+
+### Minor Changes
+
+- [`46eca9f`](https://github.com/lemonmade/nursery/commit/46eca9f324732d0df433412d11b04e6bdb506f40) Thanks [@lemonmade](https://github.com/lemonmade)! - Removed CommonJS outputs
+
 ## 0.1.2
 
 ### Patch Changes
