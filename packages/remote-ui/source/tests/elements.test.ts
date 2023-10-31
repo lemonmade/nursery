@@ -1,6 +1,6 @@
 import {describe, it, expect} from 'vitest';
 
-// Turning off all tests temporarily because vitest doesn’t support 
+// Turning off all tests temporarily because vitest doesn’t support
 describe.skip('RemoteElement', () => {
   it('works', () => {
     expect(true).toBe(true);
