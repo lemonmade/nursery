@@ -41,8 +41,8 @@ jobs:
           path: |
             **/build/typescript/
             **/*.tsbuildinfo
-          key: typescript-cache-v1-${{ github.sha }}
-          restore-keys: typescript-cache-v1-
+          key: typescript-cache-v2-${{ github.sha }}
+          restore-keys: typescript-cache-v2-
       - run: pnpm run type-check
 
   unit-tests:
