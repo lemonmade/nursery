@@ -5,8 +5,9 @@
   "private": true,
   "scripts": {
     "build": "pnpm -r run build",
-    "lint": "prettier --check --cache .",
+    "deploy": "pnpm -r publish",
     "format": "prettier --write --cache .",
+    "lint": "prettier --check --cache .",
     "test": "vitest",
     "type-check": "tsc --build --pretty",
     "version-bump": "changeset version && pnpm install --no-frozen-lockfile"
