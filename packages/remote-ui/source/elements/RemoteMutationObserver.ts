@@ -5,6 +5,8 @@ import {
   serializeRemoteNode,
 } from './internals.ts';
 import {
+  ROOT_ID,
+  REMOTE_ID,
   MUTATION_TYPE_INSERT_CHILD,
   MUTATION_TYPE_REMOVE_CHILD,
   MUTATION_TYPE_UPDATE_TEXT,
@@ -12,7 +14,7 @@ import {
 import type {RemoteMutationCallback, RemoteMutationRecord} from '../types.ts';
 
 export class RemoteMutationObserver extends MutationObserver {
-  constructor(callback: RemoteMutationCallback) {
+  constructor(private readonly callback: RemoteMutationCallback) {
     super((records) => {
       const remoteRecords: RemoteMutationRecord[] = [];
 
@@ -57,7 +59,35 @@ export class RemoteMutationObserver extends MutationObserver {
     });
   }
 
-  observe(target: Node, options?: MutationObserverInit) {
+  observe(
+    target: Node,
+    options?: MutationObserverInit & {
+      /**
+       * Whether to send the initial state of the tree to the mutation
+       * callback.
+       *
+       * @default true
+       */
+      initial?: boolean;
+    },
+  ) {
+    Object.defineProperty(target, REMOTE_ID, {value: ROOT_ID});
+
+    if (options?.initial !== false) {
+      this.callback(
+        Array.from(
+          target.childNodes,
+          (node, index) =>
+            [
+              MUTATION_TYPE_INSERT_CHILD,
+              ROOT_ID,
+              serializeRemoteNode(node),
+              index,
+            ] satisfies RemoteMutationRecord,
+        ),
+      );
+    }
+
     super.observe(target, {
       subtree: true,
       childList: true,

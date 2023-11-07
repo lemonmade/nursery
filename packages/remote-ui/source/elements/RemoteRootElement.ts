@@ -19,20 +19,18 @@ export class RemoteRootElement extends HTMLElement {
     connectRemoteNode(this, callback);
 
     if (this.childNodes.length > 0) {
-      const records: RemoteMutationRecord[] = [];
-
-      for (let i = 0; i < this.childNodes.length; i++) {
-        const node = this.childNodes[i]!;
-
-        records.push([
-          MUTATION_TYPE_INSERT_CHILD,
-          this[REMOTE_ID],
-          serializeRemoteNode(node),
-          i,
-        ]);
-      }
-
-      callback(records);
+      callback(
+        Array.from(
+          this.childNodes,
+          (node, index) =>
+            [
+              MUTATION_TYPE_INSERT_CHILD,
+              ROOT_ID,
+              serializeRemoteNode(node),
+              index,
+            ] satisfies RemoteMutationRecord,
+        ),
+      );
     }
   }
 }
