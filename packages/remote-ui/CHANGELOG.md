@@ -1,5 +1,11 @@
 # @lemonmade/remote-ui
 
+## 0.3.2
+
+### Patch Changes
+
+- [`e33cb17`](https://github.com/lemonmade/nursery/commit/e33cb178e40f4be6b1b1b0649351e5f461ffbda8) Thanks [@lemonmade](https://github.com/lemonmade)! - Make `RemoteMutationObserver` send the initial DOM structure when connected
+
 ## 0.3.1
 
 ### Patch Changes
