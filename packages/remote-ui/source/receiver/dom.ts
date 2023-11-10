@@ -42,7 +42,7 @@ export class DOMRemoteReceiver {
         const oldValue = remoteProperties[property];
 
         remoteProperties[property] = value;
-        (element as any)[property] = value;
+        updateRemoteProperty(element, property, value);
 
         release?.(oldValue);
       },
@@ -65,7 +65,7 @@ export class DOMRemoteReceiver {
             for (const property of Object.keys(node.properties)) {
               const value = node.properties[property];
               retain?.(value);
-              (normalizedChild as any)[property] = value;
+              updateRemoteProperty(normalizedChild, property, value);
             }
           } else {
             (normalizedChild as any)[REMOTE_PROPERTIES] = {};
@@ -131,5 +131,19 @@ export class DOMRemoteReceiver {
     oldRoot.childNodes.forEach((node) => {
       fragment.appendChild(node);
     });
+  }
+}
+
+function updateRemoteProperty(
+  element: Element,
+  property: string,
+  value: unknown,
+) {
+  if (property in element) {
+    (element as any)[property] = value;
+  } else if (value == null) {
+    element.removeAttribute(property);
+  } else {
+    element.setAttribute(property, String(value));
   }
 }

@@ -22,7 +22,16 @@ export function remoteId(node: Node & {[REMOTE_ID]?: string}) {
 export function remoteProperties(
   node: Node & {[REMOTE_PROPERTIES]?: Record<string, unknown>},
 ) {
-  return node[REMOTE_PROPERTIES];
+  if (node[REMOTE_PROPERTIES] != null) return node[REMOTE_PROPERTIES];
+  if ((node as any).attributes == null) return undefined;
+
+  const properties: Record<string, string> = {};
+
+  for (const {key, value} of (node as Element).attributes) {
+    properties[key] = value;
+  }
+
+  return properties;
 }
 
 export function updateRemoteElementProperty(

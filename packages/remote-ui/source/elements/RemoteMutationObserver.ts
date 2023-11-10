@@ -7,9 +7,11 @@ import {
 import {
   ROOT_ID,
   REMOTE_ID,
+  REMOTE_PROPERTIES,
   MUTATION_TYPE_INSERT_CHILD,
   MUTATION_TYPE_REMOVE_CHILD,
   MUTATION_TYPE_UPDATE_TEXT,
+  MUTATION_TYPE_UPDATE_PROPERTY,
 } from '../constants.ts';
 import type {RemoteMutationCallback, RemoteMutationRecord} from '../types.ts';
 
@@ -52,6 +54,16 @@ export class RemoteMutationObserver extends MutationObserver {
             targetId,
             record.target.textContent ?? '',
           ]);
+        } else if (
+          record.type === 'attributes' &&
+          !(REMOTE_PROPERTIES in record.target)
+        ) {
+          remoteRecords.push([
+            MUTATION_TYPE_UPDATE_PROPERTY,
+            targetId,
+            record.attributeName,
+            (record.target as Element).getAttribute(record.attributeName),
+          ]);
         }
       }
 
@@ -91,7 +103,7 @@ export class RemoteMutationObserver extends MutationObserver {
     super.observe(target, {
       subtree: true,
       childList: true,
-      attributes: false,
+      attributes: true,
       characterData: true,
       ...options,
     });
