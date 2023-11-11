@@ -1,5 +1,11 @@
 # @lemonmade/remote-ui
 
+## 0.3.3
+
+### Patch Changes
+
+- [`660e6d8`](https://github.com/lemonmade/nursery/commit/660e6d869e1ab225ea7cc87a65db28aef3625f5b) Thanks [@lemonmade](https://github.com/lemonmade)! - Support serializing native HTML elements
+
 ## 0.3.2
 
 ### Patch Changes
