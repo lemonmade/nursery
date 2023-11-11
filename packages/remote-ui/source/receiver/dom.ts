@@ -42,7 +42,7 @@ export class DOMRemoteReceiver {
         const oldValue = remoteProperties[property];
 
         remoteProperties[property] = value;
-        updateRemoteProperty(element, property, value);
+        updateRemoteProperty(element as Element, property, value);
 
         release?.(oldValue);
       },
@@ -65,7 +65,7 @@ export class DOMRemoteReceiver {
             for (const property of Object.keys(node.properties)) {
               const value = node.properties[property];
               retain?.(value);
-              updateRemoteProperty(normalizedChild, property, value);
+              updateRemoteProperty(normalizedChild as Element, property, value);
             }
           } else {
             (normalizedChild as any)[REMOTE_PROPERTIES] = {};

@@ -56,6 +56,7 @@ export class RemoteMutationObserver extends MutationObserver {
           ]);
         } else if (
           record.type === 'attributes' &&
+          record.attributeName != null &&
           !(REMOTE_PROPERTIES in record.target)
         ) {
           remoteRecords.push([

@@ -27,8 +27,8 @@ export function remoteProperties(
 
   const properties: Record<string, string> = {};
 
-  for (const {key, value} of (node as Element).attributes) {
-    properties[key] = value;
+  for (const {name, value} of (node as Element).attributes) {
+    properties[name] = value;
   }
 
   return properties;
