@@ -1,5 +1,11 @@
 # @lemonmade/graphql-live
 
+## 0.4.2
+
+### Patch Changes
+
+- [`256cdd0`](https://github.com/lemonmade/nursery/commit/256cdd0e551ca63cc4a83e360f3acfacb0a7097c) Thanks [@lemonmade](https://github.com/lemonmade)! - Use real `AbortController`
+
 ## 0.4.1
 
 ### Patch Changes
