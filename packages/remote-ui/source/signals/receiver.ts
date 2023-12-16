@@ -7,10 +7,10 @@ import {
   NODE_TYPE_COMMENT,
   NODE_TYPE_TEXT,
 } from '../constants.ts';
-import {createRemoteMutationCallback} from '../callback.ts';
+import {createRemoteConnection} from '../connection.ts';
 import type {RemoteReceiverOptions} from '../receiver.ts';
 import type {
-  RemoteMutationCallback,
+  RemoteConnection,
   RemoteNodeSerialization,
   RemoteTextSerialization,
   RemoteCommentSerialization,
@@ -65,13 +65,29 @@ export class SignalRemoteReceiver {
   >([[ROOT_ID, this.root]]);
 
   private readonly parents = new Map<string, string | typeof ROOT_ID>();
+  private readonly implementations = new Map<
+    string,
+    Record<string, (...args: unknown[]) => unknown>
+  >();
 
-  readonly receive: RemoteMutationCallback;
+  readonly connection: RemoteConnection;
 
   constructor({retain, release}: RemoteReceiverOptions = {}) {
     const {attached, parents} = this;
 
-    this.receive = createRemoteMutationCallback({
+    this.connection = createRemoteConnection({
+      call: (id, method, ...args) => {
+        const implementation = this.implementations.get(id);
+        const implementationMethod = implementation?.[method];
+
+        if (typeof implementationMethod !== 'function') {
+          throw new Error(
+            `Node ${id} does not implement the ${method}() method`,
+          );
+        }
+
+        return implementationMethod(...args);
+      },
       insertChild: (id, child, index) => {
         const parent = attached.get(id) as SignalRemoteReceiverParent;
         const newChildren = [...parent.children.peek()];
@@ -198,6 +214,17 @@ export class SignalRemoteReceiver {
           detach(grandChild);
         }
       }
+    }
+  }
+
+  implement<T extends SignalRemoteReceiverNodeOrRoot>(
+    {id}: Pick<T, 'id'>,
+    implementation?: Record<string, (...args: unknown[]) => unknown> | null,
+  ) {
+    if (implementation == null) {
+      this.implementations.delete(id);
+    } else {
+      this.implementations.set(id, implementation);
     }
   }
 

@@ -1,7 +1,7 @@
 import {DOMRemoteReceiver} from '../receiver/dom.ts';
 
 export class RemoteReceiverElement extends HTMLElement {
-  readonly receive: DOMRemoteReceiver['receive'];
+  readonly connection: DOMRemoteReceiver['connection'];
 
   retain?: (value: any) => void;
   release?: (value: any) => void;
@@ -15,6 +15,6 @@ export class RemoteReceiverElement extends HTMLElement {
     });
 
     receiver.connect(this);
-    this.receive = receiver.receive;
+    this.connection = receiver.connection;
   }
 }

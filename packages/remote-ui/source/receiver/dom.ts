@@ -1,7 +1,4 @@
-import {
-  createRemoteMutationCallback,
-  type RemoteMutationCallback,
-} from '../callback.ts';
+import {createRemoteConnection, type RemoteConnection} from '../connection.ts';
 import {
   NODE_TYPE_TEXT,
   NODE_TYPE_COMMENT,
@@ -15,14 +12,18 @@ import type {RemoteReceiverOptions} from './shared.ts';
 
 export class DOMRemoteReceiver {
   readonly root: DocumentFragment | Element = document.createDocumentFragment();
-  readonly receive: RemoteMutationCallback;
+  readonly connection: RemoteConnection;
 
   private readonly attached = new Map<string, Node>();
 
   constructor({retain, release}: RemoteReceiverOptions = {}) {
     const {attached} = this;
 
-    this.receive = createRemoteMutationCallback({
+    this.connection = createRemoteConnection({
+      call(id, method, ...args) {
+        const element = attached.get(id)!;
+        return (element as any)[method](...args);
+      },
       insertChild: (id, child, index) => {
         const parent = id === ROOT_ID ? this.root : attached.get(id)!;
         parent.insertBefore(attach(child), parent.childNodes[index] || null);
