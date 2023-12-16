@@ -1,5 +1,14 @@
 # @lemonmade/remote-ui-react
 
+## 0.4.2
+
+### Patch Changes
+
+- [#84](https://github.com/lemonmade/nursery/pull/84) [`1365dbe`](https://github.com/lemonmade/nursery/commit/1365dbed5875fe6513ce2c25724e377d39a6a0ba) Thanks [@lemonmade](https://github.com/lemonmade)! - Add support for remote methods
+
+- Updated dependencies [[`1365dbe`](https://github.com/lemonmade/nursery/commit/1365dbed5875fe6513ce2c25724e377d39a6a0ba)]:
+  - @lemonmade/remote-ui@0.3.4
+
 ## 0.4.1
 
 ### Patch Changes

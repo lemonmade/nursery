@@ -74,7 +74,7 @@ importers:
   packages/remote-ui-preact:
     dependencies:
       '@lemonmade/remote-ui':
-        specifier: ^0.3.1
+        specifier: ^0.3.4
         version: link:../remote-ui
       '@preact/signals':
         specifier: ^1.2.0
@@ -99,7 +99,7 @@ importers:
   packages/remote-ui-react:
     dependencies:
       '@lemonmade/remote-ui':
-        specifier: ^0.3.1
+        specifier: ^0.3.4
         version: link:../remote-ui
       '@types/react':
         specifier: ^17.0.0 || ^18.0.0
