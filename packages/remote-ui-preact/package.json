@@ -6,7 +6,7 @@
     "access": "public",
     "@lemonmade/registry": "https://registry.npmjs.org"
   },
-  "version": "0.4.1",
+  "version": "0.4.2",
   "engines": {
     "node": ">=14.0.0"
   },
@@ -54,7 +54,7 @@
     "build": "rollup --config rollup.config.js"
   },
   "dependencies": {
-    "@lemonmade/remote-ui": "^0.3.1",
+    "@lemonmade/remote-ui": "^0.3.4",
     "htm": "^3.1.1"
   },
   "peerDependencies": {
