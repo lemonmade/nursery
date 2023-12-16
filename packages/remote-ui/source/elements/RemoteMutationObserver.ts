@@ -13,10 +13,10 @@ import {
   MUTATION_TYPE_UPDATE_TEXT,
   MUTATION_TYPE_UPDATE_PROPERTY,
 } from '../constants.ts';
-import type {RemoteMutationCallback, RemoteMutationRecord} from '../types.ts';
+import type {RemoteConnection, RemoteMutationRecord} from '../types.ts';
 
 export class RemoteMutationObserver extends MutationObserver {
-  constructor(private readonly callback: RemoteMutationCallback) {
+  constructor(private readonly connection: RemoteConnection) {
     super((records) => {
       const remoteRecords: RemoteMutationRecord[] = [];
 
@@ -39,7 +39,7 @@ export class RemoteMutationObserver extends MutationObserver {
           });
 
           record.addedNodes.forEach((node, index) => {
-            connectRemoteNode(node, callback);
+            connectRemoteNode(node, connection);
 
             remoteRecords.push([
               MUTATION_TYPE_INSERT_CHILD,
@@ -68,7 +68,7 @@ export class RemoteMutationObserver extends MutationObserver {
         }
       }
 
-      callback(remoteRecords);
+      connection.mutate(remoteRecords);
     });
   }
 
@@ -87,18 +87,18 @@ export class RemoteMutationObserver extends MutationObserver {
     Object.defineProperty(target, REMOTE_ID, {value: ROOT_ID});
 
     if (options?.initial !== false) {
-      this.callback(
-        Array.from(
-          target.childNodes,
-          (node, index) =>
-            [
-              MUTATION_TYPE_INSERT_CHILD,
-              ROOT_ID,
-              serializeRemoteNode(node),
-              index,
-            ] satisfies RemoteMutationRecord,
-        ),
-      );
+      const mutationRecords = Array.from(target.childNodes, (node, index) => {
+        connectRemoteNode(node, this.connection);
+
+        return [
+          MUTATION_TYPE_INSERT_CHILD,
+          ROOT_ID,
+          serializeRemoteNode(node),
+          index,
+        ] satisfies RemoteMutationRecord;
+      });
+
+      this.connection.mutate(mutationRecords);
     }
 
     super.observe(target, {
