@@ -1,5 +1,11 @@
 # @lemonmade/graphql-live
 
+## 0.4.3
+
+### Patch Changes
+
+- [`c5bc11c`](https://github.com/lemonmade/nursery/commit/c5bc11cb6315ebe1c86318f7343e489ff5bde93a) Thanks [@lemonmade](https://github.com/lemonmade)! - Update quilt dependencies
+
 ## 0.4.2
 
 ### Patch Changes
