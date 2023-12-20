@@ -29,8 +29,8 @@
     "build": "rollup --config rollup.config.js"
   },
   "dependencies": {
-    "@quilted/events": "^1.0.0",
-    "@quilted/graphql": "^2.0.0"
+    "@quilted/events": "^2.0.0",
+    "@quilted/graphql": "^3.0.1"
   },
   "peerDependencies": {
     "graphql": "^16.0.0"

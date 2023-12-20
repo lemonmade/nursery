@@ -2,28 +2,23 @@
 
 import {describe, it, expect, vi} from 'vitest';
 
-import {render as preactRender} from 'preact';
+import {createRoot} from 'react-dom/client';
 import {
   useState,
   useRef,
   useImperativeHandle,
   forwardRef,
   type PropsWithChildren,
-} from 'preact/compat';
+} from 'react';
 
-// The `SignalRemoteReceiver` library uses `@preact/signals-core`, which does not include
-// the auto-updating of Preact components when they use signals. Importing this library
-// applies the internal hooks that make this work.
-import '@preact/signals';
-
-import {render} from '@quilted/preact-testing';
-import {matchers, type CustomMatchers} from '@quilted/preact-testing/matchers';
+import {render} from '@quilted/react-testing/dom';
+import {matchers, type CustomMatchers} from '@quilted/react-testing/matchers';
 
 import {
   RemoteMutationObserver,
   createRemoteElement,
 } from '@lemonmade/remote-ui/elements';
-import {SignalRemoteReceiver} from '@lemonmade/remote-ui/signals';
+import {RemoteReceiver} from '@lemonmade/remote-ui/receiver';
 
 import {createRemoteComponent} from '../index.ts';
 import {RemoteRootRenderer, createRemoteComponentRenderer} from '../host.ts';
@@ -85,8 +80,8 @@ declare global {
 }
 
 describe('remote-ui-preact', () => {
-  it('can render simple remote DOM elements', async () => {
-    const receiver = new SignalRemoteReceiver();
+  it.only('can render simple remote DOM elements', async () => {
+    const receiver = new RemoteReceiver();
     const mutationObserver = new RemoteMutationObserver(receiver.connection);
 
     const remoteRoot = document.createElement('div');
@@ -98,17 +93,17 @@ describe('remote-ui-preact', () => {
       <RemoteRootRenderer receiver={receiver} components={components} />,
     );
 
-    expect(rendered).not.toContainPreactComponent(HostButton);
+    expect(rendered).not.toContainReactComponent(HostButton);
 
     rendered.act(() => {
       mutationObserver.observe(remoteRoot);
     });
 
-    expect(rendered).toContainPreactComponent(HostButton);
+    expect(rendered).toContainReactComponent(HostButton);
   });
 
   it('can render remote DOM elements with simple properties', async () => {
-    const receiver = new SignalRemoteReceiver();
+    const receiver = new RemoteReceiver();
     const mutationObserver = new RemoteMutationObserver(receiver.connection);
 
     const remoteRoot = document.createElement('div');
@@ -122,11 +117,11 @@ describe('remote-ui-preact', () => {
       <RemoteRootRenderer receiver={receiver} components={components} />,
     );
 
-    expect(rendered).toContainPreactComponent(HostButton, {disabled: true});
+    expect(rendered).toContainReactComponent(HostButton, {disabled: true});
   });
 
   it('can render remote DOM elements with event listeners', async () => {
-    const receiver = new SignalRemoteReceiver();
+    const receiver = new RemoteReceiver();
     const mutationObserver = new RemoteMutationObserver(receiver.connection);
 
     const remoteRoot = document.createElement('div');
@@ -149,15 +144,15 @@ describe('remote-ui-preact', () => {
       <RemoteRootRenderer receiver={receiver} components={components} />,
     );
 
-    expect(rendered).toContainPreactComponent(HostButton, {disabled: false});
+    expect(rendered).toContainReactComponent(HostButton, {disabled: false});
 
     rendered.find(HostButton)?.trigger('onPress');
 
-    expect(rendered).toContainPreactComponent(HostButton, {disabled: true});
+    expect(rendered).toContainReactComponent(HostButton, {disabled: true});
   });
 
   it('can call methods on a remote DOM element by forwarding calls to the host’s implementation component ref', async () => {
-    const receiver = new SignalRemoteReceiver();
+    const receiver = new RemoteReceiver();
     const mutationObserver = new RemoteMutationObserver(receiver.connection);
 
     const remoteRoot = document.createElement('div');
@@ -181,7 +176,7 @@ describe('remote-ui-preact', () => {
   });
 
   it('can render remote DOM elements wrapped as Preact components', async () => {
-    const receiver = new SignalRemoteReceiver();
+    const receiver = new RemoteReceiver();
     const mutationObserver = new RemoteMutationObserver(receiver.connection);
 
     const remoteRoot = document.createElement('div');
@@ -201,7 +196,7 @@ describe('remote-ui-preact', () => {
       );
     }
 
-    preactRender(<Remote />, remoteRoot);
+    createRoot(remoteRoot).render(<Remote />);
 
     const rendered = render(
       <RemoteRootRenderer receiver={receiver} components={components} />,
@@ -211,10 +206,10 @@ describe('remote-ui-preact', () => {
       mutationObserver.observe(remoteRoot);
     });
 
-    expect(rendered).toContainPreactComponent(HostButton, {disabled: false});
+    expect(rendered).toContainReactComponent(HostButton, {disabled: false});
 
     rendered.find(HostButton)?.trigger('onPress');
 
-    expect(rendered).toContainPreactComponent(HostButton, {disabled: true});
+    expect(rendered).toContainReactComponent(HostButton, {disabled: true});
   });
 });

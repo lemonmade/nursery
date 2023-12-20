@@ -65,8 +65,8 @@
     "build": "rollup --config rollup.config.js"
   },
   "dependencies": {
-    "@lemonmade/remote-ui": "^0.3.4",
-    "@types/react": "^17.0.0 || ^18.0.0",
+    "@lemonmade/remote-ui": "workspace:^",
+    "@types/react": "^18.0.0",
     "htm": "^3.1.1"
   },
   "peerDependencies": {
@@ -78,7 +78,11 @@
     }
   },
   "devDependencies": {
-    "react": "npm:@quilted/react@^18.2.0"
+    "@quilted/react-testing": "^0.6.4",
+    "@types/react-dom": "^18.2.0",
+    "preact": "^10.19.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "eslintConfig": {
     "extends": [
