@@ -163,7 +163,6 @@ describe('remote-ui-preact', () => {
     const remoteRoot = document.createElement('div');
     const remoteButton = document.createElement('remote-button');
     remoteButton.onPress = () => {
-      console.log('HERE');
       remoteButton.focus();
     };
     remoteRoot.append(remoteButton);

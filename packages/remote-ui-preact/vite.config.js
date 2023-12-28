@@ -1,6 +1,17 @@
-import {defineConfig} from 'vite';
+import {defineConfig} from 'vitest/config';
 import {quiltPackage} from '@quilted/craft/vite';
 
 export default defineConfig({
   plugins: [quiltPackage({react: 'preact'})],
+  test: {
+    deps: {
+      optimizer: {
+        web: {
+          // Without this, some imports for Preact get the node_modules version, and others get
+          // the optimized dependency version.
+          exclude: ['preact', '@preact/signals', '@preact/signals-core'],
+        },
+      },
+    },
+  },
 });
