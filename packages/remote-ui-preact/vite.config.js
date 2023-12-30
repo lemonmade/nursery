@@ -9,7 +9,12 @@ export default defineConfig({
         web: {
           // Without this, some imports for Preact get the node_modules version, and others get
           // the optimized dependency version.
-          exclude: ['preact', '@preact/signals', '@preact/signals-core'],
+          exclude: [
+            'preact',
+            'preact/compat',
+            '@preact/signals',
+            '@preact/signals-core',
+          ],
         },
       },
     },

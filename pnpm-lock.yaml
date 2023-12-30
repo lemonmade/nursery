@@ -109,8 +109,8 @@ importers:
         version: 3.1.1
     devDependencies:
       '@quilted/react-testing':
-        specifier: ^0.6.4
-        version: 0.6.4(preact@10.19.3)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^0.6.5
+        version: 0.6.5(preact@10.19.3)(react-dom@18.2.0)(react@18.2.0)
       '@types/react-dom':
         specifier: ^18.2.0
         version: 18.2.18
@@ -2177,7 +2177,7 @@ packages:
     dependencies:
       '@quilted/graphql-tools': 0.2.0(typescript@5.3.3)
       '@quilted/rollup': 0.2.20(@babel/template@7.22.15)(rollup@4.1.5)
-      '@quilted/vite': 0.1.16(@babel/template@7.22.15)(preact@10.19.3)(rollup@4.1.5)(vite@5.0.10)(vitest@1.1.0)
+      '@quilted/vite': 0.1.17(@babel/template@7.22.15)(preact@10.19.3)(rollup@4.1.5)(vite@5.0.10)(vitest@1.1.0)
       pkg-dir: 7.0.0
       rollup: 4.1.5
       vite: 5.0.10
@@ -2249,8 +2249,8 @@ packages:
     resolution: {integrity: sha512-OGkhMYoOmy+9udbMFfT2WtGWzYOCRO1hslAyYSJhGTMUQf9mXUyve6ceOfA+to8WKESAJ9LMYJ93LFg8YOIfmQ==}
     dev: true
 
-  /@quilted/react-testing@0.6.4(preact@10.19.3)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-eCZAt8eyoYzKlNBqe49QnoXbrxIoB4INLsFN1cr6MAK8Jhr7ccOfvzPijZau2msjo9FNPTxW77GhyW/XWtPzrA==}
+  /@quilted/react-testing@0.6.5(preact@10.19.3)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-/VZdpTlYjIzueFCSsP/owGORZWcLl6c1Ur98IllqceJDVqtRekVQtEj0WuWqByt6+CPtcVye5bAxfb8mEF+12g==}
     peerDependencies:
       preact: ^10.19.0
       react: ^18.0.0
@@ -2347,8 +2347,8 @@ packages:
     resolution: {integrity: sha512-7xLznGa7UyWdcxHELRyNtLReL4xdfv6OaZbod4mbFzif+ZBw+5LsjAZwL+JMQqSe39yLqhhlBXTKlTXuLiBIWQ==}
     dev: true
 
-  /@quilted/vite@0.1.16(@babel/template@7.22.15)(preact@10.19.3)(rollup@4.1.5)(vite@5.0.10)(vitest@1.1.0):
-    resolution: {integrity: sha512-ZXpovrlI93p9WR5Kmp0j9RhHjKJOxWxDuyHIKATYf4Kt0NtMYKhO1wC9eM1YFfnrSmSXYYrhV072YSZVsWi/qw==}
+  /@quilted/vite@0.1.17(@babel/template@7.22.15)(preact@10.19.3)(rollup@4.1.5)(vite@5.0.10)(vitest@1.1.0):
+    resolution: {integrity: sha512-1OvtieKFMlQFHX20YXZvh6puqIu1UuHN1l6aAXk6mHDgqNpxY3liCHgijHQgG6lURF+nz2elEZibfIN8uMflZw==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       vite: ^5.0.0
