@@ -1,5 +1,7 @@
 // @vitest-environment jsdom
 
+Object.assign(globalThis, {IS_REACT_ACT_ENVIRONMENT: true});
+
 import {describe, it, expect, vi} from 'vitest';
 
 import {createRoot} from 'react-dom/client';
@@ -79,8 +81,8 @@ declare global {
   }
 }
 
-describe('remote-ui-preact', () => {
-  it.only('can render simple remote DOM elements', async () => {
+describe('remote-ui-react', () => {
+  it('can render simple remote DOM elements', async () => {
     const receiver = new RemoteReceiver();
     const mutationObserver = new RemoteMutationObserver(receiver.connection);
 
@@ -175,7 +177,7 @@ describe('remote-ui-preact', () => {
     expect(focusSpy).toHaveBeenCalled();
   });
 
-  it('can render remote DOM elements wrapped as Preact components', async () => {
+  it('can render remote DOM elements wrapped as React components', async () => {
     const receiver = new RemoteReceiver();
     const mutationObserver = new RemoteMutationObserver(receiver.connection);
 
@@ -191,16 +193,20 @@ describe('remote-ui-preact', () => {
             setDisabled(true);
           }}
         >
-          {disabled ? 'Click to disable' : 'Already disabled'}
+          {disabled ? 'Already disabled' : 'Click to disable'}
         </RemoteButton>
       );
     }
 
-    createRoot(remoteRoot).render(<Remote />);
-
     const rendered = render(
       <RemoteRootRenderer receiver={receiver} components={components} />,
     );
+
+    // Dedicated `act()` so that React actually renders the remote elements,
+    // before we start observing the remote DOM node for changes.
+    rendered.act(() => {
+      createRoot(remoteRoot).render(<Remote />);
+    });
 
     rendered.act(() => {
       mutationObserver.observe(remoteRoot);

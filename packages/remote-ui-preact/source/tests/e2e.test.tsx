@@ -195,7 +195,7 @@ describe('remote-ui-preact', () => {
             setDisabled(true);
           }}
         >
-          {disabled ? 'Click to disable' : 'Already disabled'}
+          {disabled ? 'Already disabled' : 'Click to disable'}
         </RemoteButton>
       );
     }
