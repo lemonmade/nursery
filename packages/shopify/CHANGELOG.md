@@ -1,5 +1,11 @@
 # @lemonmade/shopify
 
+## 0.5.3
+
+### Patch Changes
+
+- [`c38d333`](https://github.com/lemonmade/nursery/commit/c38d333e3835747933fc9409ea543895a30e5326) Thanks [@lemonmade](https://github.com/lemonmade)! - Improve API version types
+
 ## 0.5.2
 
 ### Patch Changes
