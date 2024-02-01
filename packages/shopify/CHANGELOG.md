@@ -1,5 +1,13 @@
 # @lemonmade/shopify
 
+## 0.5.2
+
+### Patch Changes
+
+- [`86ca9b7`](https://github.com/lemonmade/nursery/commit/86ca9b704bc9afb778286423197f2e8ec9dd1d96) Thanks [@lemonmade](https://github.com/lemonmade)! - Add ability to override URL and headers
+
+- [`91fab53`](https://github.com/lemonmade/nursery/commit/91fab53bfb3bf236a3e3e39f2441276ff51c4bad) Thanks [@lemonmade](https://github.com/lemonmade)! - Update list of supported API versions
+
 ## 0.5.1
 
 ### Patch Changes
