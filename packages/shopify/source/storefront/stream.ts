@@ -1,6 +1,6 @@
 import {createGraphQLStreamingFetch} from '@quilted/graphql';
 
-import {getCurrentApiVersion} from '../shared/api-version.ts';
+import {getCurrentAPIVersion} from '../shared/api-version.ts';
 import {
   getShopURLFromEnvironment,
   StorefrontGraphQLRequestURL,
@@ -10,7 +10,7 @@ import {
 
 export function createStorefrontGraphQLStreamingFetch({
   shop = getShopURLFromEnvironment(),
-  apiVersion = getCurrentApiVersion(),
+  apiVersion = getCurrentAPIVersion(),
   accessToken,
 }: StorefrontGraphQLRequestOptions) {
   return createGraphQLStreamingFetch({

@@ -4,14 +4,14 @@ import {
   type GraphQLFetchRequestInit,
 } from '@quilted/graphql';
 
-import type {ApiVersion} from '../types.ts';
-import {getCurrentApiVersion} from '../shared/api-version.ts';
+import type {APIVersion} from '../types.ts';
+import {getCurrentAPIVersion} from '../shared/api-version.ts';
 
 import type {StorefrontAccessToken} from './types.ts';
 
 export interface StorefrontGraphQLRequestOptions {
   readonly shop?: string | URL;
-  readonly apiVersion?: ApiVersion;
+  readonly apiVersion?: APIVersion;
   readonly accessToken: string | StorefrontAccessToken;
 }
 
@@ -39,7 +39,7 @@ export class StorefrontGraphQLRequest<
 export class StorefrontGraphQLRequestURL extends URL {
   constructor({
     shop = getShopURLFromEnvironment(),
-    apiVersion = getCurrentApiVersion(),
+    apiVersion = getCurrentAPIVersion(),
   }: Pick<StorefrontGraphQLRequestOptions, 'shop' | 'apiVersion'>) {
     super(`/api/${apiVersion}/graphql.json`, shop);
   }

@@ -1,12 +1,15 @@
-export type SupportedApiVersion =
+export type SupportedAPIVersion =
   | 'unstable'
-  | '2023-04'
+  | '2024-01'
+  | '2023-10'
+  | '2023-07'
+  | '2023-04';
+
+export type APIVersion =
+  | SupportedAPIVersion
   | '2023-01'
   | '2022-10'
-  | '2022-07';
-
-export type ApiVersion =
-  | SupportedApiVersion
+  | '2022-07'
   | '2022-04'
   | '2022-01'
   | '2021-10'

@@ -4,12 +4,12 @@ import {
   type GraphQLFetchRequestInit,
 } from '@quilted/graphql';
 
-import type {ApiVersion} from '../types.ts';
-import {getCurrentApiVersion} from '../shared/api-version.ts';
+import type {APIVersion} from '../types.ts';
+import {getCurrentAPIVersion} from '../shared/api-version.ts';
 
 export interface AdminGraphQLRequestOptions {
   readonly shop?: string | URL;
-  readonly apiVersion?: ApiVersion;
+  readonly apiVersion?: APIVersion;
 
   /**
    * @see https://shopify.dev/docs/apps/auth/admin-app-access-tokens
@@ -41,7 +41,7 @@ export class AdminGraphQLRequest<Data, Variables> extends GraphQLFetchRequest<
 export class AdminGraphQLRequestURL extends URL {
   constructor({
     shop = getShopURLFromEnvironment(),
-    apiVersion = getCurrentApiVersion(),
+    apiVersion = getCurrentAPIVersion(),
   }: Pick<AdminGraphQLRequestOptions, 'shop' | 'apiVersion'>) {
     super(`/admin/api/${apiVersion}/graphql.json`, shop);
   }
