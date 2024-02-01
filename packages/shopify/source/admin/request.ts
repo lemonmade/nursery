@@ -15,6 +15,8 @@ export interface AdminGraphQLRequestOptions {
    * @see https://shopify.dev/docs/apps/auth/admin-app-access-tokens
    */
   readonly accessToken: string;
+  url?(url: AdminGraphQLRequestURL): string | URL;
+  headers?(headers: AdminGraphQLRequestHeaders): HeadersInit;
 }
 
 export class AdminGraphQLRequest<Data, Variables> extends GraphQLFetchRequest<
@@ -22,18 +24,25 @@ export class AdminGraphQLRequest<Data, Variables> extends GraphQLFetchRequest<
   Variables
 > {
   constructor(
-    {shop, apiVersion, accessToken}: AdminGraphQLRequestOptions,
+    {
+      shop,
+      apiVersion,
+      accessToken,
+      url: customizeURL,
+      headers: customizeHeaders,
+    }: AdminGraphQLRequestOptions,
     operation: GraphQLAnyOperation<Data, Variables>,
     init?: GraphQLFetchRequestInit<Data, Variables>,
   ) {
+    const url = new AdminGraphQLRequestURL({shop, apiVersion});
     const headers = new AdminGraphQLRequestHeaders(
       {accessToken},
       init?.headers,
     );
 
-    super(new AdminGraphQLRequestURL({shop, apiVersion}), operation, {
+    super(customizeURL ? customizeURL(url) : url, operation, {
       ...init,
-      headers,
+      headers: customizeHeaders ? customizeHeaders(headers) : headers,
     });
   }
 }

@@ -13,6 +13,8 @@ export interface StorefrontGraphQLRequestOptions {
   readonly shop?: string | URL;
   readonly apiVersion?: APIVersion;
   readonly accessToken: string | StorefrontAccessToken;
+  url?(url: StorefrontGraphQLRequestURL): string | URL;
+  headers?(headers: StorefrontGraphQLRequestHeaders): HeadersInit;
 }
 
 export class StorefrontGraphQLRequest<
@@ -20,18 +22,25 @@ export class StorefrontGraphQLRequest<
   Variables,
 > extends GraphQLFetchRequest<Data, Variables> {
   constructor(
-    {shop, apiVersion, accessToken}: StorefrontGraphQLRequestOptions,
+    {
+      shop,
+      apiVersion,
+      accessToken,
+      url: customizeURL,
+      headers: customizeHeaders,
+    }: StorefrontGraphQLRequestOptions,
     operation: GraphQLAnyOperation<Data, Variables>,
     init?: GraphQLFetchRequestInit<Data, Variables>,
   ) {
+    const url = new StorefrontGraphQLRequestURL({shop, apiVersion});
     const headers = new StorefrontGraphQLRequestHeaders(
       {accessToken},
       init?.headers,
     );
 
-    super(new StorefrontGraphQLRequestURL({shop, apiVersion}), operation, {
+    super(customizeURL ? customizeURL(url) : url, operation, {
       ...init,
-      headers,
+      headers: customizeHeaders ? customizeHeaders(headers) : headers,
     });
   }
 }

@@ -12,6 +12,8 @@ export function createAdminGraphQLFetch({
   shop = getShopURLFromEnvironment(),
   apiVersion = getCurrentAPIVersion(),
   accessToken,
+  url: customizeURL,
+  headers: customizeHeaders,
 }: AdminGraphQLRequestOptions) {
   return createGraphQLFetch({
     method: 'POST',
@@ -22,10 +24,11 @@ export function createAdminGraphQLFetch({
         url.searchParams.set('operationName', name);
       }
 
-      return url;
+      return customizeURL ? customizeURL(url) : url;
     },
     headers() {
-      return new AdminGraphQLRequestHeaders({accessToken});
+      const headers = new AdminGraphQLRequestHeaders({accessToken});
+      return customizeHeaders ? customizeHeaders(headers) : headers;
     },
   });
 }
