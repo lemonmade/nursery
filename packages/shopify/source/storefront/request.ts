@@ -45,12 +45,28 @@ export class StorefrontGraphQLRequest<
   }
 }
 
+const SHOPIFY_PROTOCOL = 'shopify:';
+
 export class StorefrontGraphQLRequestURL extends URL {
   constructor({
     shop = getShopURLFromEnvironment(),
     apiVersion = getCurrentAPIVersion(),
   }: Pick<StorefrontGraphQLRequestOptions, 'shop' | 'apiVersion'>) {
-    super(`/api/${apiVersion}/graphql.json`, shop);
+    let baseURL: string | URL | undefined;
+
+    if (typeof shop === 'string') {
+      if (shop.startsWith(SHOPIFY_PROTOCOL)) {
+        baseURL = shop;
+      } else {
+        baseURL = shop;
+        if (!shop.includes('.')) baseURL = `${baseURL}.myshopify.com`;
+        if (!shop.startsWith('https:')) baseURL = `https://${baseURL}`;
+      }
+    } else if (shop != null) {
+      baseURL = shop;
+    }
+
+    super(`/api/${apiVersion}/graphql.json`, baseURL);
   }
 }
 

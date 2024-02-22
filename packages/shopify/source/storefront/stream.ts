@@ -12,6 +12,8 @@ export function createStorefrontGraphQLStreamingFetch({
   shop = getShopURLFromEnvironment(),
   apiVersion = getCurrentAPIVersion(),
   accessToken,
+  url: customizeURL,
+  headers: customizeHeaders,
 }: StorefrontGraphQLRequestOptions) {
   return createGraphQLStreamingFetch({
     method: 'POST',
@@ -22,10 +24,11 @@ export function createStorefrontGraphQLStreamingFetch({
         url.searchParams.set('operationName', name);
       }
 
-      return url;
+      return customizeURL ? customizeURL(url) : url;
     },
     headers() {
-      return new StorefrontGraphQLRequestHeaders({accessToken});
+      const headers = new StorefrontGraphQLRequestHeaders({accessToken});
+      return customizeHeaders ? customizeHeaders(headers) : headers;
     },
   });
 }
