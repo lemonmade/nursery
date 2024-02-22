@@ -1,5 +1,11 @@
 # @lemonmade/shopify
 
+## 0.5.4
+
+### Patch Changes
+
+- [`5deb156`](https://github.com/lemonmade/nursery/commit/5deb15611e4eace7a37fe9a0142f4ed8fb94c0a6) Thanks [@lemonmade](https://github.com/lemonmade)! - Improve the default logic for GraphQL creator functions
+
 ## 0.5.3
 
 ### Patch Changes
