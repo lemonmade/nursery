@@ -1,5 +1,13 @@
 # @lemonmade/shopify
 
+## 0.5.5
+
+### Patch Changes
+
+- [`1df29ee`](https://github.com/lemonmade/nursery/commit/1df29eebd4ad8346949044610b8fc81cf808d69e) Thanks [@lemonmade](https://github.com/lemonmade)! - Add Direct API Access support for admin helpers
+
+- [`1df29ee`](https://github.com/lemonmade/nursery/commit/1df29eebd4ad8346949044610b8fc81cf808d69e) Thanks [@lemonmade](https://github.com/lemonmade)! - Add query and mutation classes for observable GraphQL queries
+
 ## 0.5.4
 
 ### Patch Changes
