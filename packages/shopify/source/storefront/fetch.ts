@@ -14,7 +14,7 @@ export function createStorefrontGraphQLFetch({
   accessToken,
   url: customizeURL,
   headers: customizeHeaders,
-}: StorefrontGraphQLRequestOptions) {
+}: StorefrontGraphQLRequestOptions = {}) {
   return createGraphQLFetch({
     method: 'POST',
     url({name}) {

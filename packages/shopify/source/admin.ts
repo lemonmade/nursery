@@ -30,3 +30,5 @@ export {
   AdminGraphQLRequestHeaders,
   type AdminGraphQLRequestOptions,
 } from './admin/request.ts';
+export {AdminGraphQLQuery} from './admin/AdminGraphQLQuery.ts';
+export {AdminGraphQLMutation} from './admin/AdminGraphQLMutation.ts';

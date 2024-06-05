@@ -32,3 +32,5 @@ export {
   StorefrontGraphQLRequestHeaders,
   type StorefrontGraphQLRequestOptions,
 } from './storefront/request.ts';
+export {StorefrontGraphQLQuery} from './storefront/StorefrontGraphQLQuery.ts';
+export {StorefrontGraphQLMutation} from './storefront/StorefrontGraphQLMutation.ts';

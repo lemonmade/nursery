@@ -12,7 +12,7 @@ import type {StorefrontAccessToken} from './types.ts';
 export interface StorefrontGraphQLRequestOptions {
   readonly shop?: string | URL;
   readonly apiVersion?: APIVersion;
-  readonly accessToken: string | StorefrontAccessToken;
+  readonly accessToken?: string | StorefrontAccessToken;
   url?(url: StorefrontGraphQLRequestURL): string | URL;
   headers?(headers: StorefrontGraphQLRequestHeaders): HeadersInit;
 }
@@ -22,14 +22,14 @@ export class StorefrontGraphQLRequest<
   Variables,
 > extends GraphQLFetchRequest<Data, Variables> {
   constructor(
+    operation: GraphQLAnyOperation<Data, Variables>,
     {
       shop,
       apiVersion,
       accessToken,
       url: customizeURL,
       headers: customizeHeaders,
-    }: StorefrontGraphQLRequestOptions,
-    operation: GraphQLAnyOperation<Data, Variables>,
+    }: StorefrontGraphQLRequestOptions = {},
     init?: GraphQLFetchRequestInit<Data, Variables>,
   ) {
     const url = new StorefrontGraphQLRequestURL({shop, apiVersion});
@@ -51,12 +51,14 @@ export class StorefrontGraphQLRequestURL extends URL {
   constructor({
     shop = getShopURLFromEnvironment(),
     apiVersion = getCurrentAPIVersion(),
-  }: Pick<StorefrontGraphQLRequestOptions, 'shop' | 'apiVersion'>) {
+  }: Pick<StorefrontGraphQLRequestOptions, 'shop' | 'apiVersion'> = {}) {
     let baseURL: string | URL | undefined;
+    let isDirectAPIAccess = false;
 
     if (typeof shop === 'string') {
       if (shop.startsWith(SHOPIFY_PROTOCOL)) {
         baseURL = shop;
+        isDirectAPIAccess = true;
       } else {
         baseURL = shop;
         if (!shop.includes('.')) baseURL = `${baseURL}.myshopify.com`;
@@ -66,7 +68,10 @@ export class StorefrontGraphQLRequestURL extends URL {
       baseURL = shop;
     }
 
-    super(`/api/${apiVersion}/graphql.json`, baseURL);
+    super(
+      `${isDirectAPIAccess ? '/storefront' : ''}/api/${apiVersion}/graphql.json`,
+      baseURL,
+    );
   }
 }
 
@@ -74,10 +79,12 @@ export class StorefrontGraphQLRequestHeaders extends Headers {
   constructor(
     {
       accessToken: accessTokenOrString,
-    }: Pick<StorefrontGraphQLRequestOptions, 'accessToken'>,
+    }: Pick<StorefrontGraphQLRequestOptions, 'accessToken'> = {},
     headers?: HeadersInit,
   ) {
     super(headers);
+
+    if (!accessTokenOrString) return;
 
     const accessToken: StorefrontAccessToken =
       typeof accessTokenOrString === 'string'
@@ -105,5 +112,12 @@ export class StorefrontGraphQLRequestHeaders extends Headers {
 }
 
 export function getShopURLFromEnvironment() {
-  if (typeof location === 'object') return new URL('/', location.href);
+  // If we are in the browser, assume this is a storefront
+  if (typeof document === 'object') return new URL('/', location.href);
+
+  // Otherwise, if this looks like a worker, try to use direct API access
+  // (only available in Checkout UI extensions)
+  if (typeof (globalThis as any).WorkerGlobalScope !== 'undefined') {
+    return 'shopify:/';
+  }
 }

@@ -67,8 +67,8 @@ importers:
   packages/shopify:
     dependencies:
       '@quilted/graphql':
-        specifier: ^3.0.0
-        version: 3.0.1
+        specifier: ^3.1.0
+        version: 3.1.1
 
 packages:
 
@@ -1037,6 +1037,9 @@ packages:
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
 
+  '@preact/signals-core@1.6.0':
+    resolution: {integrity: sha512-O/XGxwP85h1F7+ouqTMOIZ3+V1whfaV9ToIVcuyGriD4JkSD00cQo54BKdqjvBJxbenvp7ynfqRHEwI6e+NIhw==}
+
   '@prefresh/babel-plugin@0.5.1':
     resolution: {integrity: sha512-uG3jGEAysxWoyG3XkYfjYHgaySFrSsaEb4GagLzYaxlydbuREtaX+FTxuIidp241RaLl85XoHg9Ej6E4+V1pcg==}
 
@@ -1057,6 +1060,9 @@ packages:
   '@quilted/assets@0.1.1':
     resolution: {integrity: sha512-1Ko59wD1LfF/B6aWZWmITTS48+qMdNZRldFp9mMw0pDUwwgJ/wT3vies9OpQKKt6SvypMfUDPQubKLu1XGClRg==}
     engines: {node: '>=14.0.0'}
+
+  '@quilted/async@0.4.12':
+    resolution: {integrity: sha512-zW3s4AP2dxKsJtmywpPF/yAUMjz3iO66YPM0YsPlkmgAst6KMzYBBHxC5Yb0WqlkRTIUOlchIf5W4DxGjHxU9A==}
 
   '@quilted/babel@0.2.1':
     resolution: {integrity: sha512-tu3mBmZajJvFcAFsERPvceCyn7sfFu0Tza3QpXT1sX8EUHm2DWFgY2eCADLXYTuJzE2SFkstjlz+LZQj25ydAQ==}
@@ -1102,6 +1108,9 @@ packages:
   '@quilted/graphql@3.0.1':
     resolution: {integrity: sha512-RiceUjn9f78WfhvBMHIr7IU2KNr0syZ5nB3YYdNkn7nPoF8I+uDtR5PDqTEfJyybVmc4FWAg17oNzBjK8ZplXQ==}
 
+  '@quilted/graphql@3.1.1':
+    resolution: {integrity: sha512-5l8pgVYLqiLB+kK5nzs+exLL3BT2uqQ7AFXQv5M9Pbho8xiMelY/NNHHkdfXczbi9OMI2Dnl12hIWw+yFY8yPw==}
+
   '@quilted/http@0.3.0':
     resolution: {integrity: sha512-60CNw2V/WJjEsShHaSSGEfNsa3yAGfZYsUACgdPpR0Pypd9PUF1doUhTvTyY09A0nJ/9WxEHWoDV6p2YFGtu2w==}
 
@@ -1119,6 +1128,10 @@ packages:
 
   '@quilted/routing@0.3.0':
     resolution: {integrity: sha512-RPhAxUMnw4+f/qfrPXZCSQdtbm+aJBh9IsIYNWYRgYPoPAuVqvQuC9qkBVZxb2jlWSmCtdeISIJkEWlAKC5qSg==}
+
+  '@quilted/signals@0.2.2':
+    resolution: {integrity: sha512-iGWkDiDpR2xq0FmAF/ix/cz1qUtz2USp+8kam/QnHe0i50uKCBkufv/QHv0QhhB2/eKbHwa8wxKwslCKdiyS2w==}
+    engines: {node: '>=14.0.0'}
 
   '@quilted/typescript@0.3.0':
     resolution: {integrity: sha512-2B+l7t096rfY6d2W2VL3QfQPUouNJCMtiNDZGaeyDUzdq3lxYWDgpi89APnIMQkAXAauwOOodgmlfMLmU4UVVQ==}
@@ -1323,6 +1336,9 @@ packages:
 
   '@types/semver@7.5.0':
     resolution: {integrity: sha512-G8hZ6XJiHnuhQKR7ZmysCeJWE08o8T0AXtk5darsCaTVsYZhhgUrq53jizaR2FvsoeCwJhlmwTjkXBY5Pn/ZHw==}
+
+  '@types/web@0.0.59':
+    resolution: {integrity: sha512-eh97GJ7nfRpPTrPMjXlFsSWsSHpCMO/Y3Zr/RPoX5BwzNogI4C+IH3l+Xrgf4dVATT3L0//O3GSjyoTa5ixMYw==}
 
   '@vitest/expect@1.5.2':
     resolution: {integrity: sha512-rf7MTD1WCoDlN3FfYJ9Llfp0PbdtOMZ3FIF0AVkDnKbp3oiMW1c8AmvRZBcqbAhDUAvF52e9zx4WQM1r3oraVA==}
@@ -4458,6 +4474,8 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
+  '@preact/signals-core@1.6.0': {}
+
   '@prefresh/babel-plugin@0.5.1': {}
 
   '@prefresh/core@1.5.2(preact@10.20.2)':
@@ -4479,6 +4497,13 @@ snapshots:
       - supports-color
 
   '@quilted/assets@0.1.1': {}
+
+  '@quilted/async@0.4.12':
+    dependencies:
+      '@quilted/assets': 0.1.1
+      '@quilted/events': 2.0.0
+      '@quilted/signals': 0.2.2
+      '@types/web': 0.0.59
 
   '@quilted/babel@0.2.1(@babel/core@7.24.4)(@babel/template@7.24.0)(@babel/traverse@7.24.1)(@babel/types@7.24.0)':
     dependencies:
@@ -4518,7 +4543,7 @@ snapshots:
       '@graphql-tools/graphql-file-loader': 8.0.1(graphql@16.8.1)
       '@graphql-tools/json-file-loader': 8.0.1(graphql@16.8.1)
       '@graphql-tools/load': 8.0.2(graphql@16.8.1)
-      '@quilted/graphql': 3.0.1
+      '@quilted/graphql': 3.1.1
       '@quilted/useful-types': 2.0.0
       arg: 5.0.2
       chokidar: 3.6.0
@@ -4535,6 +4560,13 @@ snapshots:
 
   '@quilted/graphql@3.0.1':
     dependencies:
+      '@types/chance': 1.1.6
+      chance: 1.1.11
+      graphql: 16.8.1
+
+  '@quilted/graphql@3.1.1':
+    dependencies:
+      '@quilted/async': 0.4.12
       '@types/chance': 1.1.6
       chance: 1.1.11
       graphql: 16.8.1
@@ -4563,7 +4595,7 @@ snapshots:
       '@mdn/browser-compat-data': 5.5.23
       '@quilted/assets': 0.1.1
       '@quilted/babel': 0.2.1(@babel/core@7.24.4)(@babel/template@7.24.0)(@babel/traverse@7.24.1)(@babel/types@7.24.0)
-      '@quilted/graphql': 3.0.1
+      '@quilted/graphql': 3.1.1
       '@rollup/plugin-alias': 5.1.0(rollup@4.16.4)
       '@rollup/plugin-babel': 6.0.4(@babel/core@7.24.4)(rollup@4.16.4)
       '@rollup/plugin-commonjs': 25.0.7(rollup@4.16.4)
@@ -4595,6 +4627,11 @@ snapshots:
       - supports-color
 
   '@quilted/routing@0.3.0': {}
+
+  '@quilted/signals@0.2.2':
+    dependencies:
+      '@preact/signals-core': 1.6.0
+      '@quilted/events': 2.0.0
 
   '@quilted/typescript@0.3.0(typescript@5.4.5)':
     dependencies:
@@ -4754,6 +4791,8 @@ snapshots:
   '@types/resolve@1.20.2': {}
 
   '@types/semver@7.5.0': {}
+
+  '@types/web@0.0.59': {}
 
   '@vitest/expect@1.5.2':
     dependencies:

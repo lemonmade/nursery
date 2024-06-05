@@ -67,6 +67,21 @@ const shopQuery = gql`
 const {data, errors} = await fetchGraphQL(shopQuery);
 ```
 
+```ts
+import {gql, StorefrontGraphQLQuery} from '@lemonmade/shopify/storefront';
+
+const shopQuery = gql`
+  query {
+    shop {
+      name
+    }
+  }
+`;
+
+const query = new StorefrontGraphQLQuery(shopQuery);
+const {data, errors} = await query.run(shopQuery);
+```
+
 ### Using the `@defer` directive
 
 Handling the streamed responses of the `@defer` directive takes a bit more work than a “standard” GraphQL request, so this library provides a dedicated `createStorefrontGraphQLStreamingFetch()` function. You can use this to create a function that will handle the construction of GraphQL requests, and the parsing of the streamed response body.

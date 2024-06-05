@@ -14,7 +14,7 @@ export interface AdminGraphQLRequestOptions {
   /**
    * @see https://shopify.dev/docs/apps/auth/admin-app-access-tokens
    */
-  readonly accessToken: string;
+  readonly accessToken?: string;
   url?(url: AdminGraphQLRequestURL): string | URL;
   headers?(headers: AdminGraphQLRequestHeaders): HeadersInit;
 }
@@ -24,6 +24,7 @@ export class AdminGraphQLRequest<Data, Variables> extends GraphQLFetchRequest<
   Variables
 > {
   constructor(
+    operation: GraphQLAnyOperation<Data, Variables>,
     {
       shop,
       apiVersion,
@@ -31,7 +32,6 @@ export class AdminGraphQLRequest<Data, Variables> extends GraphQLFetchRequest<
       url: customizeURL,
       headers: customizeHeaders,
     }: AdminGraphQLRequestOptions,
-    operation: GraphQLAnyOperation<Data, Variables>,
     init?: GraphQLFetchRequestInit<Data, Variables>,
   ) {
     const url = new AdminGraphQLRequestURL({shop, apiVersion});
@@ -49,9 +49,10 @@ export class AdminGraphQLRequest<Data, Variables> extends GraphQLFetchRequest<
 
 export class AdminGraphQLRequestURL extends URL {
   constructor({
-    shop = getShopURLFromEnvironment(),
+    // If no shop is provided, try to use Direct API access
+    shop = 'shopify:/',
     apiVersion = getCurrentAPIVersion(),
-  }: Pick<AdminGraphQLRequestOptions, 'shop' | 'apiVersion'>) {
+  }: Pick<AdminGraphQLRequestOptions, 'shop' | 'apiVersion'> = {}) {
     super(`/admin/api/${apiVersion}/graphql.json`, shop);
   }
 }
@@ -62,10 +63,7 @@ export class AdminGraphQLRequestHeaders extends Headers {
     headers?: HeadersInit,
   ) {
     super(headers);
-    this.set('X-Shopify-Access-Token', accessToken);
+    // Direct API access does not require an access token
+    if (accessToken) this.set('X-Shopify-Access-Token', accessToken);
   }
-}
-
-export function getShopURLFromEnvironment() {
-  if (typeof location === 'object') return new URL('/', location.href);
 }
