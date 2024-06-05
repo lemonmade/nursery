@@ -33,8 +33,8 @@ export type GraphQLLiveResolverObject<
     [Field in keyof Type]: Field extends '__typename'
       ? Type[Field]
       : Type[Field] extends (variables: infer Variables) => infer ReturnValue
-      ? GraphQLLiveResolverField<ReturnValue, Variables, Context>
-      : never;
+        ? GraphQLLiveResolverField<ReturnValue, Variables, Context>
+        : never;
   },
   GraphQLNullableFields<Type>
 > & {__context?: Context};
@@ -88,18 +88,18 @@ export type GraphQLLiveReturnResult<
 > = Type extends null
   ? null | undefined | Error | void
   : Type extends number
-  ? Type
-  : Type extends string
-  ? Type
-  : Type extends boolean
-  ? Type
-  : Type extends (infer U)[]
-  ? GraphQLLiveReturnResult<U, Context>[]
-  : Type extends {__possibleTypes: any}
-  ? GraphQLLiveReturnResult<Type['__possibleTypes'], Context>
-  : Type extends {__typename: any}
-  ? GraphQLLiveResolverObject<Type, Context>
-  : unknown;
+    ? Type
+    : Type extends string
+      ? Type
+      : Type extends boolean
+        ? Type
+        : Type extends (infer U)[]
+          ? GraphQLLiveReturnResult<U, Context>[]
+          : Type extends {__possibleTypes: any}
+            ? GraphQLLiveReturnResult<Type['__possibleTypes'], Context>
+            : Type extends {__typename: any}
+              ? GraphQLLiveResolverObject<Type, Context>
+              : unknown;
 
 export interface GraphQLLiveResolverCreateHelper<
   Types,

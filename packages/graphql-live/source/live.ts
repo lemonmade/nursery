@@ -529,23 +529,23 @@ export function run<
       valueKind === 'EnumValue'
       ? value.value
       : valueKind === 'IntValue'
-      ? Number.parseInt(value.value)
-      : valueKind === 'FloatValue'
-      ? Number.parseFloat(value.value)
-      : valueKind === 'NullValue'
-      ? null
-      : valueKind === 'Variable'
-      ? (variables as any)[value.name.value] ?? null
-      : valueKind === 'ListValue'
-      ? value.values.map(resolveArgumentValue)
-      : valueKind === 'ObjectValue'
-      ? Object.fromEntries(
-          value.fields.map((field) => [
-            field.name.value,
-            resolveArgumentValue(field.value),
-          ]),
-        )
-      : null;
+        ? Number.parseInt(value.value)
+        : valueKind === 'FloatValue'
+          ? Number.parseFloat(value.value)
+          : valueKind === 'NullValue'
+            ? null
+            : valueKind === 'Variable'
+              ? (variables as any)[value.name.value] ?? null
+              : valueKind === 'ListValue'
+                ? value.values.map(resolveArgumentValue)
+                : valueKind === 'ObjectValue'
+                  ? Object.fromEntries(
+                      value.fields.map((field) => [
+                        field.name.value,
+                        resolveArgumentValue(field.value),
+                      ]),
+                    )
+                  : null;
   }
 }
 
