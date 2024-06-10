@@ -1,12 +1,11 @@
 {
   "extends": "@quilted/typescript/workspace.json",
-  "compilerOptions": {
-    "outDir": "build/typescript"
-  },
+  "compilerOptions": {"outDir": "build/typescript"},
   "include": [],
   "references": [
     {"path": "./packages/create-create-tester"},
     {"path": "./packages/graphql-live"},
-    {"path": "./packages/shopify"}
+    {"path": "./packages/shopify"},
+    {"path": "./packages/shopify-quilt"}
   ]
 }

@@ -1,0 +1,52 @@
+{
+  "name": "@lemonmade/shopify-quilt",
+  "type": "module",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "@lemonmade/registry": "https://registry.npmjs.org"
+  },
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/<USER>/<REPOSITORY>",
+    "directory": "packages/shopify-quilt"
+  },
+  "exports": {
+    ".": {
+      "types": "./build/typescript/index.d.ts",
+      "quilt:source": "./source/index.ts",
+      "quilt:esnext": "./build/esnext/index.esnext",
+      "import": "./build/esm/index.mjs"
+    }
+  },
+  "types": "./build/typescript/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "build": "rollup --config ./rollup.config.js"
+  },
+  "dependencies": {},
+  "peerDependencies": {
+    "@quilted/quilt": "^0.7.0",
+    "preact": "^10.22.0"
+  },
+  "peerDependenciesMeta": {
+    "@quilted/quilt": {
+      "optional": true
+    },
+    "preact": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@quilted/quilt": "^0.7.5",
+    "preact": "^10.22.0"
+  },
+  "browserslist": [
+    "defaults and fully supports es6-module",
+    "maintained node versions"
+  ]
+}
