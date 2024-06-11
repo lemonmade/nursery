@@ -18,7 +18,7 @@
     "@quilted/browserslist-config": "^0.1.9",
     "@quilted/craft": "^0.2.6",
     "@quilted/prettier": "^0.2.11",
-    "@quilted/typescript": "^0.3.0",
+    "@quilted/typescript": "^0.3.1",
     "jsdom": "^24.0.0",
     "prettier": "^3.2.5",
     "rollup": "^4.16.4",

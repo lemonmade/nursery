@@ -51,7 +51,7 @@
     "build": "rollup --config rollup.config.js"
   },
   "dependencies": {
-    "@quilted/graphql": "^3.1.0"
+    "@quilted/graphql": "^3.3.0"
   },
   "eslintConfig": {
     "extends": [

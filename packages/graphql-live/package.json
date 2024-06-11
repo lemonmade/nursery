@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@quilted/events": "^2.0.0",
-    "@quilted/graphql": "^3.0.1"
+    "@quilted/graphql": "^3.3.0"
   },
   "peerDependencies": {
     "graphql": "^16.0.0"

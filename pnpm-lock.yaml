@@ -24,8 +24,8 @@ importers:
         specifier: ^0.2.11
         version: 0.2.11
       '@quilted/typescript':
-        specifier: ^0.3.0
-        version: 0.3.0(typescript@5.4.5)
+        specifier: ^0.3.1
+        version: 0.3.1
       jsdom:
         specifier: ^24.0.0
         version: 24.0.0
@@ -57,8 +57,8 @@ importers:
         specifier: ^2.0.0
         version: 2.0.0
       '@quilted/graphql':
-        specifier: ^3.0.1
-        version: 3.0.1
+        specifier: ^3.3.0
+        version: 3.3.0
     devDependencies:
       graphql:
         specifier: ^16.0.0
@@ -67,8 +67,8 @@ importers:
   packages/shopify:
     dependencies:
       '@quilted/graphql':
-        specifier: ^3.1.0
-        version: 3.1.1
+        specifier: ^3.3.0
+        version: 3.3.0
 
   packages/shopify-quilt:
     devDependencies:
@@ -812,8 +812,20 @@ packages:
     cpu: [ppc64]
     os: [aix]
 
+  '@esbuild/aix-ppc64@0.21.5':
+    resolution: {integrity: sha512-1SDgH6ZSPTlggy1yI6+Dbkiz8xzpHJEVAlF/AM1tHPLsf5STom9rwtjE4hKAF20FfXXNTFqEYXyJNWh1GiZedQ==}
+    engines: {node: '>=12'}
+    cpu: [ppc64]
+    os: [aix]
+
   '@esbuild/android-arm64@0.20.2':
     resolution: {integrity: sha512-mRzjLacRtl/tWU0SvD8lUEwb61yP9cqQo6noDZP/O8VkwafSYwZ4yWy24kan8jE/IMERpYncRt2dw438LP3Xmg==}
+    engines: {node: '>=12'}
+    cpu: [arm64]
+    os: [android]
+
+  '@esbuild/android-arm64@0.21.5':
+    resolution: {integrity: sha512-c0uX9VAUBQ7dTDCjq+wdyGLowMdtR/GoC2U5IYk/7D1H1JYC0qseD7+11iMP2mRLN9RcCMRcjC4YMclCzGwS/A==}
     engines: {node: '>=12'}
     cpu: [arm64]
     os: [android]
@@ -824,8 +836,20 @@ packages:
     cpu: [arm]
     os: [android]
 
+  '@esbuild/android-arm@0.21.5':
+    resolution: {integrity: sha512-vCPvzSjpPHEi1siZdlvAlsPxXl7WbOVUBBAowWug4rJHb68Ox8KualB+1ocNvT5fjv6wpkX6o/iEpbDrf68zcg==}
+    engines: {node: '>=12'}
+    cpu: [arm]
+    os: [android]
+
   '@esbuild/android-x64@0.20.2':
     resolution: {integrity: sha512-btzExgV+/lMGDDa194CcUQm53ncxzeBrWJcncOBxuC6ndBkKxnHdFJn86mCIgTELsooUmwUm9FkhSp5HYu00Rg==}
+    engines: {node: '>=12'}
+    cpu: [x64]
+    os: [android]
+
+  '@esbuild/android-x64@0.21.5':
+    resolution: {integrity: sha512-D7aPRUUNHRBwHxzxRvp856rjUHRFW1SdQATKXH2hqA0kAZb1hKmi02OpYRacl0TxIGz/ZmXWlbZgjwWYaCakTA==}
     engines: {node: '>=12'}
     cpu: [x64]
     os: [android]
@@ -836,8 +860,20 @@ packages:
     cpu: [arm64]
     os: [darwin]
 
+  '@esbuild/darwin-arm64@0.21.5':
+    resolution: {integrity: sha512-DwqXqZyuk5AiWWf3UfLiRDJ5EDd49zg6O9wclZ7kUMv2WRFr4HKjXp/5t8JZ11QbQfUS6/cRCKGwYhtNAY88kQ==}
+    engines: {node: '>=12'}
+    cpu: [arm64]
+    os: [darwin]
+
   '@esbuild/darwin-x64@0.20.2':
     resolution: {integrity: sha512-tBcXp9KNphnNH0dfhv8KYkZhjc+H3XBkF5DKtswJblV7KlT9EI2+jeA8DgBjp908WEuYll6pF+UStUCfEpdysA==}
+    engines: {node: '>=12'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@esbuild/darwin-x64@0.21.5':
+    resolution: {integrity: sha512-se/JjF8NlmKVG4kNIuyWMV/22ZaerB+qaSi5MdrXtd6R08kvs2qCN4C09miupktDitvh8jRFflwGFBQcxZRjbw==}
     engines: {node: '>=12'}
     cpu: [x64]
     os: [darwin]
@@ -848,8 +884,20 @@ packages:
     cpu: [arm64]
     os: [freebsd]
 
+  '@esbuild/freebsd-arm64@0.21.5':
+    resolution: {integrity: sha512-5JcRxxRDUJLX8JXp/wcBCy3pENnCgBR9bN6JsY4OmhfUtIHe3ZW0mawA7+RDAcMLrMIZaf03NlQiX9DGyB8h4g==}
+    engines: {node: '>=12'}
+    cpu: [arm64]
+    os: [freebsd]
+
   '@esbuild/freebsd-x64@0.20.2':
     resolution: {integrity: sha512-d+DipyvHRuqEeM5zDivKV1KuXn9WeRX6vqSqIDgwIfPQtwMP4jaDsQsDncjTDDsExT4lR/91OLjRo8bmC1e+Cw==}
+    engines: {node: '>=12'}
+    cpu: [x64]
+    os: [freebsd]
+
+  '@esbuild/freebsd-x64@0.21.5':
+    resolution: {integrity: sha512-J95kNBj1zkbMXtHVH29bBriQygMXqoVQOQYA+ISs0/2l3T9/kj42ow2mpqerRBxDJnmkUDCaQT/dfNXWX/ZZCQ==}
     engines: {node: '>=12'}
     cpu: [x64]
     os: [freebsd]
@@ -860,8 +908,20 @@ packages:
     cpu: [arm64]
     os: [linux]
 
+  '@esbuild/linux-arm64@0.21.5':
+    resolution: {integrity: sha512-ibKvmyYzKsBeX8d8I7MH/TMfWDXBF3db4qM6sy+7re0YXya+K1cem3on9XgdT2EQGMu4hQyZhan7TeQ8XkGp4Q==}
+    engines: {node: '>=12'}
+    cpu: [arm64]
+    os: [linux]
+
   '@esbuild/linux-arm@0.20.2':
     resolution: {integrity: sha512-VhLPeR8HTMPccbuWWcEUD1Az68TqaTYyj6nfE4QByZIQEQVWBB8vup8PpR7y1QHL3CpcF6xd5WVBU/+SBEvGTg==}
+    engines: {node: '>=12'}
+    cpu: [arm]
+    os: [linux]
+
+  '@esbuild/linux-arm@0.21.5':
+    resolution: {integrity: sha512-bPb5AHZtbeNGjCKVZ9UGqGwo8EUu4cLq68E95A53KlxAPRmUyYv2D6F0uUI65XisGOL1hBP5mTronbgo+0bFcA==}
     engines: {node: '>=12'}
     cpu: [arm]
     os: [linux]
@@ -872,8 +932,20 @@ packages:
     cpu: [ia32]
     os: [linux]
 
+  '@esbuild/linux-ia32@0.21.5':
+    resolution: {integrity: sha512-YvjXDqLRqPDl2dvRODYmmhz4rPeVKYvppfGYKSNGdyZkA01046pLWyRKKI3ax8fbJoK5QbxblURkwK/MWY18Tg==}
+    engines: {node: '>=12'}
+    cpu: [ia32]
+    os: [linux]
+
   '@esbuild/linux-loong64@0.20.2':
     resolution: {integrity: sha512-PR7sp6R/UC4CFVomVINKJ80pMFlfDfMQMYynX7t1tNTeivQ6XdX5r2XovMmha/VjR1YN/HgHWsVcTRIMkymrgQ==}
+    engines: {node: '>=12'}
+    cpu: [loong64]
+    os: [linux]
+
+  '@esbuild/linux-loong64@0.21.5':
+    resolution: {integrity: sha512-uHf1BmMG8qEvzdrzAqg2SIG/02+4/DHB6a9Kbya0XDvwDEKCoC8ZRWI5JJvNdUjtciBGFQ5PuBlpEOXQj+JQSg==}
     engines: {node: '>=12'}
     cpu: [loong64]
     os: [linux]
@@ -884,8 +956,20 @@ packages:
     cpu: [mips64el]
     os: [linux]
 
+  '@esbuild/linux-mips64el@0.21.5':
+    resolution: {integrity: sha512-IajOmO+KJK23bj52dFSNCMsz1QP1DqM6cwLUv3W1QwyxkyIWecfafnI555fvSGqEKwjMXVLokcV5ygHW5b3Jbg==}
+    engines: {node: '>=12'}
+    cpu: [mips64el]
+    os: [linux]
+
   '@esbuild/linux-ppc64@0.20.2':
     resolution: {integrity: sha512-rD3KsaDprDcfajSKdn25ooz5J5/fWBylaaXkuotBDGnMnDP1Uv5DLAN/45qfnf3JDYyJv/ytGHQaziHUdyzaAg==}
+    engines: {node: '>=12'}
+    cpu: [ppc64]
+    os: [linux]
+
+  '@esbuild/linux-ppc64@0.21.5':
+    resolution: {integrity: sha512-1hHV/Z4OEfMwpLO8rp7CvlhBDnjsC3CttJXIhBi+5Aj5r+MBvy4egg7wCbe//hSsT+RvDAG7s81tAvpL2XAE4w==}
     engines: {node: '>=12'}
     cpu: [ppc64]
     os: [linux]
@@ -896,8 +980,20 @@ packages:
     cpu: [riscv64]
     os: [linux]
 
+  '@esbuild/linux-riscv64@0.21.5':
+    resolution: {integrity: sha512-2HdXDMd9GMgTGrPWnJzP2ALSokE/0O5HhTUvWIbD3YdjME8JwvSCnNGBnTThKGEB91OZhzrJ4qIIxk/SBmyDDA==}
+    engines: {node: '>=12'}
+    cpu: [riscv64]
+    os: [linux]
+
   '@esbuild/linux-s390x@0.20.2':
     resolution: {integrity: sha512-wcWISOobRWNm3cezm5HOZcYz1sKoHLd8VL1dl309DiixxVFoFe/o8HnwuIwn6sXre88Nwj+VwZUvJf4AFxkyrQ==}
+    engines: {node: '>=12'}
+    cpu: [s390x]
+    os: [linux]
+
+  '@esbuild/linux-s390x@0.21.5':
+    resolution: {integrity: sha512-zus5sxzqBJD3eXxwvjN1yQkRepANgxE9lgOW2qLnmr8ikMTphkjgXu1HR01K4FJg8h1kEEDAqDcZQtbrRnB41A==}
     engines: {node: '>=12'}
     cpu: [s390x]
     os: [linux]
@@ -908,8 +1004,20 @@ packages:
     cpu: [x64]
     os: [linux]
 
+  '@esbuild/linux-x64@0.21.5':
+    resolution: {integrity: sha512-1rYdTpyv03iycF1+BhzrzQJCdOuAOtaqHTWJZCWvijKD2N5Xu0TtVC8/+1faWqcP9iBCWOmjmhoH94dH82BxPQ==}
+    engines: {node: '>=12'}
+    cpu: [x64]
+    os: [linux]
+
   '@esbuild/netbsd-x64@0.20.2':
     resolution: {integrity: sha512-K8/DhBxcVQkzYc43yJXDSyjlFeHQJBiowJ0uVL6Tor3jGQfSGHNNJcWxNbOI8v5k82prYqzPuwkzHt3J1T1iZQ==}
+    engines: {node: '>=12'}
+    cpu: [x64]
+    os: [netbsd]
+
+  '@esbuild/netbsd-x64@0.21.5':
+    resolution: {integrity: sha512-Woi2MXzXjMULccIwMnLciyZH4nCIMpWQAs049KEeMvOcNADVxo0UBIQPfSmxB3CWKedngg7sWZdLvLczpe0tLg==}
     engines: {node: '>=12'}
     cpu: [x64]
     os: [netbsd]
@@ -920,8 +1028,20 @@ packages:
     cpu: [x64]
     os: [openbsd]
 
+  '@esbuild/openbsd-x64@0.21.5':
+    resolution: {integrity: sha512-HLNNw99xsvx12lFBUwoT8EVCsSvRNDVxNpjZ7bPn947b8gJPzeHWyNVhFsaerc0n3TsbOINvRP2byTZ5LKezow==}
+    engines: {node: '>=12'}
+    cpu: [x64]
+    os: [openbsd]
+
   '@esbuild/sunos-x64@0.20.2':
     resolution: {integrity: sha512-2UyFtRC6cXLyejf/YEld4Hajo7UHILetzE1vsRcGL3earZEW77JxrFjH4Ez2qaTiEfMgAXxfAZCm1fvM/G/o8w==}
+    engines: {node: '>=12'}
+    cpu: [x64]
+    os: [sunos]
+
+  '@esbuild/sunos-x64@0.21.5':
+    resolution: {integrity: sha512-6+gjmFpfy0BHU5Tpptkuh8+uw3mnrvgs+dSPQXQOv3ekbordwnzTVEb4qnIvQcYXq6gzkyTnoZ9dZG+D4garKg==}
     engines: {node: '>=12'}
     cpu: [x64]
     os: [sunos]
@@ -932,14 +1052,32 @@ packages:
     cpu: [arm64]
     os: [win32]
 
+  '@esbuild/win32-arm64@0.21.5':
+    resolution: {integrity: sha512-Z0gOTd75VvXqyq7nsl93zwahcTROgqvuAcYDUr+vOv8uHhNSKROyU961kgtCD1e95IqPKSQKH7tBTslnS3tA8A==}
+    engines: {node: '>=12'}
+    cpu: [arm64]
+    os: [win32]
+
   '@esbuild/win32-ia32@0.20.2':
     resolution: {integrity: sha512-HfLOfn9YWmkSKRQqovpnITazdtquEW8/SoHW7pWpuEeguaZI4QnCRW6b+oZTztdBnZOS2hqJ6im/D5cPzBTTlQ==}
     engines: {node: '>=12'}
     cpu: [ia32]
     os: [win32]
 
+  '@esbuild/win32-ia32@0.21.5':
+    resolution: {integrity: sha512-SWXFF1CL2RVNMaVs+BBClwtfZSvDgtL//G/smwAc5oVK/UPu2Gu9tIaRgFmYFFKrmg3SyAjSrElf0TiJ1v8fYA==}
+    engines: {node: '>=12'}
+    cpu: [ia32]
+    os: [win32]
+
   '@esbuild/win32-x64@0.20.2':
     resolution: {integrity: sha512-N49X4lJX27+l9jbLKSqZ6bKNjzQvHaT8IIFUy+YIqmXQdjYCToGWwOItDrfby14c78aDd5NHQl29xingXfCdLQ==}
+    engines: {node: '>=12'}
+    cpu: [x64]
+    os: [win32]
+
+  '@esbuild/win32-x64@0.21.5':
+    resolution: {integrity: sha512-tQd/1efJuzPC6rCFwEvLtci/xNFcTZknmXs98FYDfGE4wP9ClFV98nyKrzJKVPMhdDnjzLhdUyMX4PsQAPjwIw==}
     engines: {node: '>=12'}
     cpu: [x64]
     os: [win32]
@@ -1070,22 +1208,15 @@ packages:
       preact: ^10.4.0
       vite: '>=2.0.0'
 
-  '@quilted/assets@0.1.1':
-    resolution: {integrity: sha512-1Ko59wD1LfF/B6aWZWmITTS48+qMdNZRldFp9mMw0pDUwwgJ/wT3vies9OpQKKt6SvypMfUDPQubKLu1XGClRg==}
-    engines: {node: '>=14.0.0'}
-
   '@quilted/assets@0.1.2':
     resolution: {integrity: sha512-vdWmoM6ONaeLBwYJdBJXCzsGr7hSc1gdWP57NVuC7qMibLmOwsej1MzyJbIRWv3QlQ9nssT4V4xIC8Wc7atiag==}
     engines: {node: '>=14.0.0'}
 
-  '@quilted/async@0.4.12':
-    resolution: {integrity: sha512-zW3s4AP2dxKsJtmywpPF/yAUMjz3iO66YPM0YsPlkmgAst6KMzYBBHxC5Yb0WqlkRTIUOlchIf5W4DxGjHxU9A==}
+  '@quilted/async@0.4.15':
+    resolution: {integrity: sha512-TCxmcDJXvd/HP8w0c4FvyJlrnHW2ZoSZ17nOHzvfpjXS3+urEuawpusCrg1Z8G9GFzEtxoGlF0SlaQjhETwloA==}
 
-  '@quilted/async@0.4.14':
-    resolution: {integrity: sha512-cEnL1vA890ORDmlF1Wob727hfz8TqE7nTL1evEHN70w1L486XTOBvbIgu9aMeRI2ZT/NAxUFrqt6YpXqRwzJBQ==}
-
-  '@quilted/babel@0.2.1':
-    resolution: {integrity: sha512-tu3mBmZajJvFcAFsERPvceCyn7sfFu0Tza3QpXT1sX8EUHm2DWFgY2eCADLXYTuJzE2SFkstjlz+LZQj25ydAQ==}
+  '@quilted/babel@0.2.2':
+    resolution: {integrity: sha512-lSQnlro13dhU7gZtgk0810CSRBxsbhB2ryh8mPnfVlo6NEJaX6EFmcA7/nwEHQDuICR1FVMRLOsBfi5IkS8I8A==}
     peerDependencies:
       '@babel/core': '>=7.0.0 <8.0.0'
       '@babel/template': '>=7.0.0 <8.0.0'
@@ -1125,21 +1256,18 @@ packages:
     resolution: {integrity: sha512-0Q5w7jgHPj3nD8sTh1o7oa7LFxATK+dH0i4p8Y6BgKBLDOkr9/m01IDUXsbZdZ98XvxQaVkxBF/HUNAFfg/KfA==}
     engines: {node: '>=14.0.0'}
 
-  '@quilted/graphql-tools@0.2.1':
-    resolution: {integrity: sha512-5UCeotf7bacbJxLv6J2vHXY12Jgf8ikDAJJrDRRthjYEp253F7U3djJwedjRSpQsWNsOsEqS7oJ8voq13CRs6w==}
+  '@quilted/graphql-tools@0.2.5':
+    resolution: {integrity: sha512-10s7vW6A9DSfnK5hmiywDLtuX25f6fmz1+eBSVBIqgV3+29fiBAr1R6p7sY85PxWirfQVgdMyGqs9/DZnTBCbQ==}
     hasBin: true
 
-  '@quilted/graphql@3.0.1':
-    resolution: {integrity: sha512-RiceUjn9f78WfhvBMHIr7IU2KNr0syZ5nB3YYdNkn7nPoF8I+uDtR5PDqTEfJyybVmc4FWAg17oNzBjK8ZplXQ==}
-
-  '@quilted/graphql@3.1.1':
-    resolution: {integrity: sha512-5l8pgVYLqiLB+kK5nzs+exLL3BT2uqQ7AFXQv5M9Pbho8xiMelY/NNHHkdfXczbi9OMI2Dnl12hIWw+yFY8yPw==}
+  '@quilted/graphql@3.3.0':
+    resolution: {integrity: sha512-O73EvK83H+/ox7AgWPyzsJLnkfq07VmDNbFh7DQJGXSJVhEwQyXs7vgY4x3W8nzbdYuSub1nfvvXQQ5SrUeGuA==}
 
   '@quilted/http@0.3.0':
     resolution: {integrity: sha512-60CNw2V/WJjEsShHaSSGEfNsa3yAGfZYsUACgdPpR0Pypd9PUF1doUhTvTyY09A0nJ/9WxEHWoDV6p2YFGtu2w==}
 
-  '@quilted/localize@0.2.0':
-    resolution: {integrity: sha512-5Ifv83Dxffz6oN7aJp9sLl0GLTzX/4RdbZmZ7MuxJdURyKEBfke74CpcqmjVuQDGZQ+5mSzgXK4l3WB1eNGepg==}
+  '@quilted/localize@0.2.1':
+    resolution: {integrity: sha512-CihBhwwUpKgFqDmVEEh5mO6gfLM7A3nX2Vr03h1dLXVrjhhbMh/g/1GvWmKBNWgHt1exnH35a5FHcVdaJ9KTvg==}
     engines: {node: '>=14.0.0'}
 
   '@quilted/performance@0.2.0':
@@ -1150,8 +1278,8 @@ packages:
       react:
         optional: true
 
-  '@quilted/preact-async@0.1.13':
-    resolution: {integrity: sha512-MVWt4YyXf8l7pA5BHsEuti2vrRv/08NU+ZFT7gI3iVDyp49OqBTSZFuJf8QhAP8mC3ECX9wkvkYYsC54E4l6qw==}
+  '@quilted/preact-async@0.1.14':
+    resolution: {integrity: sha512-sDLziylINNYGz3j+6GERCQBwkru/B0QDZXPNaeI0JFmz5lTB5my7zI/Wc5mpWkiW07R3Ur55eWHz+026kvyKiw==}
     peerDependencies:
       preact: ^10.21.0
     peerDependenciesMeta:
@@ -1176,8 +1304,8 @@ packages:
       preact:
         optional: true
 
-  '@quilted/preact-graphql@0.1.2':
-    resolution: {integrity: sha512-t+DA1Rmk51MKEXZZPREUffeTbXY8YU72oIxqlVtbevcqBV1erSF48fNC5bKKecvScFmaIOfhy/9ibKvhk+1YVw==}
+  '@quilted/preact-graphql@0.1.3':
+    resolution: {integrity: sha512-9yegcefZ+mH3Dss300guaPE1RGyyS4y7D1yIA0TbayIPj8C4pujEhtiIqSyJdHEACGEqNOIYcFPn+w8SmeGlNg==}
     peerDependencies:
       preact: ^10.21.0
     peerDependenciesMeta:
@@ -1267,8 +1395,8 @@ packages:
   '@quilted/request-router@0.2.0':
     resolution: {integrity: sha512-quwOFCI1LTNhyWNQ6ZUKNCG9tUIBvGJptMXfbDYgBPaO/VQiz81lcjkkIVkgoRC4Eb0o5qvoJbMGw4aEHV2x4Q==}
 
-  '@quilted/rollup@0.2.23':
-    resolution: {integrity: sha512-jNU03G20L2u73hCuhkWdAmtelQNE4VS/KIouzfpLxh3J1GdAQ+PrNd035PBaz0Ste2aUjL42JZkh97K7cMlLew==}
+  '@quilted/rollup@0.2.31':
+    resolution: {integrity: sha512-wYlM1H5uriMInqCtD/GMdV4V87S0mYEotigu6I4or2XB9Tc2+0rXMF0hUyWbAazZs8omTEU1LPaU9gXzE2RkqA==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       rollup: ^4.0.0
@@ -1289,16 +1417,15 @@ packages:
       '@preact/signals-core':
         optional: true
 
-  '@quilted/typescript@0.3.0':
-    resolution: {integrity: sha512-2B+l7t096rfY6d2W2VL3QfQPUouNJCMtiNDZGaeyDUzdq3lxYWDgpi89APnIMQkAXAauwOOodgmlfMLmU4UVVQ==}
-    peerDependencies:
-      typescript: ^5.2.0
+  '@quilted/typescript@0.3.1':
+    resolution: {integrity: sha512-NNjkmk5g9IbaWPWLk08M18OiB6KDBLl4qDqJtmoFvQWMT9dExRCCKxEPJ5URh4E4cr6V4De4lQfqF/gQFY+7kg==}
+    engines: {node: '>=18.0.0'}
 
   '@quilted/useful-types@2.0.0':
     resolution: {integrity: sha512-7xLznGa7UyWdcxHELRyNtLReL4xdfv6OaZbod4mbFzif+ZBw+5LsjAZwL+JMQqSe39yLqhhlBXTKlTXuLiBIWQ==}
 
-  '@quilted/vite@0.1.18':
-    resolution: {integrity: sha512-MFLvQvltjcNcr18kDwQ41eleIpvgdAPIJ+KYSn/GDDVCyCxp6xNpRFeILvQfCywl44WRmUyz3TPqKQMd5SfOjQ==}
+  '@quilted/vite@0.1.21':
+    resolution: {integrity: sha512-lbATFvr7ETuLuvC/UMObo9y0Yo95Z1YYbYQLThXQcmR9uC5fpFIF+gnyoFeK8NnH2L70uD7R3iweztwmmBoykg==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       vite: ^5.0.0
@@ -1944,6 +2071,11 @@ packages:
 
   esbuild@0.20.2:
     resolution: {integrity: sha512-WdOOppmUNU+IbZ0PaDiTst80zjnrOkyJNHoKupIcVyU8Lvla3Ugx94VzkQ32Ijqd7UhHJy75gNWDMUekcrSJ6g==}
+    engines: {node: '>=12'}
+    hasBin: true
+
+  esbuild@0.21.5:
+    resolution: {integrity: sha512-mg3OPMV4hXywwpoDxu3Qda5xCKQi+vCTZq8S9J/EpkhB2HzKXq4SNFZE3+NK93JYxc8VMSep+lOUSC/RVKaBqw==}
     engines: {node: '>=12'}
     hasBin: true
 
@@ -4471,70 +4603,139 @@ snapshots:
   '@esbuild/aix-ppc64@0.20.2':
     optional: true
 
+  '@esbuild/aix-ppc64@0.21.5':
+    optional: true
+
   '@esbuild/android-arm64@0.20.2':
+    optional: true
+
+  '@esbuild/android-arm64@0.21.5':
     optional: true
 
   '@esbuild/android-arm@0.20.2':
     optional: true
 
+  '@esbuild/android-arm@0.21.5':
+    optional: true
+
   '@esbuild/android-x64@0.20.2':
+    optional: true
+
+  '@esbuild/android-x64@0.21.5':
     optional: true
 
   '@esbuild/darwin-arm64@0.20.2':
     optional: true
 
+  '@esbuild/darwin-arm64@0.21.5':
+    optional: true
+
   '@esbuild/darwin-x64@0.20.2':
+    optional: true
+
+  '@esbuild/darwin-x64@0.21.5':
     optional: true
 
   '@esbuild/freebsd-arm64@0.20.2':
     optional: true
 
+  '@esbuild/freebsd-arm64@0.21.5':
+    optional: true
+
   '@esbuild/freebsd-x64@0.20.2':
+    optional: true
+
+  '@esbuild/freebsd-x64@0.21.5':
     optional: true
 
   '@esbuild/linux-arm64@0.20.2':
     optional: true
 
+  '@esbuild/linux-arm64@0.21.5':
+    optional: true
+
   '@esbuild/linux-arm@0.20.2':
+    optional: true
+
+  '@esbuild/linux-arm@0.21.5':
     optional: true
 
   '@esbuild/linux-ia32@0.20.2':
     optional: true
 
+  '@esbuild/linux-ia32@0.21.5':
+    optional: true
+
   '@esbuild/linux-loong64@0.20.2':
+    optional: true
+
+  '@esbuild/linux-loong64@0.21.5':
     optional: true
 
   '@esbuild/linux-mips64el@0.20.2':
     optional: true
 
+  '@esbuild/linux-mips64el@0.21.5':
+    optional: true
+
   '@esbuild/linux-ppc64@0.20.2':
+    optional: true
+
+  '@esbuild/linux-ppc64@0.21.5':
     optional: true
 
   '@esbuild/linux-riscv64@0.20.2':
     optional: true
 
+  '@esbuild/linux-riscv64@0.21.5':
+    optional: true
+
   '@esbuild/linux-s390x@0.20.2':
+    optional: true
+
+  '@esbuild/linux-s390x@0.21.5':
     optional: true
 
   '@esbuild/linux-x64@0.20.2':
     optional: true
 
+  '@esbuild/linux-x64@0.21.5':
+    optional: true
+
   '@esbuild/netbsd-x64@0.20.2':
+    optional: true
+
+  '@esbuild/netbsd-x64@0.21.5':
     optional: true
 
   '@esbuild/openbsd-x64@0.20.2':
     optional: true
 
+  '@esbuild/openbsd-x64@0.21.5':
+    optional: true
+
   '@esbuild/sunos-x64@0.20.2':
+    optional: true
+
+  '@esbuild/sunos-x64@0.21.5':
     optional: true
 
   '@esbuild/win32-arm64@0.20.2':
     optional: true
 
+  '@esbuild/win32-arm64@0.21.5':
+    optional: true
+
   '@esbuild/win32-ia32@0.20.2':
     optional: true
 
+  '@esbuild/win32-ia32@0.21.5':
+    optional: true
+
   '@esbuild/win32-x64@0.20.2':
+    optional: true
+
+  '@esbuild/win32-x64@0.21.5':
     optional: true
 
   '@graphql-tools/graphql-file-loader@8.0.1(graphql@16.8.1)':
@@ -4687,25 +4888,16 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@quilted/assets@0.1.1': {}
-
   '@quilted/assets@0.1.2': {}
 
-  '@quilted/async@0.4.12':
-    dependencies:
-      '@quilted/assets': 0.1.1
-      '@quilted/events': 2.0.0
-      '@quilted/signals': 0.2.2
-      '@types/web': 0.0.59
-
-  '@quilted/async@0.4.14':
+  '@quilted/async@0.4.15':
     dependencies:
       '@quilted/assets': 0.1.2
       '@quilted/events': 2.0.0
       '@quilted/signals': 0.2.2
       '@types/web': 0.0.59
 
-  '@quilted/babel@0.2.1(@babel/core@7.24.4)(@babel/template@7.24.0)(@babel/traverse@7.24.1)(@babel/types@7.24.0)':
+  '@quilted/babel@0.2.2(@babel/core@7.24.4)(@babel/template@7.24.0)(@babel/traverse@7.24.1)(@babel/types@7.24.0)':
     dependencies:
       '@babel/template': 7.24.0
     optionalDependencies:
@@ -4723,9 +4915,9 @@ snapshots:
 
   '@quilted/craft@0.2.6(@babel/template@7.24.0)(@babel/traverse@7.24.1)(@babel/types@7.24.0)(preact@10.22.0)(rollup@4.16.4)(typescript@5.4.5)(vite@5.2.10(@types/node@18.15.11)(lightningcss@1.24.1))(vitest@1.5.2(@types/node@18.15.11)(jsdom@24.0.0)(lightningcss@1.24.1))':
     dependencies:
-      '@quilted/graphql-tools': 0.2.1(typescript@5.4.5)
-      '@quilted/rollup': 0.2.23(@babel/template@7.24.0)(@babel/traverse@7.24.1)(@babel/types@7.24.0)(rollup@4.16.4)
-      '@quilted/vite': 0.1.18(@babel/template@7.24.0)(@babel/traverse@7.24.1)(@babel/types@7.24.0)(preact@10.22.0)(rollup@4.16.4)(vite@5.2.10(@types/node@18.15.11)(lightningcss@1.24.1))(vitest@1.5.2(@types/node@18.15.11)(jsdom@24.0.0)(lightningcss@1.24.1))
+      '@quilted/graphql-tools': 0.2.5(typescript@5.4.5)
+      '@quilted/rollup': 0.2.31(@babel/template@7.24.0)(@babel/traverse@7.24.1)(@babel/types@7.24.0)(rollup@4.16.4)
+      '@quilted/vite': 0.1.21(@babel/template@7.24.0)(@babel/traverse@7.24.1)(@babel/types@7.24.0)(preact@10.22.0)(rollup@4.16.4)(vite@5.2.10(@types/node@18.15.11)(lightningcss@1.24.1))(vitest@1.5.2(@types/node@18.15.11)(jsdom@24.0.0)(lightningcss@1.24.1))
       pkg-dir: 7.0.0
     optionalDependencies:
       rollup: 4.16.4
@@ -4742,21 +4934,21 @@ snapshots:
 
   '@quilted/events@2.0.0': {}
 
-  '@quilted/graphql-tools@0.2.1(typescript@5.4.5)':
+  '@quilted/graphql-tools@0.2.5(typescript@5.4.5)':
     dependencies:
       '@babel/generator': 7.24.4
       '@babel/types': 7.24.0
       '@graphql-tools/graphql-file-loader': 8.0.1(graphql@16.8.1)
       '@graphql-tools/json-file-loader': 8.0.1(graphql@16.8.1)
       '@graphql-tools/load': 8.0.2(graphql@16.8.1)
-      '@quilted/graphql': 3.1.1
+      '@quilted/graphql': 3.3.0
       '@quilted/useful-types': 2.0.0
       arg: 5.0.2
       chokidar: 3.6.0
       colorette: 2.0.20
       cosmiconfig: 8.3.6(typescript@5.4.5)
       cosmiconfig-toml-loader: 1.0.0
-      esbuild: 0.20.2
+      esbuild: 0.21.5
       globby: 13.2.2
       graphql: 16.8.1
       is-glob: 4.0.3
@@ -4764,30 +4956,24 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  '@quilted/graphql@3.0.1':
+  '@quilted/graphql@3.3.0':
     dependencies:
-      '@types/chance': 1.1.6
-      chance: 1.1.11
-      graphql: 16.8.1
-
-  '@quilted/graphql@3.1.1':
-    dependencies:
-      '@quilted/async': 0.4.12
+      '@quilted/async': 0.4.15
       '@types/chance': 1.1.6
       chance: 1.1.11
       graphql: 16.8.1
 
   '@quilted/http@0.3.0': {}
 
-  '@quilted/localize@0.2.0': {}
+  '@quilted/localize@0.2.1': {}
 
   '@quilted/performance@0.2.0':
     dependencies:
       '@quilted/events': 2.0.0
 
-  '@quilted/preact-async@0.1.13(preact@10.22.0)':
+  '@quilted/preact-async@0.1.14(preact@10.22.0)':
     dependencies:
-      '@quilted/async': 0.4.14
+      '@quilted/async': 0.4.15
       '@quilted/preact-browser': 0.1.7(preact@10.22.0)
       '@quilted/preact-context': 0.1.2(preact@10.22.0)
       '@quilted/preact-signals': 0.1.0(preact@10.22.0)
@@ -4808,10 +4994,10 @@ snapshots:
     optionalDependencies:
       preact: 10.22.0
 
-  '@quilted/preact-graphql@0.1.2(preact@10.22.0)':
+  '@quilted/preact-graphql@0.1.3(preact@10.22.0)':
     dependencies:
-      '@quilted/graphql': 3.1.1
-      '@quilted/preact-async': 0.1.13(preact@10.22.0)
+      '@quilted/graphql': 3.3.0
+      '@quilted/preact-async': 0.1.14(preact@10.22.0)
       '@quilted/preact-context': 0.1.2(preact@10.22.0)
       '@quilted/preact-signals': 0.1.0(preact@10.22.0)
       '@quilted/useful-types': 2.0.0
@@ -4820,7 +5006,7 @@ snapshots:
 
   '@quilted/preact-localize@0.1.0(@quilted/request-router@0.2.0)(preact@10.22.0)':
     dependencies:
-      '@quilted/localize': 0.2.0
+      '@quilted/localize': 0.2.1
       '@quilted/preact-browser': 0.1.7(preact@10.22.0)
       '@quilted/preact-context': 0.1.2(preact@10.22.0)
       '@quilted/preact-router': 0.1.0(preact@10.22.0)
@@ -4877,13 +5063,13 @@ snapshots:
   '@quilted/quilt@0.7.5(@preact/signals-core@1.6.0)(graphql@16.8.1)(preact@10.22.0)(prettier@3.2.5)(vitest@1.5.2(@types/node@18.15.11)(jsdom@24.0.0)(lightningcss@1.24.1))':
     dependencies:
       '@quilted/assets': 0.1.2
-      '@quilted/async': 0.4.12
+      '@quilted/async': 0.4.15
       '@quilted/events': 2.0.0
-      '@quilted/graphql': 3.1.1
-      '@quilted/preact-async': 0.1.13(preact@10.22.0)
+      '@quilted/graphql': 3.3.0
+      '@quilted/preact-async': 0.1.14(preact@10.22.0)
       '@quilted/preact-browser': 0.1.7(preact@10.22.0)
       '@quilted/preact-context': 0.1.2(preact@10.22.0)
-      '@quilted/preact-graphql': 0.1.2(preact@10.22.0)
+      '@quilted/preact-graphql': 0.1.3(preact@10.22.0)
       '@quilted/preact-localize': 0.1.0(@quilted/request-router@0.2.0)(preact@10.22.0)
       '@quilted/preact-performance': 0.1.0(preact@10.22.0)
       '@quilted/preact-router': 0.1.0(preact@10.22.0)
@@ -4926,7 +5112,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@quilted/rollup@0.2.23(@babel/template@7.24.0)(@babel/traverse@7.24.1)(@babel/types@7.24.0)(rollup@4.16.4)':
+  '@quilted/rollup@0.2.31(@babel/template@7.24.0)(@babel/traverse@7.24.1)(@babel/types@7.24.0)(rollup@4.16.4)':
     dependencies:
       '@babel/core': 7.24.4
       '@babel/plugin-proposal-decorators': 7.24.1(@babel/core@7.24.4)
@@ -4936,9 +5122,9 @@ snapshots:
       '@babel/preset-react': 7.24.1(@babel/core@7.24.4)
       '@babel/preset-typescript': 7.24.1(@babel/core@7.24.4)
       '@mdn/browser-compat-data': 5.5.23
-      '@quilted/assets': 0.1.1
-      '@quilted/babel': 0.2.1(@babel/core@7.24.4)(@babel/template@7.24.0)(@babel/traverse@7.24.1)(@babel/types@7.24.0)
-      '@quilted/graphql': 3.1.1
+      '@quilted/assets': 0.1.2
+      '@quilted/babel': 0.2.2(@babel/core@7.24.4)(@babel/template@7.24.0)(@babel/traverse@7.24.1)(@babel/types@7.24.0)
+      '@quilted/graphql': 3.3.0
       '@rollup/plugin-alias': 5.1.0(rollup@4.16.4)
       '@rollup/plugin-babel': 6.0.4(@babel/core@7.24.4)(rollup@4.16.4)
       '@rollup/plugin-commonjs': 25.0.7(rollup@4.16.4)
@@ -4950,14 +5136,14 @@ snapshots:
       browserslist-useragent-regexp: 4.1.3(browserslist@4.23.0)
       dotenv: 16.4.5
       es-module-lexer: 1.5.0
-      esbuild: 0.20.2
+      esbuild: 0.21.5
       glob: 10.3.12
       graphql: 16.8.1
       lightningcss: 1.24.1
       magic-string: 0.30.10
       mrmime: 1.0.1
       rollup: 4.16.4
-      rollup-plugin-esbuild: 6.1.1(esbuild@0.20.2)(rollup@4.16.4)
+      rollup-plugin-esbuild: 6.1.1(esbuild@0.21.5)(rollup@4.16.4)
       rollup-plugin-node-externals: 6.1.2(rollup@4.16.4)
       rollup-plugin-visualizer: 5.12.0(rollup@4.16.4)
       semver: 7.6.0
@@ -4982,19 +5168,17 @@ snapshots:
     optionalDependencies:
       '@preact/signals-core': 1.6.0
 
-  '@quilted/typescript@0.3.0(typescript@5.4.5)':
-    dependencies:
-      typescript: 5.4.5
+  '@quilted/typescript@0.3.1': {}
 
   '@quilted/useful-types@2.0.0': {}
 
-  '@quilted/vite@0.1.18(@babel/template@7.24.0)(@babel/traverse@7.24.1)(@babel/types@7.24.0)(preact@10.22.0)(rollup@4.16.4)(vite@5.2.10(@types/node@18.15.11)(lightningcss@1.24.1))(vitest@1.5.2(@types/node@18.15.11)(jsdom@24.0.0)(lightningcss@1.24.1))':
+  '@quilted/vite@0.1.21(@babel/template@7.24.0)(@babel/traverse@7.24.1)(@babel/types@7.24.0)(preact@10.22.0)(rollup@4.16.4)(vite@5.2.10(@types/node@18.15.11)(lightningcss@1.24.1))(vitest@1.5.2(@types/node@18.15.11)(jsdom@24.0.0)(lightningcss@1.24.1))':
     dependencies:
       '@babel/core': 7.24.4
       '@prefresh/vite': 2.4.5(preact@10.22.0)(vite@5.2.10(@types/node@18.15.11)(lightningcss@1.24.1))
-      '@quilted/babel': 0.2.1(@babel/core@7.24.4)(@babel/template@7.24.0)(@babel/traverse@7.24.1)(@babel/types@7.24.0)
+      '@quilted/babel': 0.2.2(@babel/core@7.24.4)(@babel/template@7.24.0)(@babel/traverse@7.24.1)(@babel/types@7.24.0)
       '@quilted/request-router': 0.2.0
-      '@quilted/rollup': 0.2.23(@babel/template@7.24.0)(@babel/traverse@7.24.1)(@babel/types@7.24.0)(rollup@4.16.4)
+      '@quilted/rollup': 0.2.31(@babel/template@7.24.0)(@babel/traverse@7.24.1)(@babel/types@7.24.0)(rollup@4.16.4)
     optionalDependencies:
       vite: 5.2.10(@types/node@18.15.11)(lightningcss@1.24.1)
       vitest: 1.5.2(@types/node@18.15.11)(jsdom@24.0.0)(lightningcss@1.24.1)
@@ -5649,6 +5833,32 @@ snapshots:
       '@esbuild/win32-arm64': 0.20.2
       '@esbuild/win32-ia32': 0.20.2
       '@esbuild/win32-x64': 0.20.2
+
+  esbuild@0.21.5:
+    optionalDependencies:
+      '@esbuild/aix-ppc64': 0.21.5
+      '@esbuild/android-arm': 0.21.5
+      '@esbuild/android-arm64': 0.21.5
+      '@esbuild/android-x64': 0.21.5
+      '@esbuild/darwin-arm64': 0.21.5
+      '@esbuild/darwin-x64': 0.21.5
+      '@esbuild/freebsd-arm64': 0.21.5
+      '@esbuild/freebsd-x64': 0.21.5
+      '@esbuild/linux-arm': 0.21.5
+      '@esbuild/linux-arm64': 0.21.5
+      '@esbuild/linux-ia32': 0.21.5
+      '@esbuild/linux-loong64': 0.21.5
+      '@esbuild/linux-mips64el': 0.21.5
+      '@esbuild/linux-ppc64': 0.21.5
+      '@esbuild/linux-riscv64': 0.21.5
+      '@esbuild/linux-s390x': 0.21.5
+      '@esbuild/linux-x64': 0.21.5
+      '@esbuild/netbsd-x64': 0.21.5
+      '@esbuild/openbsd-x64': 0.21.5
+      '@esbuild/sunos-x64': 0.21.5
+      '@esbuild/win32-arm64': 0.21.5
+      '@esbuild/win32-ia32': 0.21.5
+      '@esbuild/win32-x64': 0.21.5
 
   escalade@3.1.2: {}
 
@@ -6606,12 +6816,12 @@ snapshots:
 
   reusify@1.0.4: {}
 
-  rollup-plugin-esbuild@6.1.1(esbuild@0.20.2)(rollup@4.16.4):
+  rollup-plugin-esbuild@6.1.1(esbuild@0.21.5)(rollup@4.16.4):
     dependencies:
       '@rollup/pluginutils': 5.1.0(rollup@4.16.4)
       debug: 4.3.4
       es-module-lexer: 1.5.0
-      esbuild: 0.20.2
+      esbuild: 0.21.5
       get-tsconfig: 4.7.3
       rollup: 4.16.4
     transitivePeerDependencies:
