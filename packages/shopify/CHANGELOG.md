@@ -1,5 +1,13 @@
 # @lemonmade/shopify
 
+## 0.5.6
+
+### Patch Changes
+
+- [`9260e91`](https://github.com/lemonmade/nursery/commit/9260e91a8d51d0370fdbc47697c4a918c13a9b17) Thanks [@lemonmade](https://github.com/lemonmade)! - Fix Shopify query class types
+
+- [`7ab8917`](https://github.com/lemonmade/nursery/commit/7ab8917bd0e3357d55b1fdb5ce7551a815975470) Thanks [@lemonmade](https://github.com/lemonmade)! - Update quilt dependencies
+
 ## 0.5.5
 
 ### Patch Changes
