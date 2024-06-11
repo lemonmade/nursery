@@ -15,17 +15,19 @@ export class AdminGraphQLQuery<Data, Variables> extends GraphQLQuery<
     {
       fetch = createAdminGraphQLFetch(),
       cached,
-    }: {
-      /**
-       * The function used to run the GraphQL query. If not provided,
-       * a default Admin GraphQL fetch function will be used, which
-       * will only work in environments that support Direct API access.
-       *
-       * @see https://shopify.dev/docs/api/admin-extensions/unstable#direct-api-access
-       * @see https://shopify.dev/docs/api/app-bridge-library#direct-api-access
-       */
-      fetch?: GraphQLQueryOptions<Data, Variables>['fetch'];
-    } & Omit<GraphQLQueryOptions<Data, Variables>, 'fetch'> = {},
+    }: NoInfer<
+      {
+        /**
+         * The function used to run the GraphQL query. If not provided,
+         * a default Admin GraphQL fetch function will be used, which
+         * will only work in environments that support Direct API access.
+         *
+         * @see https://shopify.dev/docs/api/admin-extensions/unstable#direct-api-access
+         * @see https://shopify.dev/docs/api/app-bridge-library#direct-api-access
+         */
+        fetch?: GraphQLQueryOptions<Data, Variables>['fetch'];
+      } & Omit<GraphQLQueryOptions<Data, Variables>, 'fetch'>
+    > = {} as any,
   ) {
     super(operation, {fetch, cached});
   }

@@ -14,15 +14,17 @@ export class StorefrontGraphQLMutation<Data, Variables> extends GraphQLMutation<
     operation: GraphQLAnyOperation<Data, Variables>,
     {
       fetch = createStorefrontGraphQLFetch(),
-    }: {
-      /**
-       * The function used to run the GraphQL mutation. If not provided,
-       * a default Storefront GraphQL fetch function will be used, which
-       * will only work in environments like UI extensions where both the
-       * `shop` and `accessToken` options are optional.
-       */
-      fetch?: GraphQLMutationOptions<Data, Variables>['fetch'];
-    } & Omit<GraphQLMutationOptions<Data, Variables>, 'fetch'> = {},
+    }: NoInfer<
+      {
+        /**
+         * The function used to run the GraphQL mutation. If not provided,
+         * a default Storefront GraphQL fetch function will be used, which
+         * will only work in environments like UI extensions where both the
+         * `shop` and `accessToken` options are optional.
+         */
+        fetch?: GraphQLMutationOptions<Data, Variables>['fetch'];
+      } & Omit<GraphQLMutationOptions<Data, Variables>, 'fetch'>
+    > = {},
   ) {
     super(operation, {fetch});
   }

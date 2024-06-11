@@ -15,15 +15,17 @@ export class StorefrontGraphQLQuery<Data, Variables> extends GraphQLQuery<
     {
       fetch = createStorefrontGraphQLFetch(),
       cached,
-    }: {
-      /**
-       * The function used to run the GraphQL query. If not provided,
-       * a default Storefront GraphQL fetch function will be used, which
-       * will only work in environments like UI extensions where both the
-       * `shop` and `accessToken` options are optional.
-       */
-      fetch?: GraphQLQueryOptions<Data, Variables>['fetch'];
-    } & Omit<GraphQLQueryOptions<Data, Variables>, 'fetch'> = {},
+    }: NoInfer<
+      {
+        /**
+         * The function used to run the GraphQL query. If not provided,
+         * a default Storefront GraphQL fetch function will be used, which
+         * will only work in environments like UI extensions where both the
+         * `shop` and `accessToken` options are optional.
+         */
+        fetch?: GraphQLQueryOptions<Data, Variables>['fetch'];
+      } & Omit<GraphQLQueryOptions<Data, Variables>, 'fetch'>
+    > = {} as any,
   ) {
     super(operation, {fetch, cached});
   }
