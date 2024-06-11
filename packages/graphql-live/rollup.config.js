@@ -1,3 +1,3 @@
-import {quiltPackage} from '@quilted/craft/rollup';
+import {quiltPackage} from '@quilted/rollup/package';
 
 export default quiltPackage();
