@@ -1,4 +1,4 @@
-import {quiltPackage} from '@quilted/craft/vite';
+import {quiltPackage} from '@quilted/vite/package';
 
 export default {
   plugins: [quiltPackage()],
