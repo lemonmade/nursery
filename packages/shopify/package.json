@@ -22,6 +22,12 @@
       "quilt:esnext": "./build/esnext/index.esnext",
       "import": "./build/esm/index.mjs"
     },
+    "./graphql": {
+      "types": "./build/typescript/graphql.d.ts",
+      "quilt:source": "./source/graphql.ts",
+      "quilt:esnext": "./build/esnext/graphql.esnext",
+      "import": "./build/esm/graphql.mjs"
+    },
     "./admin": {
       "types": "./build/typescript/admin.d.ts",
       "quilt:source": "./source/admin.ts",
