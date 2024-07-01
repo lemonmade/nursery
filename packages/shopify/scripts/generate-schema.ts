@@ -2,6 +2,8 @@ import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 
 import {printSchema} from 'graphql';
+import {format} from 'prettier';
+
 import {fetchGraphQLSchema} from '../source/graphql.ts';
 import {
   createStorefrontGraphQLFetch,
@@ -34,4 +36,5 @@ const schema = await fetchGraphQLSchema({fetch});
 const file = path.resolve(`./graphql/${apiVersion}/storefront.schema.graphql`);
 await fs.mkdir(path.dirname(file), {recursive: true});
 
-await fs.writeFile(file, printSchema(schema) + '\n');
+const content = await format(printSchema(schema), {filepath: file});
+await fs.writeFile(file, content);
