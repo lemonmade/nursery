@@ -1,6 +1,6 @@
 import {createGraphQLFetch} from '@quilted/graphql';
 
-import {getCurrentAPIVersion} from '../shared/api-version.ts';
+import {getLatestAPIVersion} from '../shared/api-version.ts';
 import {
   getShopURLFromEnvironment,
   StorefrontGraphQLRequestURL,
@@ -10,7 +10,7 @@ import {
 
 export function createStorefrontGraphQLFetch({
   shop = getShopURLFromEnvironment(),
-  apiVersion = getCurrentAPIVersion(),
+  apiVersion = getLatestAPIVersion(),
   accessToken,
   url: customizeURL,
   headers: customizeHeaders,

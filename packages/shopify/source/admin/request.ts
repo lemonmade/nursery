@@ -5,7 +5,7 @@ import {
 } from '@quilted/graphql';
 
 import type {APIVersion} from '../types.ts';
-import {getCurrentAPIVersion} from '../shared/api-version.ts';
+import {getLatestAPIVersion} from '../shared/api-version.ts';
 
 export interface AdminGraphQLRequestOptions {
   readonly shop?: string | URL;
@@ -51,7 +51,7 @@ export class AdminGraphQLRequestURL extends URL {
   constructor({
     // If no shop is provided, try to use Direct API access
     shop = 'shopify:/',
-    apiVersion = getCurrentAPIVersion(),
+    apiVersion = getLatestAPIVersion(),
   }: Pick<AdminGraphQLRequestOptions, 'shop' | 'apiVersion'> = {}) {
     super(`/admin/api/${apiVersion}/graphql.json`, shop);
   }

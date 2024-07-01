@@ -5,7 +5,7 @@ import {
 } from '@quilted/graphql';
 
 import type {APIVersion} from '../types.ts';
-import {getCurrentAPIVersion} from '../shared/api-version.ts';
+import {getLatestAPIVersion} from '../shared/api-version.ts';
 
 import type {StorefrontAccessToken} from './types.ts';
 
@@ -50,7 +50,7 @@ const SHOPIFY_PROTOCOL = 'shopify:';
 export class StorefrontGraphQLRequestURL extends URL {
   constructor({
     shop = getShopURLFromEnvironment(),
-    apiVersion = getCurrentAPIVersion(),
+    apiVersion = getLatestAPIVersion(),
   }: Pick<StorefrontGraphQLRequestOptions, 'shop' | 'apiVersion'> = {}) {
     let baseURL: string | URL | undefined;
     let isDirectAPIAccess = false;

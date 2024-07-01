@@ -21,8 +21,9 @@ export type {
 } from '@quilted/graphql';
 export {gql, graphql} from '@quilted/graphql';
 
-export * from './graphql.ts';
 export * from './types.ts';
+export * from './graphql/gid.ts';
+export {getLatestAPIVersion} from './shared/api-version.ts';
 export type {StorefrontAccessToken} from './storefront/types.ts';
 export {createStorefrontGraphQLFetch} from './storefront/fetch.ts';
 export {createStorefrontGraphQLStreamingFetch} from './storefront/stream.ts';

@@ -1,6 +1,6 @@
 import {createGraphQLFetch} from '@quilted/graphql';
 
-import {getCurrentAPIVersion} from '../shared/api-version.ts';
+import {getLatestAPIVersion} from '../shared/api-version.ts';
 import {
   AdminGraphQLRequestURL,
   AdminGraphQLRequestHeaders,
@@ -9,7 +9,7 @@ import {
 
 export function createAdminGraphQLFetch({
   shop,
-  apiVersion = getCurrentAPIVersion(),
+  apiVersion = getLatestAPIVersion(),
   accessToken,
   url: customizeURL,
   headers: customizeHeaders,

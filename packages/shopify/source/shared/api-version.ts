@@ -2,7 +2,7 @@ import type {APIVersion} from '../types.ts';
 
 const API_VERSIONS_BY_QUARTER = ['01', '04', '07', '10'];
 
-export function getCurrentAPIVersion() {
+export function getLatestAPIVersion() {
   const date = new Date();
   const year = date.getUTCFullYear();
   const month = date.getUTCMonth();

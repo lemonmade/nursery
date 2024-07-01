@@ -22,7 +22,8 @@ export type {
 export {gql, graphql} from '@quilted/graphql';
 
 export * from './types.ts';
-export * from './graphql.ts';
+export * from './graphql/gid.ts';
+export {getLatestAPIVersion} from './shared/api-version.ts';
 export {createAdminGraphQLFetch} from './admin/fetch.ts';
 export {
   AdminGraphQLRequest,
