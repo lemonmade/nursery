@@ -1,5 +1,15 @@
 # @lemonmade/shopify
 
+## 0.5.7
+
+### Patch Changes
+
+- [`9f1eb4d`](https://github.com/lemonmade/nursery/commit/9f1eb4d8a617c607db41bbc89cf49f6cef0b9a34) Thanks [@lemonmade](https://github.com/lemonmade)! - Add exports for storefront GraphQL schemas
+
+- [`d0b80f6`](https://github.com/lemonmade/nursery/commit/d0b80f6e075410081ed39441005d0bf148c9cd79) Thanks [@lemonmade](https://github.com/lemonmade)! - Export `getLatestAPIVersion` helper
+
+- [`10bb470`](https://github.com/lemonmade/nursery/commit/10bb470082be3fe8848d4c6f34732a3b616b3331) Thanks [@lemonmade](https://github.com/lemonmade)! - Add `@lemonmade/shopify/graphql` entrypoint and export schema utilities
+
 ## 0.5.6
 
 ### Patch Changes
