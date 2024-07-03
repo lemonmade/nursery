@@ -1,5 +1,11 @@
 # @lemonmade/shopify
 
+## 0.5.8
+
+### Patch Changes
+
+- [`523993c`](https://github.com/lemonmade/nursery/commit/523993c0c4af69b240d3e931eb48837b759a3de3) Thanks [@lemonmade](https://github.com/lemonmade)! - Add `latest` alias for latest GraphQL schemas
+
 ## 0.5.7
 
 ### Patch Changes
