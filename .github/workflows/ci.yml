@@ -58,6 +58,7 @@ jobs:
     name: Build 🏗
     if: ${{ inputs.build || github.event_name == 'push' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/workflows/actions/prepare
