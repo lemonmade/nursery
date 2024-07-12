@@ -6,6 +6,7 @@
     {"path": "./packages/create-create-tester"},
     {"path": "./packages/graphql-live"},
     {"path": "./packages/shopify"},
-    {"path": "./packages/shopify-quilt"}
+    {"path": "./packages/shopify-quilt"},
+    {"path": "./packages/web-sandboxes"}
   ]
 }

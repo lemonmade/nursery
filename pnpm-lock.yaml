@@ -91,6 +91,8 @@ importers:
         specifier: ^10.22.0
         version: 10.22.0
 
+  packages/web-sandboxes: {}
+
 packages:
 
   '@ampproject/remapping@2.3.0':
