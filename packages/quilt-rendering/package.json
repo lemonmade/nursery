@@ -27,6 +27,12 @@
       "quilt:source": "./source/browser.tsx",
       "quilt:esnext": "./build/esnext/browser.esnext",
       "import": "./build/esm/browser.mjs"
+    },
+    "./server": {
+      "types": "./build/typescript/server.d.ts",
+      "quilt:source": "./source/server.tsx",
+      "quilt:esnext": "./build/esnext/server.esnext",
+      "import": "./build/esm/server.mjs"
     }
   },
   "types": "./build/typescript/index.d.ts",
@@ -34,6 +40,9 @@
     "*": {
       "browser": [
         "./build/typescript/browser.d.ts"
+      ],
+      "server": [
+        "./build/typescript/server.d.ts"
       ]
     }
   },

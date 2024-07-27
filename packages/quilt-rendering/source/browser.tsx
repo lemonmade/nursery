@@ -3,7 +3,7 @@ import {Suspense} from 'preact/compat';
 
 import type {AsyncComponentType} from '@quilted/quilt/async';
 
-export const DEFAULT_TAG_NAME = 'quilt-async-component';
+import {DEFAULT_TAG_NAME} from './constants.ts';
 
 export interface AsyncComponentRegistration<Props> {
   readonly AsyncComponent: AsyncComponentType<Props>;
@@ -13,7 +13,7 @@ export interface AsyncComponentRegistration<Props> {
 const ASYNC_COMPONENT_MAP = new Map<string, AsyncComponentRegistration<any>>();
 
 export class QuiltAsyncComponentElement<Props = unknown> extends HTMLElement {
-  static defineElement(tagName: string = 'quilt-async-component') {
+  static define(tagName: string = DEFAULT_TAG_NAME) {
     customElements.define(tagName, QuiltAsyncComponentElement);
   }
 
