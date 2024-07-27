@@ -5,6 +5,7 @@
   "references": [
     {"path": "./packages/create-create-tester"},
     {"path": "./packages/graphql-live"},
+    {"path": "./packages/quilt-rendering"},
     {"path": "./packages/shopify"},
     {"path": "./packages/shopify-quilt"},
     {"path": "./packages/web-sandboxes"}
