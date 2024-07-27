@@ -5,6 +5,11 @@ import type {AsyncComponentType} from '@quilted/quilt/async';
 
 import {DEFAULT_TAG_NAME} from './constants.ts';
 
+export {
+  MultiPageAppRouter,
+  MultiPageAppNavigation,
+} from './browser/MultiPageNavigation.tsx';
+
 export interface AsyncComponentRegistration<Props> {
   readonly AsyncComponent: AsyncComponentType<Props>;
   render?(vnode: VNode<Props>): ComponentChild;

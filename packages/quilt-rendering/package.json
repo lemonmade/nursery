@@ -50,7 +50,9 @@
   "scripts": {
     "build": "rollup --config ./rollup.config.js"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@quilted/routing": "^0.4.2"
+  },
   "peerDependencies": {
     "@quilted/quilt": "^0.7.0",
     "preact": "^10.0.0"

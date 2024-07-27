@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@quilted/quilt": "^0.7.10",
-    "preact": "^10.22.0"
+    "preact": "^10.23.1"
   },
   "browserslist": [
     "defaults and fully supports es6-module",
