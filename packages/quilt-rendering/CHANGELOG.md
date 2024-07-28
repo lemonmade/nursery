@@ -1,5 +1,11 @@
 # @quilted/quilt-rendering
 
+## 0.1.2
+
+### Patch Changes
+
+- [`6a709c2`](https://github.com/lemonmade/nursery/commit/6a709c2d029021fadf0346926d8b5cd1f7118822) Thanks [@lemonmade](https://github.com/lemonmade)! - Lean in to "Island" naming
+
 ## 0.1.1
 
 ### Patch Changes
