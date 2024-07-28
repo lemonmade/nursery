@@ -17,9 +17,9 @@ export interface AsyncComponentRegistration<Props> {
 
 const ASYNC_COMPONENT_MAP = new Map<string, AsyncComponentRegistration<any>>();
 
-export class QuiltAsyncComponentElement<Props = unknown> extends HTMLElement {
+export class AsyncComponentIslandElement<Props = unknown> extends HTMLElement {
   static define(tagName: string = DEFAULT_TAG_NAME) {
-    customElements.define(tagName, QuiltAsyncComponentElement);
+    customElements.define(tagName, AsyncComponentIslandElement);
   }
 
   static registerComponent = registerAsyncComponent;
