@@ -61,13 +61,15 @@ export class AsyncComponentIslandElement<Props = unknown> extends HTMLElement {
 
       const props = JSON.parse(this.getAttribute('props') || '{}');
 
-      const element = registration?.render ? (
-        registration.render(<AsyncComponent {...props} />)
-      ) : (
+      let element: ComponentChild = (
         <Suspense fallback={null}>
           <AsyncComponent {...props} />
         </Suspense>
       );
+
+      if (registration?.render) {
+        element = registration.render(element as VNode<any>);
+      }
 
       if (OldAsyncComponent) {
         this.innerHTML = '';

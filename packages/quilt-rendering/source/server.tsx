@@ -1,5 +1,5 @@
 import type {ComponentType} from 'preact';
-import type {AsyncComponentProps} from '@quilted/quilt/async';
+import {AsyncComponent, type AsyncComponentProps} from '@quilted/quilt/async';
 
 import {DEFAULT_TAG_NAME} from './constants.ts';
 
@@ -10,11 +10,15 @@ export class AsyncComponentIslandServerRenderer {
     this.#tagName = tagName;
   }
 
-  render: AsyncComponentProps<any>['render'] = (element, {module, props}) => {
+  render: AsyncComponentProps<any>['render'] = (element, asyncProps) => {
     const Wrapper = this.#tagName as any as ComponentType<{
       module?: string;
       props?: string;
     }>;
+
+    const {module, props} = asyncProps;
+
+    if (typeof document === 'undefined') AsyncComponent.useAssets(asyncProps);
 
     return (
       <Wrapper
