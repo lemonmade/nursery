@@ -1,5 +1,11 @@
 # @quilted/quilt-rendering
 
+## 0.1.3
+
+### Patch Changes
+
+- [`86164aa`](https://github.com/lemonmade/nursery/commit/86164aa1b788a18b14a311023dcdd2a294c97c66) Thanks [@lemonmade](https://github.com/lemonmade)! - Simplify async island rendering
+
 ## 0.1.2
 
 ### Patch Changes
