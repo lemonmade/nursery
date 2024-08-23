@@ -40,11 +40,11 @@
       "quilt:esnext": "./build/esnext/graphql.esnext",
       "import": "./build/esm/graphql.mjs"
     },
-    "./graphql/latest/storefront.schema.graphql": "./graphql/2024-04/storefront.schema.graphql",
+    "./graphql/latest/storefront.schema.graphql": "./graphql/2024-07/storefront.schema.graphql",
+    "./graphql/2024-07/storefront.schema.graphql": "./graphql/2024-07/storefront.schema.graphql",
     "./graphql/2024-04/storefront.schema.graphql": "./graphql/2024-04/storefront.schema.graphql",
     "./graphql/2024-01/storefront.schema.graphql": "./graphql/2024-01/storefront.schema.graphql",
-    "./graphql/2023-10/storefront.schema.graphql": "./graphql/2023-10/storefront.schema.graphql",
-    "./graphql/2023-07/storefront.schema.graphql": "./graphql/2023-07/storefront.schema.graphql"
+    "./graphql/2023-10/storefront.schema.graphql": "./graphql/2023-10/storefront.schema.graphql"
   },
   "types": "./build/typescript/index.d.ts",
   "typesVersions": {
@@ -54,6 +54,9 @@
       ],
       "storefront": [
         "./build/typescript/storefront.d.ts"
+      ],
+      "graphql": [
+        "./build/typescript/graphql.d.ts"
       ]
     }
   },

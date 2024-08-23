@@ -18,8 +18,8 @@ const fetchGraphQL = createStorefrontGraphQLFetch();
 import {createStorefrontGraphQLFetch} from '@lemonmade/shopify/storefront';
 
 const fetchGraphQL = createStorefrontGraphQLFetch({
-  apiVersion: 'unstable',
   shop: 'https://my-shop.com',
+  apiVersion: 'unstable',
   accessToken: MY_PUBLIC_ACCESS_TOKEN,
 });
 ```
@@ -28,8 +28,8 @@ const fetchGraphQL = createStorefrontGraphQLFetch({
 import {createStorefrontGraphQLFetch} from '@lemonmade/shopify/storefront';
 
 const fetchGraphQL = createStorefrontGraphQLFetch({
-  apiVersion: 'unstable',
   shop: 'https://shop.myshopify.com',
+  apiVersion: 'unstable',
   accessToken: {
     access: 'authenticated',
     token: MY_ACCESS_TOKEN,
@@ -41,8 +41,8 @@ const fetchGraphQL = createStorefrontGraphQLFetch({
 import {createStorefrontGraphQLFetch} from '@lemonmade/shopify/storefront';
 
 const fetchGraphQL = createStorefrontGraphQLFetch({
-  apiVersion: 'unstable',
   shop: 'https://shop.myshopify.com',
+  apiVersion: 'unstable',
   accessToken: {
     access: 'authenticated',
     token: env.SHOPIFY_STOREFRONT_AUTHENTICATED_ACCESS_TOKEN,
@@ -119,7 +119,7 @@ const shopQuery = gql`
 const {data, errors} = await fetchGraphQL(shopQuery);
 ```
 
-More importantly, though, this function will return an [async iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncIterator). Each incremental result will cause this iterator to yield the curent, combined response value, as well as details about the last incremental result that was received.
+More importantly, though, this function will return an [async iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncIterator). Each incremental result will cause this iterator to yield the current, combined response value, as well as details about the last incremental result that was received.
 
 ```ts
 import {
