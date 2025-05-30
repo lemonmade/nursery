@@ -1,0 +1,21 @@
+{
+  "name": "@lemonmade/web-mcp-run",
+  "description": "CDN scripts for @lemonmade/web-mcp",
+  "type": "module",
+  "private": true,
+  "sideEffects": true,
+  "scripts": {
+    "build": "rollup --config ./rollup.config.js",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "@lemonmade/web-mcp": "workspace:*"
+  },
+  "devDependencies": {
+    "wrangler": "^4.18.0"
+  },
+  "browserslist": [
+    "defaults and fully supports es6-module",
+    "maintained node versions"
+  ]
+}

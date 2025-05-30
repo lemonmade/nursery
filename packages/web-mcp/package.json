@@ -1,0 +1,54 @@
+{
+  "name": "@lemonmade/web-mcp",
+  "description": "Makes it easy to turn an HTML webpage into a Model Context Protocol (MCP) server",
+  "type": "module",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "@lemonmade/registry": "https://registry.npmjs.org"
+  },
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lemonmade/nursery",
+    "directory": "packages/web-mcp"
+  },
+  "exports": {
+    ".": {
+      "types": "./build/typescript/index.d.ts",
+      "quilt:source": "./source/index.ts",
+      "quilt:esnext": "./build/esnext/index.esnext",
+      "import": "./build/esm/index.mjs"
+    },
+    "./client": {
+      "types": "./build/typescript/client.d.ts",
+      "quilt:source": "./source/client.ts",
+      "quilt:esnext": "./build/esnext/client.esnext",
+      "import": "./build/esm/client.mjs"
+    },
+    "./server": {
+      "types": "./build/typescript/server.d.ts",
+      "quilt:source": "./source/server.ts",
+      "quilt:esnext": "./build/esnext/server.esnext",
+      "import": "./build/esm/server.mjs"
+    }
+  },
+  "types": "./build/typescript/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "build": "rollup --config ./rollup.config.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1"
+  },
+  "peerDependencies": {},
+  "peerDependenciesMeta": {},
+  "devDependencies": {},
+  "browserslist": [
+    "defaults and fully supports es6-module",
+    "maintained node versions"
+  ]
+}
