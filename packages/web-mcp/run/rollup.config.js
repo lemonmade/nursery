@@ -7,5 +7,5 @@ export default quiltModule({
   },
   assets: {
     minify: true,
-  }
+  },
 });
