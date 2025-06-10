@@ -1,0 +1,6 @@
+{
+  "extends": "@quilted/typescript/tsconfig.project.json",
+  "include": ["**/*"],
+  "exclude": ["build"],
+  "references": []
+}

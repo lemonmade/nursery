@@ -8,7 +8,10 @@
     {"path": "./packages/quilt-rendering"},
     {"path": "./packages/shopify"},
     {"path": "./packages/shopify-quilt"},
+    {"path": "./packages/web-agents"},
     {"path": "./packages/web-mcp"},
-    {"path": "./packages/web-sandboxes"}
+    {"path": "./packages/web-sandboxes"},
+    {"path": "./web-agent-example"},
+    {"path": "./web-agent-server"}
   ]
 }

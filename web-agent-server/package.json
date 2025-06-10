@@ -1,0 +1,23 @@
+{
+  "name": "web-agent-server",
+  "type": "module",
+  "exports": {
+    ".": "./server.ts"
+  },
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "tsx ./server.ts",
+    "build": "rollup --config ./rollup.config.js"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.14.0",
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "hono": "^4.7.0",
+    "zod": "^3.25.57"
+  },
+  "devDependencies": {},
+  "browserslist": [
+    "defaults and fully supports es6-module"
+  ]
+}
