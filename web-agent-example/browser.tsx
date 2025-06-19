@@ -26,12 +26,27 @@ addEventListener('agent-connection-start', (event) => {
 const agent = new AgentConnection();
 
 agent.tools.set('get_message', {
+  description: 'Get a message from the website to display to the user',
   async call(args) {
     console.log(
       `[TOOL: get_message] called with args: ${JSON.stringify(args)}`,
     );
 
     return 'Hello, world!';
+  },
+});
+
+agent.tools.set('random_color', {
+  description: 'Set the background color to a random color',
+  async call(args) {
+    console.log(
+      `[TOOL: random_color] called with args: ${JSON.stringify(args)}`,
+    );
+
+    const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+    document.documentElement.style.backgroundColor = randomColor;
+
+    return `Updated background color to ${randomColor}`;
   },
 });
 
