@@ -9,40 +9,63 @@ This package provides a set of utilities for working with the [Shopify Storefron
 TODO
 
 ```ts
-import {createStorefrontGraphQLFetch} from '@lemonmade/shopify/storefront';
+import {gql, createStorefrontGraphQLFetch} from '@lemonmade/shopify/storefront';
 
+// Default values:
+// - `shop` is inferred from the current page
+// - `apiVersion` is the most recent stable API version
+// - `accessToken` is omitted, relying on tokenless or environment-provided tokens
 const fetchGraphQL = createStorefrontGraphQLFetch();
+
+// gql is just a helper that improves syntax highlighting in some editors
+const shopQuery = gql`
+  query {
+    shop {
+      name
+    }
+  }
+`;
+
+// Make your query
+const {data, errors} = await fetchGraphQL(shopQuery);
 ```
+
+Available options:
 
 ```ts
 import {createStorefrontGraphQLFetch} from '@lemonmade/shopify/storefront';
 
+// Hardcoded shop URL
 const fetchGraphQL = createStorefrontGraphQLFetch({
   shop: 'https://my-shop.com',
-  apiVersion: 'unstable',
-  accessToken: MY_PUBLIC_ACCESS_TOKEN,
 });
-```
 
-```ts
-import {createStorefrontGraphQLFetch} from '@lemonmade/shopify/storefront';
+// Hardcoded API version
+const fetchGraphQL = createStorefrontGraphQLFetch({
+  apiVersion: 'unstable',
+});
+
+// Unauthenticated Storefront API access token
+const accessToken = document.querySelector(
+  'script[type="shopify/storefront-access-token"]',
+)?.textContent;
 
 const fetchGraphQL = createStorefrontGraphQLFetch({
-  shop: 'https://shop.myshopify.com',
-  apiVersion: 'unstable',
+  accessToken,
+});
+
+// Authenticated Storefront API access token
+const fetchGraphQL = createStorefrontGraphQLFetch({
+  shop: 'shop.myshopify.com',
   accessToken: {
     access: 'authenticated',
-    token: MY_ACCESS_TOKEN,
+    token: env.SHOPIFY_STOREFRONT_AUTHENTICATED_ACCESS_TOKEN,
   },
 });
-```
 
-```ts
-import {createStorefrontGraphQLFetch} from '@lemonmade/shopify/storefront';
-
+// Authenticated Storefront API access token with buyer IP
 const fetchGraphQL = createStorefrontGraphQLFetch({
-  shop: 'https://shop.myshopify.com',
-  apiVersion: 'unstable',
+  shop: 'shop.myshopify.com',
   accessToken: {
     access: 'authenticated',
     token: env.SHOPIFY_STOREFRONT_AUTHENTICATED_ACCESS_TOKEN,
@@ -51,54 +74,53 @@ const fetchGraphQL = createStorefrontGraphQLFetch({
 });
 ```
 
+There is also an object-based wrapper around the `fetch()` function. This wrapper, based on [`@quilted/graphql`’s `GraphQLQuery`](https://github.com/lemonmade/quilt/tree/main/packages/graphql#fetching-graphql-queries-and-mutations) which can be used to run and re-run a query over time while observing the state of each individual run:
+
 ```ts
-import {gql, createStorefrontGraphQLFetch} from '@lemonmade/shopify/storefront';
+import {effect} from '@preact/signals';
+import {
+  createStorefrontGraphQLFetch,
+  StorefrontGraphQLQuery,
+} from '@lemonmade/shopify/storefront';
 
 const fetchGraphQL = createStorefrontGraphQLFetch();
 
-const shopQuery = gql`
-  query {
-    shop {
-      name
+const productDetailsQuery = new StorefrontGraphQLQuery(
+  `
+  query ProductDetails($id: ID!) {
+    product(id: $id) {
+      id
+      title
     }
   }
-`;
+`,
+  {fetch: fetchGraphQL},
+);
 
-const {data, errors} = await fetchGraphQL(shopQuery);
-```
+// StorefrontGraphQLQuery is backed by Preact signals, so you can easily observe and reach to changes
+// in the underlying value as the query is used.
+effect(() => {
+  console.log(
+    `Latest query value: ${productDetailsQuery.value}, startedAt: ${productDetailsQuery.latest?.startedAt}, finishedAt: ${productDetailsQuery.latest?.finishedAt}`,
+  );
+});
 
-```ts
-import {gql, StorefrontGraphQLQuery} from '@lemonmade/shopify/storefront';
+const result1 = await productDetailsQuery.fetch({
+  variables: {id: 'gid://shopify/Product/1'},
+});
 
-const shopQuery = gql`
-  query {
-    shop {
-      name
-    }
-  }
-`;
+// Later...
 
-const query = new StorefrontGraphQLQuery(shopQuery);
-const {data, errors} = await query.run(shopQuery);
+const result2 = await productDetailsQuery.fetch({
+  variables: {id: 'gid://shopify/Product/1'},
+});
 ```
 
 ### Using the `@defer` directive
 
 Handling the streamed responses of the `@defer` directive takes a bit more work than a “standard” GraphQL request, so this library provides a dedicated `createStorefrontGraphQLStreamingFetch()` function. You can use this to create a function that will handle the construction of GraphQL requests, and the parsing of the streamed response body.
 
-When creating your GraphQL fetch function, you can pass in the same `shop`, `accessToken`, and `apiVersion` options that are documented above, for `createStorefrontGraphQLFetch()`. Like with that function, you can omit any of the options, and they will be inferred from the global environment.
-
-```ts
-import {createStorefrontGraphQLStreamingFetch} from '@lemonmade/shopify/storefront';
-
-const fetchGraphQL = createStorefrontGraphQLStreamingFetch({
-  apiVersion: 'unstable',
-  shop: 'https://my-shop.com',
-  accessToken: MY_PUBLIC_ACCESS_TOKEN,
-});
-```
-
-The resulting function can be used like ones created by `createStorefrontGraphQLFetch()`, to run GraphQL queries and mutations without the `@defer` directive:
+When creating your GraphQL fetch function, you can pass in the same `shop`, `accessToken`, and `apiVersion` options that are documented above, for `createStorefrontGraphQLFetch()`. Like with that function, you can omit any of the options, and they will be inferred from the global environment. The resulting function can be used like ones created by `createStorefrontGraphQLFetch()`, to run GraphQL queries and mutations without the `@defer` directive:
 
 ```ts
 import {

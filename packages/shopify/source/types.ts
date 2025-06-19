@@ -1,13 +1,17 @@
 export type UnstableAPIVersion = 'unstable';
 
-export type ReleaseCandidateAPIVersion = '2024-07';
+export type ReleaseCandidateAPIVersion = '2025-07';
 
-export type SupportedAPIVersion = '2024-04' | '2024-01' | '2023-10' | '2023-07';
+export type SupportedAPIVersion = '2025-04' | '2025-01' | '2024-10' | '2024-07';
 
 export type APIVersion =
   | UnstableAPIVersion
   | ReleaseCandidateAPIVersion
   | SupportedAPIVersion
+  | '2024-04'
+  | '2024-01'
+  | '2023-10'
+  | '2023-07'
   | '2023-04'
   | '2023-01'
   | '2022-10'
