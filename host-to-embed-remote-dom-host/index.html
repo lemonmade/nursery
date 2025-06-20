@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Host app</title>
+  </head>
+  <body>
+    <div>
+      <h1>Host app</h1>
+
+      <extension-embed src="http://localhost:5174/">
+        <extension-point slot="header">
+          <extension-banner>Header content from the host!</extension-banner>
+        </extension-point>
+
+        <extension-point slot="footer">
+          <extension-stack>
+            <extension-text>Footer content from the host! Rendered <extension-text id="extension-rendered-ago">0 seconds</extension-text> ago.</extension-text>
+
+            <extension-button>Click me!</extension-button>
+
+            <extension-text id="extension-button-count">clicked 0 times</extension-text>
+          </extension-stack>
+        </extension-point>
+      </extension-embed>
+
+      <button id="open-as-popup">Open as popup</button>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
