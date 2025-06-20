@@ -4,7 +4,7 @@ import {SignalRemoteReceiver} from '@remote-dom/preact/host';
 import {ThreadNestedIframe, ThreadNestedWindow} from '@quilted/threads';
 import '@preact/signals';
 
-import {ExtensionRenderer} from './ExtensionRenderer.tsx';
+import {ExtensionRenderer} from './embed/ExtensionRenderer.tsx';
 
 const extensionPoints = new Map(
   Array.from(

@@ -1,5 +1,4 @@
 packages:
   - packages/*
   - packages/web-mcp/run
-  - host-to-embed-remote-dom-embed
-  - host-to-embed-remote-dom-host
+  - remote-dom-embeds
