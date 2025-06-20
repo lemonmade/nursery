@@ -1,5 +1,11 @@
 # @lemonmade/shopify
 
+## 0.6.0
+
+### Minor Changes
+
+- [#100](https://github.com/lemonmade/nursery/pull/100) [`fb2e14d`](https://github.com/lemonmade/nursery/commit/fb2e14d9f39e39696ca275fa37151537b1b6fe3a) Thanks [@lemonmade](https://github.com/lemonmade)! - Add missing Storefront API versions
+
 ## 0.5.9
 
 ### Patch Changes
