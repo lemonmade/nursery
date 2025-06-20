@@ -10,12 +10,12 @@
     <div>
       <h1>Host app</h1>
 
-      <extension-embed src="/embed">
-        <extension-point slot="header">
+      <remote-dom-iframe src="/embed">
+        <remote-dom-extension slot="header">
           <extension-banner>Header content from the host!</extension-banner>
-        </extension-point>
+        </remote-dom-extension>
 
-        <extension-point slot="footer">
+        <remote-dom-extension slot="footer">
           <extension-stack>
             <extension-text>Footer content from the host! Rendered <extension-text id="extension-rendered-ago">0 seconds</extension-text> ago.</extension-text>
 
@@ -23,8 +23,8 @@
 
             <extension-text id="extension-button-count">clicked 0 times</extension-text>
           </extension-stack>
-        </extension-point>
-      </extension-embed>
+        </remote-dom-extension>
+      </remote-dom-iframe>
 
       <button id="open-as-popup">Open as popup</button>
     </div>
