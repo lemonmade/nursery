@@ -17,24 +17,20 @@
     <div>
       <h1>Host app</h1>
 
-      <remote-dom-slots>
-        <remote-dom slot="header">
-          <extension-banner>Header content from the host!</extension-banner>
-        </remote-dom>
+      <c-embed>
+        <cx-banner slot="header">Header content from the host!</cx-banner>
 
-        <remote-dom slot="footer">
-          <extension-stack>
-            <extension-text>Footer content from the host! Rendered <extension-text id="extension-rendered-ago">0 seconds</extension-text> ago.</extension-text>
+        <cx-stack slot="footer">
+          <cx-text>Footer content from the host! Rendered <cx-text id="extension-rendered-ago">0 seconds</cx-text> ago.</cx-text>
 
-            <extension-button>Click me!</extension-button>
+          <cx-button>Click me!</cx-button>
 
-            <extension-text id="extension-button-count">clicked 0 times</extension-text>
-          </extension-stack>
-        </remote-dom>
-      </remote-dom-slots>
-
-      <iframe src="/embed"></iframe>
+          <cx-text id="extension-button-count">clicked 0 times</cx-text>
+        </cx-stack>
+      </c-embed>
     </div>
+
+    <script type="module" src="/src/embed-sdk.ts"></script>
     <script type="module" src="/src/host.ts"></script>
   </body>
 </html>

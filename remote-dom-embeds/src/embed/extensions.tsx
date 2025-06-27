@@ -1,36 +1,35 @@
 import {type RenderableProps} from 'preact';
-import {
-  SignalRemoteReceiver,
-  RemoteRootRenderer,
-  createRemoteComponentRenderer,
-} from '@remote-dom/preact/host';
+import {createRemoteComponentRenderer} from '@remote-dom/preact/host';
 
-const components = new Map([
-  ['extension-text', createRemoteComponentRenderer(ExtensionText)],
-  ['extension-banner', createRemoteComponentRenderer(ExtensionBanner)],
-  ['extension-stack', createRemoteComponentRenderer(ExtensionStack)],
+export const COMPONENTS = new Map([
+  ['cx-text', createRemoteComponentRenderer(ExtensionText)],
+  ['cx-banner', createRemoteComponentRenderer(ExtensionBanner)],
+  ['cx-stack', createRemoteComponentRenderer(ExtensionStack)],
   [
-    'extension-button',
+    'cx-button',
     createRemoteComponentRenderer(ExtensionButton, {
       eventProps: {onClick: {event: 'click'}},
     }),
   ],
 ]);
 
-export function ExtensionRenderer({
-  receiver,
-}: {
-  receiver: SignalRemoteReceiver;
-}) {
-  return <RemoteRootRenderer receiver={receiver} components={components} />;
-}
-
 function ExtensionText({children}: RenderableProps<{}>) {
   return <span>{children}</span>;
 }
 
 function ExtensionBanner({children}: RenderableProps<{}>) {
-  return <div>{children}</div>;
+  return (
+    <div
+      style={{
+        backgroundColor: 'rgb(198, 227, 247)',
+        border: '1px solid rgb(57, 85, 111)',
+        padding: '1rem',
+        borderRadius: '0.75rem',
+      }}
+    >
+      {children}
+    </div>
+  );
 }
 
 function ExtensionStack({
@@ -61,5 +60,9 @@ function ExtensionButton({
   children,
   onClick,
 }: RenderableProps<{onClick?(): void}>) {
-  return <button onClick={onClick}>{children}</button>;
+  return (
+    <button style={{maxWidth: 'max-content'}} onClick={onClick}>
+      {children}
+    </button>
+  );
 }

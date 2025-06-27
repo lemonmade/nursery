@@ -1,31 +1,52 @@
-import {render} from 'preact';
-import {SignalRemoteReceiver} from '@remote-dom/preact/host';
+import {render, type ComponentChild} from 'preact';
+import {
+  RemoteRootRenderer,
+  SignalRemoteReceiver,
+} from '@remote-dom/preact/host';
 import {ThreadNestedIframe} from '@quilted/threads';
 import '@preact/signals';
 
-import {ExtensionRenderer} from './embed/ExtensionRenderer.tsx';
-import type {HostAPI} from './rpc.ts';
+import {COMPONENTS} from './embed/extensions.tsx';
+import type {HostAPI} from './embed/rpc.ts';
 
-const extensionPoints = new Map(
-  Array.from(
-    document.querySelectorAll<HTMLElement>('[data-extension-point]'),
-  ).map((element) => {
-    const extensionPoint = element.dataset.extensionPoint!;
+class ExtensionPoint {
+  readonly rendered: ComponentChild;
+  readonly receiver: SignalRemoteReceiver;
 
-    return [
-      extensionPoint,
-      {element, extensionPoint, receiver: new SignalRemoteReceiver()},
-    ];
-  }),
-);
+  constructor() {
+    this.receiver = new SignalRemoteReceiver();
+    this.rendered = (
+      <RemoteRootRenderer receiver={this.receiver} components={COMPONENTS} />
+    );
+  }
+}
+
+const extensionPoints = {
+  header: new ExtensionPoint(),
+  footer: new ExtensionPoint(),
+};
+
+function App() {
+  return (
+    <div style={{display: 'flex', flexDirection: 'column', gap: '16px'}}>
+      {extensionPoints.header.rendered}
+
+      <div>Native embedded app content.</div>
+
+      {extensionPoints.footer.rendered}
+    </div>
+  );
+}
+
+render(<App />, document.getElementById('app')!);
 
 const {connect} = ThreadNestedIframe.import<HostAPI>();
 
-const connections: Parameters<typeof connect>[0] = {};
-
-for (const [extensionPoint, {receiver, element}] of extensionPoints.entries()) {
-  connections[extensionPoint] = receiver.connection;
-  render(<ExtensionRenderer receiver={receiver} />, element);
-}
-
-await connect(connections);
+await connect(
+  Object.fromEntries(
+    Object.entries(extensionPoints).map(([key, {receiver}]) => [
+      key,
+      receiver.connection,
+    ]),
+  ),
+);
