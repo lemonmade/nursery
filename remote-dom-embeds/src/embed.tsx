@@ -1,10 +1,10 @@
 import {render} from 'preact';
 import {SignalRemoteReceiver} from '@remote-dom/preact/host';
-import {ThreadNestedIframe, ThreadNestedWindow} from '@quilted/threads';
+import {ThreadNestedIframe} from '@quilted/threads';
 import '@preact/signals';
 
 import {ExtensionRenderer} from './embed/ExtensionRenderer.tsx';
-import type {HostAPI, EmbedAPI} from './rpc.ts';
+import type {HostAPI} from './rpc.ts';
 
 const extensionPoints = new Map(
   Array.from(
@@ -19,15 +19,13 @@ const extensionPoints = new Map(
   }),
 );
 
-const thread = window.opener
-  ? new ThreadNestedWindow<HostAPI, EmbedAPI>(window.opener)
-  : new ThreadNestedIframe<HostAPI, EmbedAPI>();
+const {connect} = ThreadNestedIframe.import<HostAPI>();
 
-const connections: Parameters<HostAPI['connect']>[0] = {};
+const connections: Parameters<typeof connect>[0] = {};
 
 for (const [extensionPoint, {receiver, element}] of extensionPoints.entries()) {
   connections[extensionPoint] = receiver.connection;
   render(<ExtensionRenderer receiver={receiver} />, element);
 }
 
-await thread.imports.connect(connections);
+await connect(connections);

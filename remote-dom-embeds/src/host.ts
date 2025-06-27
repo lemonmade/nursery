@@ -1,13 +1,18 @@
+import {ThreadIframe} from '@quilted/threads';
 import {ExtensionButton, ExtensionStack} from './host/component-library.ts';
-import {RemoteDOMIframe} from './host/RemoteDOMIframe.ts';
+import {RemoteDOM, RemoteDOMSlots} from './host/RemoteDOMIframe.ts';
+import type {HostAPI} from './rpc.ts';
 
 customElements.define('extension-button', ExtensionButton);
 customElements.define('extension-stack', ExtensionStack);
-customElements.define('remote-dom-iframe', RemoteDOMIframe);
+customElements.define('remote-dom', RemoteDOM);
+customElements.define('remote-dom-slots', RemoteDOMSlots);
 
 const now = Date.now();
-const iframe = document.querySelector<RemoteDOMIframe>('remote-dom-iframe')!;
-const renderedAgo = iframe.querySelector('#extension-rendered-ago')!;
+const iframe = document.querySelector('iframe')!;
+const slots = document.querySelector<RemoteDOMSlots>('remote-dom-slots')!;
+
+const renderedAgo = slots.querySelector('#extension-rendered-ago')!;
 
 setInterval(() => {
   const seconds = Math.round((Date.now() - now) / 1000);
@@ -15,17 +20,16 @@ setInterval(() => {
 }, 1000);
 
 let count = 0;
-const countText = iframe.querySelector('#extension-button-count')!;
-const button = iframe.querySelector('extension-button')!;
+const countText = slots.querySelector('#extension-button-count')!;
+const button = slots.querySelector('extension-button')!;
 
 button.addEventListener('click', () => {
   count += 1;
   countText.textContent = `clicked ${count === 1 ? `1 time` : `${count} times`}`;
 });
 
-const openAsPopupButton =
-  document.querySelector<HTMLButtonElement>('#open-as-popup')!;
-
-openAsPopupButton.addEventListener('click', () => {
-  iframe.open();
+ThreadIframe.export<HostAPI>(iframe, {
+  connect: async (connections) => {
+    slots.connect(connections);
+  },
 });
