@@ -186,7 +186,7 @@ export class RemoteMutationObserver extends MutationObserver {
   disconnect({empty = true}: {empty?: boolean} = {}) {
     super.disconnect();
 
-    if (empty && this.#observed) {
+    if (empty && this.#observed.size > 0) {
       const records: RemoteMutationRecord[] = [];
 
       for (const node of this.#observed.values()) {
