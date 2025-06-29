@@ -219,7 +219,7 @@ class BrowserPageMCPController {
         window.__agent_playwright_update_tools?.(initialTools);
 
         // TODO: listen for updates
-        agent.tools.addEventListener('update-tools', (event) => {
+        agent.tools.addEventListener('update', (event) => {
           console.log(`[PLAYWRIGHT: tool-update]`, event);
           const tools = Array.from(agent.tools).map((tool: any) => {
             return {name: tool.name, description: tool.description};
