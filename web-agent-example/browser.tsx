@@ -3,27 +3,21 @@ import {AgentConnection} from '@lemonmade/web-agents';
 
 import {App} from './App.tsx';
 
-addEventListener('agent-connection-start', (event) => {
-  console.log(`[EVENT: agent-connection-start]`, event);
+const agent = AgentConnection.defineGlobal();
 
-  const {connection} = event as any as {connection: AgentConnection};
-
-  connection.tools.addEventListener('update-tools', (event) => {
-    console.log(`[EVENT: update-tools]`, event);
-    const tools = Array.from(connection.tools);
-    console.log(tools);
-  });
-
-  connection.tools.addEventListener('call-tool', (event) => {
-    console.log(`[EVENT: call-tool]`, event);
-  });
-
-  connection.tools.addEventListener('call-tool-result', (event) => {
-    console.log(`[EVENT: call-tool-result]`, event);
-  });
+agent.tools.addEventListener('update', (event) => {
+  console.log(`[EVENT: update]`, event);
+  const tools = Array.from(agent.tools);
+  console.log(tools);
 });
 
-const agent = new AgentConnection();
+agent.tools.addEventListener('call', (event) => {
+  console.log(`[EVENT: call]`, event);
+});
+
+agent.tools.addEventListener('result', (event) => {
+  console.log(`[EVENT: result]`, event);
+});
 
 agent.tools.set('get_message', {
   description: 'Get a message from the website to display to the user',

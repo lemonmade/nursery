@@ -7,9 +7,11 @@ export type ListToolsResult = (typeof ListToolsResultSchema)['_type'];
 export type CallToolResult = (typeof CallToolResultSchema)['_type'];
 export type ToolDefinition = ListToolsResult['tools'][number];
 
-export const EVENT_NAME_TOOL_SET_UPDATE = 'update-tools';
-export const EVENT_NAME_TOOL_CALL = 'call-tool';
-export const EVENT_NAME_TOOL_CALL_RESULT = 'call-tool-result';
+const AGENT_GLOBAL = 'agent';
+
+export const EVENT_NAME_TOOL_SET_UPDATE = 'update';
+export const EVENT_NAME_TOOL_CALL = 'call';
+export const EVENT_NAME_TOOL_CALL_RESULT = 'result';
 export const EVENT_NAME_AGENT_CONNECTION_START = 'agent-connection-start';
 
 export const SCRIPT_TYPE_AGENT_MANIFEST = 'application/agent-manifest';
@@ -127,17 +129,17 @@ class AgentToolSet extends EventTarget {
   }
 
   addEventListener(
-    event: 'update-tools',
+    event: typeof EVENT_NAME_TOOL_SET_UPDATE,
     listener: AgentEventListener<AgentToolSetUpdateEvent>,
     options?: boolean | AddEventListenerOptions,
   ): void;
   addEventListener(
-    event: 'call-tool',
+    event: typeof EVENT_NAME_TOOL_CALL,
     listener: AgentEventListener<AgentToolCallEvent>,
     options?: boolean | AddEventListenerOptions,
   ): void;
   addEventListener(
-    event: 'call-tool-result',
+    event: typeof EVENT_NAME_TOOL_CALL_RESULT,
     listener: AgentEventListener<AgentToolCallResultEvent>,
     options?: boolean | AddEventListenerOptions,
   ): void;
@@ -219,28 +221,27 @@ export class AgentConnectionStartEvent extends Event {
 }
 
 export class AgentConnection {
-  static defineGlobal(connection = new AgentConnection({defineGlobal: false})) {
-    defineAgentGlobal(connection);
-    return connection;
+  static defineGlobal(agent?: AgentConnection) {
+    const existingAgent = (
+      globalThis as any as {[AGENT_GLOBAL]: AgentConnection}
+    )[AGENT_GLOBAL];
+
+    if (existingAgent) return existingAgent;
+
+    const finalAgent = agent ?? new AgentConnection();
+
+    Object.defineProperty(globalThis, AGENT_GLOBAL, {
+      value: finalAgent,
+      writable: true,
+      configurable: true,
+    });
+
+    globalThis.dispatchEvent(new AgentConnectionStartEvent(finalAgent));
+
+    return finalAgent;
   }
 
   readonly tools = new AgentToolSet();
-
-  constructor({defineGlobal = true}: {defineGlobal?: boolean} = {}) {
-    if (defineGlobal) {
-      defineAgentGlobal(this);
-    }
-
-    globalThis.dispatchEvent(new AgentConnectionStartEvent(this));
-  }
-}
-
-function defineAgentGlobal(connection: AgentConnection) {
-  Object.defineProperty(globalThis, 'agent', {
-    value: connection,
-    writable: true,
-    configurable: true,
-  });
 }
 
 function parseAgentManifest(manifestElement: HTMLScriptElement) {
