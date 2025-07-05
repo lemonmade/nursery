@@ -1,5 +1,5 @@
 {
-  "name": "@lemonmade/remote-dom-extensions",
+  "name": "@lemonmade/remote-dom-extended",
   "type": "module",
   "license": "MIT",
   "publishConfig": {
@@ -38,7 +38,7 @@
     }
   },
   "devDependencies": {
-    "@remote-dom/core": "^1.8.0"
+    "@remote-dom/core": "^1.9.0"
   },
   "browserslist": [
     "defaults and fully supports es6-module",

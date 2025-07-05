@@ -1,5 +1,5 @@
 import type {RemoteConnection} from '@remote-dom/core';
-import {RemoteMutationObserver} from './RemoteMutationObserver.ts';
+import {RemoteMutationObserver} from '@remote-dom/core/elements';
 
 let id = 0;
 
