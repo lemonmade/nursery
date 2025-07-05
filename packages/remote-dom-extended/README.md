@@ -77,7 +77,7 @@ class MyEmbed extends HTMLElement {
       <iframe src="https://my-embed.com/embed"></iframe>
     `;
 
-    this.#slotObserver.observe(this);
+    this.#slotObserver.observe(this.shadowRoot);
   }
 
   disconnectedCallback() {
@@ -115,7 +115,9 @@ class MyEmbed extends HTMLElement {
 
     ThreadIframe.export(this.shadowRoot.querySelector('iframe'), {
       connect(connections) {
-        this.#slotObserver.connect({announcement: connections.announcement});
+        this.#slotObserver.connect({
+          announcement: connections.announcement,
+        });
       },
     });
   }
