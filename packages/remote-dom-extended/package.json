@@ -1,0 +1,47 @@
+{
+  "name": "@lemonmade/remote-dom-extended",
+  "type": "module",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "@lemonmade/registry": "https://registry.npmjs.org"
+  },
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lemonmade/nursery",
+    "directory": "packages/remote-dom-extensions"
+  },
+  "exports": {
+    ".": {
+      "types": "./build/typescript/index.d.ts",
+      "quilt:source": "./source/index.ts",
+      "quilt:esnext": "./build/esnext/index.esnext",
+      "import": "./build/esm/index.mjs"
+    }
+  },
+  "types": "./build/typescript/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "build": "rollup --config ./rollup.config.js"
+  },
+  "dependencies": {},
+  "peerDependencies": {
+    "@remote-dom/core": "^1.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@remote-dom/core": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@remote-dom/core": "^1.9.0"
+  },
+  "browserslist": [
+    "defaults and fully supports es6-module",
+    "maintained node versions"
+  ]
+}
