@@ -75,8 +75,17 @@ export class RemoteSlotObserver {
 
     const {observer} = state;
 
-    for (const [index, child] of Object.entries(slot.assignedElements())) {
-      observer.observe(child, {id: `SlotObserver:${this.#id}:${index}`});
+    const elements = slot.assignedElements();
+
+    debugger;
+
+    // TODO: handle more complex re-ordering changes
+    if (elements.length === 0) {
+      observer.disconnect({empty: true});
+    } else {
+      for (const [index, child] of Object.entries(elements)) {
+        observer.observe(child, {id: `SlotObserver:${this.#id}:${index}`});
+      }
     }
   }
 }
