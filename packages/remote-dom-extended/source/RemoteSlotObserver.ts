@@ -77,8 +77,6 @@ export class RemoteSlotObserver {
 
     const elements = slot.assignedElements();
 
-    debugger;
-
     // TODO: handle more complex re-ordering changes
     if (elements.length === 0) {
       observer.disconnect({empty: true});
