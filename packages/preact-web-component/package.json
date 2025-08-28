@@ -1,0 +1,50 @@
+{
+  "name": "@lemonmade/preact-web-component",
+  "description": "Helps create Web Components from Preact components",
+  "type": "module",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "@lemonmade/registry": "https://registry.npmjs.org"
+  },
+  "version": "0.0.0",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/<USER>/<REPOSITORY>",
+    "directory": "packages/preact-web-component"
+  },
+  "exports": {
+    ".": {
+      "types": "./build/typescript/index.d.ts",
+      "quilt:source": "./source/index.ts",
+      "quilt:esnext": "./build/esnext/index.esnext",
+      "import": "./build/esm/index.mjs"
+    }
+  },
+  "types": "./build/typescript/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "build": "rollup --config ./rollup.config.js"
+  },
+  "dependencies": {
+    "@preact/signals": "^2.0.0"
+  },
+  "peerDependencies": {
+    "preact": "^10.0.0 || ^11.0.0"
+  },
+  "peerDependenciesMeta": {
+    "preact": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "preact": "^10.23.1"
+  },
+  "browserslist": [
+    "defaults and fully supports es6-module",
+    "maintained node versions"
+  ]
+}
