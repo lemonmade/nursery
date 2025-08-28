@@ -5,6 +5,7 @@
   "references": [
     {"path": "./packages/create-create-tester"},
     {"path": "./packages/graphql-live"},
+    {"path": "./packages/preact-web-component"},
     {"path": "./packages/quilt-rendering"},
     {"path": "./packages/remote-dom-extended"},
     {"path": "./packages/shopify"},
