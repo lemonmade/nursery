@@ -26,26 +26,38 @@ export interface UcpProfileService {
   };
 }
 
-export type UcpOperation = 'read' | 'create' | 'update' | 'complete' | (string & {});
+export type UcpOperation =
+  | 'read'
+  | 'create'
+  | 'update'
+  | 'complete'
+  | (string & {});
 
 export interface UcpProfileJsonSchema {
   $id?: string;
 
   ucp_request?:
-  | 'required'
-  | 'optional'
-  | 'omit'
-  | {
-    [K in UcpOperation]?: 'required' | 'optional' | 'omit';
-  };
+    | 'required'
+    | 'optional'
+    | 'omit'
+    | {
+        [K in UcpOperation]?: 'required' | 'optional' | 'omit';
+      };
 
   $schema?:
-  | 'https://json-schema.org/draft/2020-12/schema'
-  | 'http://json-schema.org/draft-07/schema#'
-  | 'http://json-schema.org/draft-04/schema#';
+    | 'https://json-schema.org/draft/2020-12/schema'
+    | 'http://json-schema.org/draft-07/schema#'
+    | 'http://json-schema.org/draft-04/schema#';
   $ref?: string;
   $defs?: Record<string, UcpProfileJsonSchema>;
-  type?: "object" | "array" | "string" | "number" | "boolean" | "null" | "integer";
+  type?:
+    | 'object'
+    | 'array'
+    | 'string'
+    | 'number'
+    | 'boolean'
+    | 'null'
+    | 'integer';
   title?: string;
   description?: string;
   oneOf?: UcpProfileJsonSchema[];
