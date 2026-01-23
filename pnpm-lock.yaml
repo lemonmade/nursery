@@ -110,7 +110,11 @@ importers:
         specifier: ^10.23.1
         version: 10.23.1
 
-  packages/ucp-schema: {}
+  packages/ucp-schema:
+    devDependencies:
+      zod:
+        specifier: ^4.3.0
+        version: 4.3.6
 
   packages/web-mcp:
     dependencies:
@@ -4425,6 +4429,9 @@ packages:
 
   zod@3.25.36:
     resolution: {integrity: sha512-eRFS3i8T0IrpGdL8HQyqFAugGOn7jOjyGgGdtv5NY4Wkhi7lJDk732bNZ609YMIGFbLoaj6J69O1Mura23gfIw==}
+
+  zod@4.3.6:
+    resolution: {integrity: sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==}
 
 snapshots:
 
@@ -8930,3 +8937,5 @@ snapshots:
   zod@3.22.3: {}
 
   zod@3.25.36: {}
+
+  zod@4.3.6: {}
