@@ -9,6 +9,7 @@
     {"path": "./packages/remote-dom-extended"},
     {"path": "./packages/shopify"},
     {"path": "./packages/shopify-quilt"},
+    {"path": "./packages/ucp-schema"},
     {"path": "./packages/web-mcp"},
     {"path": "./packages/web-sandboxes"}
   ]

@@ -110,6 +110,8 @@ importers:
         specifier: ^10.23.1
         version: 10.23.1
 
+  packages/ucp-schema: {}
+
   packages/web-mcp:
     dependencies:
       '@modelcontextprotocol/sdk':
