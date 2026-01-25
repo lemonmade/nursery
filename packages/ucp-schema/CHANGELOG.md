@@ -1,5 +1,11 @@
 # @lemonmade/ucp-schema
 
+## 0.1.2
+
+### Patch Changes
+
+- [`8e9a962`](https://github.com/lemonmade/nursery/commit/8e9a962c831a9d812b9581cfb9bc6f1afcc81c3f) Thanks [@lemonmade](https://github.com/lemonmade)! - Use 'get' instead of 'read' for base UCP schema
+
 ## 0.1.1
 
 ### Patch Changes
