@@ -27,7 +27,7 @@ export interface UcpProfileService {
 }
 
 export type UcpOperation =
-  | 'read'
+  | 'get'
   | 'create'
   | 'update'
   | 'complete'

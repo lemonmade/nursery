@@ -153,7 +153,7 @@ export class UcpSchemaComposer {
    * @param options.operation - The operation context
    * @returns An iterator of schema URL and composed schema pairs
    */
-  entries({operation = 'read'}: {operation?: UcpOperation} = {}) {
+  entries({operation = 'get'}: {operation?: UcpOperation} = {}) {
     return this.#schemaMapForOperation(operation).entries();
   }
 
@@ -163,7 +163,7 @@ export class UcpSchemaComposer {
    */
   composedSchema(
     schema: string,
-    {operation = 'read'}: {operation?: UcpOperation} = {},
+    {operation = 'get'}: {operation?: UcpOperation} = {},
   ): UcpProfileJsonSchema | undefined {
     return this.#schemaMapForOperation(operation).get(schema);
   }
@@ -350,7 +350,7 @@ function processSchemaUcpMetadata(
           : value.ucp_request[operation];
       delete value.ucp_request;
 
-      if (operation === 'read') continue;
+      if (operation === 'get') continue;
 
       switch (ucpRequest) {
         case 'omit':
