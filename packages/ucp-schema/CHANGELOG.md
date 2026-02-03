@@ -1,5 +1,11 @@
 # @lemonmade/ucp-schema
 
+## 0.1.3
+
+### Patch Changes
+
+- [`23fb87f`](https://github.com/lemonmade/nursery/commit/23fb87fd26904f17bf7032c9c0522974a978191e) Thanks [@lemonmade](https://github.com/lemonmade)! - Use updated UCP profile shapes
+
 ## 0.1.2
 
 ### Patch Changes
