@@ -1,29 +1,33 @@
 export interface UcpProfile {
-  ucp: {
-    version: string;
-    capabilities: UcpProfileCapability[];
+  readonly ucp: {
+    readonly version: string;
+    readonly services: Record<string, readonly UcpProfileServiceTransport[]>;
+    readonly capabilities: Record<string, readonly UcpProfileCapability[]>;
   };
 }
 
 export interface UcpProfileCapability {
-  name: string;
-  version: string;
-  spec: string;
-  schema: string;
-  extends?: string | string[];
+  readonly name: string;
+  readonly version: string;
+  readonly spec: string;
+  readonly schema: string;
+  readonly extends?: string | string[];
 }
 
-export interface UcpProfileService {
-  version: string;
-  spec: string;
-  rest?: {
-    schema: string;
-    endpoint: string;
-  };
-  mcp?: {
-    schema: string;
-    endpoint: string;
-  };
+export type UcpProfileServiceTransportType =
+  | 'rest'
+  | 'mcp'
+  | 'a2a'
+  | 'embedded'
+  | (string & {});
+
+export interface UcpProfileServiceTransport {
+  readonly version: string;
+  readonly transport: UcpProfileServiceTransportType;
+  readonly spec: string;
+  readonly schema?: string;
+  readonly endpoint?: string;
+  readonly config?: Record<string, unknown>;
 }
 
 export type UcpOperation =

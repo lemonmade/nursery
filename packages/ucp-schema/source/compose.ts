@@ -77,32 +77,35 @@ export class UcpSchemaComposer {
     } = {},
   ): Promise<UcpSchemaComposer> {
     const resolvedCapabilities = await Promise.all(
-      capabilities.map(async (capability) => {
-        let json: UcpProfileJsonSchema;
+      Object.values(capabilities).flatMap((capabilityReferences) => {
+        // Only process the first version of a given capability.
+        return capabilityReferences.slice(0, 1).map(async (capability) => {
+          let json: UcpProfileJsonSchema;
 
-        const schemaUrl = new URL(capability.schema);
-        const reverseDnsForUrl = schemaUrl.hostname
-          .split('.')
-          .reverse()
-          .join('.');
+          const schemaUrl = new URL(capability.schema);
+          const reverseDnsForUrl = schemaUrl.hostname
+            .split('.')
+            .reverse()
+            .join('.');
 
-        if (!capability.name.startsWith(reverseDnsForUrl)) {
-          throw new Error(
-            `Invalid schema name: ${capability.name} does not match URL ${capability.schema}`,
-          );
-        }
+          if (!capability.name.startsWith(reverseDnsForUrl)) {
+            throw new Error(
+              `Invalid schema name: ${capability.name} does not match URL ${capability.schema}`,
+            );
+          }
 
-        try {
-          // TODO: also need to fetch more JSON schemas that may be referenced by the fields in this one
-          json = await fetchSchema(capability.schema);
-        } catch (error) {
-          throw new Error(`Schema not found for URL: ${capability.schema}`);
-        }
+          try {
+            // TODO: also need to fetch more JSON schemas that may be referenced by the fields in this one
+            json = await fetchSchema(capability.schema);
+          } catch (error) {
+            throw new Error(`Schema not found for URL: ${capability.schema}`);
+          }
 
-        return {
-          capability,
-          schema: json,
-        } satisfies UcpProfileCapabilitiesWithResolvedSchemas;
+          return {
+            capability,
+            schema: json,
+          } satisfies UcpProfileCapabilitiesWithResolvedSchemas;
+        });
       }),
     );
 
