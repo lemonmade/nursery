@@ -1,5 +1,11 @@
 # @lemonmade/ucp-schema
 
+## 0.1.4
+
+### Patch Changes
+
+- [`cb583b6`](https://github.com/lemonmade/nursery/commit/cb583b6f70b4039d4dafb4ed13aa4886bb959cd7) Thanks [@lemonmade](https://github.com/lemonmade)! - Remove capability.name field
+
 ## 0.1.3
 
 ### Patch Changes
