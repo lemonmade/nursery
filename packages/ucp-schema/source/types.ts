@@ -7,7 +7,6 @@ export interface UcpProfile {
 }
 
 export interface UcpProfileCapability {
-  readonly name: string;
   readonly version: string;
   readonly spec: string;
   readonly schema: string;

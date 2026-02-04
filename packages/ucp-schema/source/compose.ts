@@ -6,6 +6,7 @@ import type {
 } from './types.ts';
 
 interface UcpProfileCapabilitiesWithResolvedSchemas {
+  readonly name: string;
   readonly capability: UcpProfileCapability;
   readonly schema: UcpProfileJsonSchema;
 }
@@ -77,7 +78,7 @@ export class UcpSchemaComposer {
     } = {},
   ): Promise<UcpSchemaComposer> {
     const resolvedCapabilities = await Promise.all(
-      Object.values(capabilities).flatMap((capabilityReferences) => {
+      Object.entries(capabilities).flatMap(([name, capabilityReferences]) => {
         // Only process the first version of a given capability.
         return capabilityReferences.slice(0, 1).map(async (capability) => {
           let json: UcpProfileJsonSchema;
@@ -88,9 +89,9 @@ export class UcpSchemaComposer {
             .reverse()
             .join('.');
 
-          if (!capability.name.startsWith(reverseDnsForUrl)) {
+          if (!name.startsWith(reverseDnsForUrl)) {
             throw new Error(
-              `Invalid schema name: ${capability.name} does not match URL ${capability.schema}`,
+              `Invalid schema name: ${name} does not match URL ${capability.schema}`,
             );
           }
 
@@ -102,6 +103,7 @@ export class UcpSchemaComposer {
           }
 
           return {
+            name,
             capability,
             schema: json,
           } satisfies UcpProfileCapabilitiesWithResolvedSchemas;
@@ -125,8 +127,8 @@ export class UcpSchemaComposer {
   constructor(profile: UcpProfileWithResolvedSchemas) {
     this.#profile = profile;
 
-    for (const {capability} of profile.capabilities) {
-      this.#profileNameToUrlMap.set(capability.name, capability.schema);
+    for (const {name, capability} of profile.capabilities) {
+      this.#profileNameToUrlMap.set(name, capability.schema);
       this.#profileUrlToCapabilityMap.set(capability.schema, capability);
     }
   }
@@ -228,8 +230,8 @@ function createSchemaMap(
   const schemaMap = new Map<string, UcpProfileJsonSchema>();
   const schemaNameToUrlMap = new Map<string, string>();
 
-  for (const {capability, schema} of capabilities) {
-    schemaNameToUrlMap.set(capability.name, capability.schema);
+  for (const {name, capability, schema} of capabilities) {
+    schemaNameToUrlMap.set(name, capability.schema);
 
     const clonedSchema = structuredClone(schema);
     processSchemaUcpMetadata(clonedSchema, operation);
@@ -311,11 +313,11 @@ function createSchemaMap(
 
       Object.assign(
         extendedSchema.$defs!,
-        namespaceExtensionDefs(clonedDefs, capability),
+        namespaceExtensionDefs(clonedDefs, {name}),
       );
       extendedSchema.allOf!.push({
         type: 'object',
-        $ref: `#/$defs/${namespaceIdentifier(extendedSchemaName, capability)}`,
+        $ref: `#/$defs/${namespaceIdentifier(extendedSchemaName, {name})}`,
       });
     }
   }
@@ -420,14 +422,14 @@ function processSchemaUcpMetadata(
 
 function namespaceIdentifier(
   identifier: string,
-  capability: Pick<UcpProfileCapability, 'name'>,
+  capability: Pick<UcpProfileCapabilitiesWithResolvedSchemas, 'name'>,
 ) {
   return `${capability.name}~${identifier}`;
 }
 
 function namespaceExtensionDefs(
   defs: Record<string, UcpProfileJsonSchema>,
-  capability: Pick<UcpProfileCapability, 'name'>,
+  capability: Pick<UcpProfileCapabilitiesWithResolvedSchemas, 'name'>,
 ) {
   const newDefs: Record<string, UcpProfileJsonSchema> = {};
 
@@ -443,7 +445,7 @@ function namespaceExtensionDefs(
 
 function updateRefsWithNamespace(
   obj: any,
-  capability: Pick<UcpProfileCapability, 'name'>,
+  capability: Pick<UcpProfileCapabilitiesWithResolvedSchemas, 'name'>,
 ): any {
   if (obj === null || typeof obj !== 'object') {
     return obj;

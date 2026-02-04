@@ -26,7 +26,6 @@ describe('UcpSchemaComposer', () => {
           capabilities: {
             'dev.ucp.shopping.checkout': [
               {
-                name: 'dev.ucp.shopping.checkout',
                 version: '2026-01-11',
                 spec: 'https://ucp.dev/specification/checkout',
                 schema: 'https://ucp.dev/schemas/shopping/checkout.json',
@@ -56,7 +55,6 @@ describe('UcpSchemaComposer', () => {
           capabilities: {
             'dev.ucp.shopping.checkout': [
               {
-                name: 'dev.ucp.shopping.checkout',
                 version: '2026-01-11',
                 spec: 'https://ucp.dev/specification/checkout',
                 schema: 'https://mischief.dev/schemas/shopping/checkout.json',
@@ -88,7 +86,6 @@ describe('UcpSchemaComposer', () => {
           capabilities: {
             'dev.ucp.shopping.checkout': [
               {
-                name: 'dev.ucp.shopping.checkout',
                 version: '2026-01-11',
                 spec: 'https://ucp.dev/specification/checkout',
                 schema: 'https://ucp.dev/schemas/shopping/checkout.json',
@@ -124,7 +121,6 @@ describe('UcpSchemaComposer', () => {
           capabilities: {
             'dev.ucp.shopping.checkout': [
               {
-                name: 'dev.ucp.shopping.checkout',
                 version: '2026-01-11',
                 spec: 'https://ucp.dev/specification/checkout',
                 schema: 'https://ucp.dev/schemas/shopping/checkout.json',
@@ -158,7 +154,6 @@ describe('UcpSchemaComposer', () => {
           capabilities: {
             'dev.ucp.shopping.checkout': [
               {
-                name: 'dev.ucp.shopping.checkout',
                 version: '2026-01-11',
                 spec: 'https://ucp.dev/specification/checkout',
                 schema: 'https://ucp.dev/schemas/shopping/checkout.json',
@@ -166,7 +161,6 @@ describe('UcpSchemaComposer', () => {
             ],
             'dev.ucp.shopping.fulfillment': [
               {
-                name: 'dev.ucp.shopping.fulfillment',
                 version: '2026-01-11',
                 spec: 'https://ucp.dev/specification/fulfillment',
                 schema: 'https://ucp.dev/schemas/shopping/fulfillment.json',
@@ -286,7 +280,6 @@ describe('UcpSchemaComposer', () => {
           capabilities: {
             'dev.ucp.shopping.checkout': [
               {
-                name: 'dev.ucp.shopping.checkout',
                 version: '2026-01-11',
                 spec: 'https://ucp.dev/specification/checkout',
                 schema: 'https://ucp.dev/schemas/shopping/checkout.json',
@@ -294,7 +287,6 @@ describe('UcpSchemaComposer', () => {
             ],
             'dev.ucp.shopping.cart': [
               {
-                name: 'dev.ucp.shopping.cart',
                 version: '2026`-01-11',
                 spec: 'https://ucp.dev/specification/cart',
                 schema: 'https://ucp.dev/schemas/shopping/cart.json',
@@ -302,7 +294,6 @@ describe('UcpSchemaComposer', () => {
             ],
             'dev.ucp.shopping.fulfillment': [
               {
-                name: 'dev.ucp.shopping.fulfillment',
                 version: '2026-01-11',
                 spec: 'https://ucp.dev/specification/fulfillment',
                 schema: 'https://ucp.dev/schemas/shopping/fulfillment.json',
@@ -441,7 +432,6 @@ describe('UcpSchemaComposer', () => {
           capabilities: {
             'dev.ucp.shopping.checkout': [
               {
-                name: 'dev.ucp.shopping.checkout',
                 version: '2026-01-11',
                 spec: 'https://ucp.dev/specification/checkout',
                 schema: 'https://ucp.dev/schemas/shopping/checkout.json',
@@ -449,7 +439,6 @@ describe('UcpSchemaComposer', () => {
             ],
             'dev.ucp.shopping.fulfillment': [
               {
-                name: 'dev.ucp.shopping.fulfillment',
                 version: '2026-01-11',
                 spec: 'https://ucp.dev/specification/fulfillment',
                 schema: 'https://ucp.dev/schemas/shopping/fulfillment.json',
@@ -458,7 +447,6 @@ describe('UcpSchemaComposer', () => {
             ],
             'dev.ucp.shopping.discount': [
               {
-                name: 'dev.ucp.shopping.discount',
                 version: '2026-01-11',
                 spec: 'https://ucp.dev/specification/discount',
                 schema: 'https://ucp.dev/schemas/shopping/discount.json',
@@ -623,7 +611,6 @@ describe('UcpSchemaComposer', () => {
           capabilities: {
             'dev.ucp.shopping.checkout': [
               {
-                name: 'dev.ucp.shopping.checkout',
                 version: '2026-01-11',
                 spec: 'https://ucp.dev/specification/checkout',
                 schema: 'https://ucp.dev/schemas/shopping/checkout.json',
@@ -631,7 +618,6 @@ describe('UcpSchemaComposer', () => {
             ],
             'dev.ucp.shopping.fulfillment': [
               {
-                name: 'dev.ucp.shopping.fulfillment',
                 version: '2026-01-11',
                 spec: 'https://ucp.dev/specification/fulfillment',
                 schema: 'https://ucp.dev/schemas/shopping/fulfillment.json',
@@ -682,7 +668,6 @@ describe('UcpSchemaComposer', () => {
           capabilities: {
             'dev.ucp.shopping.checkout': [
               {
-                name: 'dev.ucp.shopping.checkout',
                 version: '2026-01-11',
                 spec: 'https://ucp.dev/specification/checkout',
                 schema: 'https://ucp.dev/schemas/shopping/checkout.json',
@@ -690,7 +675,6 @@ describe('UcpSchemaComposer', () => {
             ],
             'dev.ucp.shopping.fulfillment': [
               {
-                name: 'dev.ucp.shopping.fulfillment',
                 version: '2026-01-11',
                 spec: 'https://ucp.dev/specification/fulfillment',
                 schema: 'https://ucp.dev/schemas/shopping/fulfillment.json',
