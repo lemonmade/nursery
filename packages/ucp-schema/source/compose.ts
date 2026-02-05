@@ -27,21 +27,20 @@ export interface UcpProfileSchemaFetcher {
  * ```ts
  * const composer = await UcpSchemaComposer.fromProfile({
  *   ucp: {
- *     capabilities: [
- *       {
- *         name: 'dev.ucp.shopping.checkout',
+ *     capabilities: {
+ *       'dev.ucp.shopping.checkout': [
  *         version: '2026-01-11',
  *         spec: 'https://ucp.dev/specification/checkout',
  *         schema: 'https://ucp.dev/schemas/shopping/checkout.json',
- *       },
+ *       ],
  *       // ... more capabilities ...
- *     ],
+ *     },
  *   },
  * });
  *
  * const checkoutFile = composer.get('https://ucp.dev/schemas/shopping/checkout.json');
- * const checkoutReadSchema = checkoutFile.composedSchema();
- * const checkoutCreateSchema = checkoutFile.composedSchema({ operation: 'create' });
+ * const checkoutGetSchema = checkoutFile.composedSchema();
+ * const checkoutCreateSchema = checkoutFile.composedSchema({operation: 'create'});
  * ```
  */
 export class UcpSchemaComposer {

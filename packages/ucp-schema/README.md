@@ -9,16 +9,16 @@ import {UcpSchemaComposer} from '@lemonmade/ucp-schema';
 
 const composer = await UcpSchemaComposer.fromProfile({
   ucp: {
-    capabilities: [
-      // ... more capabilities ...
-    ],
+    capabilities: {
+      // ... record of capabilities ...
+    },
   },
 });
 
 const checkoutFile = composer.get(
   'https://ucp.dev/schemas/shopping/checkout.json',
 );
-const checkoutReadSchema = checkoutFile.composedSchema();
+const checkoutGetSchema = checkoutFile.composedSchema();
 const checkoutCreateSchema = checkoutFile.composedSchema({operation: 'create'});
 
 // ... use the JSON schemas to validate and transform UCP requests
